@@ -1,0 +1,74 @@
+{
+  "Swin-UNet": {
+    "mean_gain": 0.02301755356201377,
+    "ci_95": [
+      0.0027311670106438565,
+      0.0440938739076233
+    ],
+    "p_value": 0.03,
+    "statistically_significant": true
+  },
+  "ResU-Net": {
+    "mean_gain": 0.043466587745454754,
+    "ci_95": [
+      0.013314320608705774,
+      0.0737744556472426
+    ],
+    "p_value": 0.01,
+    "statistically_significant": true
+  },
+  "SiamUNet-diff": {
+    "mean_gain": 0.06388529267945675,
+    "ci_95": [
+      0.025885158802979757,
+      0.10594046699047427
+    ],
+    "p_value": 0.0,
+    "statistically_significant": true
+  },
+  "SiamUNet-conc": {
+    "mean_gain": -0.011216549698777716,
+    "ci_95": [
+      -0.02799152862875489,
+      0.004012311186994907
+    ],
+    "p_value": 0.144,
+    "statistically_significant": false
+  },
+  "Ablation-NoLIA": {
+    "mean_gain": 0.020371852607280853,
+    "ci_95": [
+      0.009819317009746678,
+      0.03130478813366685
+    ],
+    "p_value": 0.0,
+    "statistically_significant": true
+  },
+  "Ablation-NoAspect": {
+    "mean_gain": -0.0009310175870907067,
+    "ci_95": [
+      -0.013919363425339087,
+      0.010378524838332548
+    ],
+    "p_value": 0.942,
+    "statistically_significant": false
+  },
+  "Ablation-NoCrossAttn": {
+    "mean_gain": 0.014150116639505318,
+    "ci_95": [
+      0.0032698773209991817,
+      0.026039987876925633
+    ],
+    "p_value": 0.01,
+    "statistically_significant": true
+  },
+  "Ablation-NoGeoLoss": {
+    "mean_gain": 0.03159659477499876,
+    "ci_95": [
+      0.014927111922001116,
+      0.04745332783877386
+    ],
+    "p_value": 0.002,
+    "statistically_significant": true
+  }
+}

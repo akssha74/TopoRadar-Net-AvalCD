@@ -1,0 +1,107 @@
+{
+  "unit_scale": "1 pixel = 100 m^2 = 0.01 ha = 0.0001 km^2",
+  "regions": {
+    "Tromso_Arctic": {
+      "scene_area_km2": 98.6,
+      "debris_ground_truth_ha": 339.72,
+      "models": {
+        "TopoRadar-Net": {
+          "tp_ha": 270.09,
+          "fp_ha": 87.82,
+          "fp_km2": 0.88,
+          "fn_ha": 69.6,
+          "false_alarm_rate_ha_per_km2": 0.89
+        },
+        "Swin-UNet": {
+          "tp_ha": 261.49,
+          "fp_ha": 68.34,
+          "fp_km2": 0.68,
+          "fn_ha": 78.2,
+          "false_alarm_rate_ha_per_km2": 0.69
+        },
+        "ResU-Net": {
+          "tp_ha": 251.72,
+          "fp_ha": 65.17,
+          "fp_km2": 0.65,
+          "fn_ha": 87.97,
+          "false_alarm_rate_ha_per_km2": 0.66
+        },
+        "SiamUNet-conc": {
+          "tp_ha": 278.77,
+          "fp_ha": 87.93,
+          "fp_km2": 0.88,
+          "fn_ha": 60.92,
+          "false_alarm_rate_ha_per_km2": 0.89
+        },
+        "SiamUNet-diff": {
+          "tp_ha": 218.33,
+          "fp_ha": 43.13,
+          "fp_km2": 0.43,
+          "fn_ha": 121.36,
+          "false_alarm_rate_ha_per_km2": 0.44
+        }
+      }
+    },
+    "Pamir_HighMountain": {
+      "scene_area_km2": 143.8,
+      "debris_ground_truth_ha": 225.79,
+      "models": {
+        "TopoRadar-Net": {
+          "tp_ha": 130.25,
+          "fp_ha": 169.89,
+          "fp_km2": 1.7,
+          "fn_ha": 95.54,
+          "false_alarm_rate_ha_per_km2": 1.18
+        },
+        "Swin-UNet": {
+          "tp_ha": 150.43,
+          "fp_ha": 242.77,
+          "fp_km2": 2.43,
+          "fn_ha": 75.36,
+          "false_alarm_rate_ha_per_km2": 1.69
+        },
+        "ResU-Net": {
+          "tp_ha": 150.26,
+          "fp_ha": 239.62,
+          "fp_km2": 2.4,
+          "fn_ha": 75.53,
+          "false_alarm_rate_ha_per_km2": 1.67
+        },
+        "SiamUNet-conc": {
+          "tp_ha": 163.76,
+          "fp_ha": 302.63,
+          "fp_km2": 3.03,
+          "fn_ha": 62.03,
+          "false_alarm_rate_ha_per_km2": 2.1
+        },
+        "SiamUNet-diff": {
+          "tp_ha": 98.23,
+          "fp_ha": 204.98,
+          "fp_km2": 2.05,
+          "fn_ha": 127.56,
+          "false_alarm_rate_ha_per_km2": 1.43
+        }
+      }
+    }
+  },
+  "triage_matrix": [
+    {
+      "tier": "Alert Level 1 (Routine Monitoring)",
+      "prob_range": "p < 0.40",
+      "area_ha": "< 0.1 ha",
+      "action": "Background logging; zero mobilization; 98.4% valley clutter filtered."
+    },
+    {
+      "tier": "Alert Level 2 (Priority Reconnaissance)",
+      "prob_range": "0.40 <= p < 0.70",
+      "area_ha": "0.1 - 1.0 ha",
+      "action": "Automated drone/UAV tasking or high-resolution optical satellite cueing."
+    },
+    {
+      "tier": "Alert Level 3 (Emergency Infrastructure Alert)",
+      "prob_range": "p >= 0.70",
+      "area_ha": ">= 1.0 ha (or Class D3/D4)",
+      "action": "Immediate dispatch to highway authorities (e.g. E8/M41) for protective transport corridor closure."
+    }
+  ]
+}

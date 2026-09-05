@@ -1,0 +1,11 @@
+{
+  "device": "mps",
+  "parameter_count": 3455729,
+  "scene_dimensions": "2500x2000",
+  "patch_size": 128,
+  "stride": 64,
+  "n_patches_simulated": 1200,
+  "full_scene_inference_seconds_mean": 1.7950169324874878,
+  "full_scene_inference_seconds_std": 0.019335255440541536,
+  "throughput_patches_per_sec": 668.5173706618306
+}

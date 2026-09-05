@@ -1,0 +1,42 @@
+{
+  "Swin-UNet": {
+    "mean_gain": 0.03265156652005211,
+    "ci_95": [
+      0.01123605167600777,
+      0.05367656801223462
+    ],
+    "p_value": 0.01,
+    "statistically_significant": true,
+    "n_spatial_clusters": 339
+  },
+  "ResU-Net": {
+    "mean_gain": 0.04302579628867912,
+    "ci_95": [
+      0.015413583349006785,
+      0.06968703969899687
+    ],
+    "p_value": 0.002,
+    "statistically_significant": true,
+    "n_spatial_clusters": 339
+  },
+  "SiamUNet-conc": {
+    "mean_gain": 0.024704958854303696,
+    "ci_95": [
+      0.004069297118135734,
+      0.04604137870504266
+    ],
+    "p_value": 0.026,
+    "statistically_significant": true,
+    "n_spatial_clusters": 339
+  },
+  "SiamUNet-diff": {
+    "mean_gain": 0.12767492917311987,
+    "ci_95": [
+      0.09184136466482479,
+      0.1661085112151883
+    ],
+    "p_value": 0.0,
+    "statistically_significant": true,
+    "n_spatial_clusters": 339
+  }
+}
