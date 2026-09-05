@@ -7,26 +7,26 @@
 To evaluate the generalization capability of TopoRadar-Net under genuine operational deployment conditions, all models are trained on the European Alps (Livigno) and sub-polar Greenland (Nuuk), and evaluated zero-shot across two completely unseen mountain systems: the Scandinavian Arctic (Troms{\o}, Norway) and the high-altitude Pamir Mountains (Pish, Tajikistan). Table~\ref{tab:cross_system_performance} reports quantitative pixel-level and instance-level metrics across three independent training seeds (seeds 42, 123, and 456), showing mean $\pm$ standard deviation.
 
 \begin{table*}[t]
-\centering
 \caption{Cross-system zero-shot evaluation on unseen mountain systems (Scandinavian Arctic Troms{\o} and Central Asian Pamir Mountains), reporting Mean $\pm$ Standard Deviation across 3 independent training seeds. All values recomputed directly from primary experiment logs and serialized model weights.}
 \label{tab:cross_system_performance}
-\resizebox{\textwidth}{!}{%
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{lcrccccc}
 \toprule
-\multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Params}} & \multicolumn{3}{c}{\textbf{Scandinavian Arctic (Troms{\o})}} & \multicolumn{2}{c}{\textbf{Pamir Mountains (Pish)}} & \textbf{Pooled Benchmark} \\
+\multirow{2}{*}{\textbf{Method}} & \multirow{2}{*}{\textbf{Params}} & \multicolumn{3}{c}{\textbf{Troms{\o} (Scandinavian Arctic)}} & \multicolumn{2}{c}{\textbf{Pamirs (Tajikistan)}} & \textbf{Pooled Benchmark} \\
 \cmidrule(lr){3-5} \cmidrule(lr){6-7} \cmidrule(lr){8-8}
- & & \textbf{Pixel F1 (\%)} & \textbf{Pixel IoU (\%)} & \textbf{HR@0.3 (\%)} & \textbf{Pixel F1 (\%)} & \textbf{Pixel IoU (\%)} & \textbf{Macro F1 (\%)} \\
+ & & \textbf{Pixel F1} & \textbf{IoU (\%)} & \textbf{HR@0.3} & \textbf{Pixel F1} & \textbf{IoU (\%)} & \textbf{Macro F1 (\%)} \\
 \midrule
 SiamUNet-diff & 1.54M & $72.64 \pm 0.39$ & $57.03 \pm 0.48$ & $63.25 \pm 2.52$ & $37.11 \pm 2.44$ & $22.81 \pm 1.86$ & $54.87 \pm 1.03$ \\
 SiamUNet-conc & 1.54M & $78.92 \pm 1.07$ & $65.20 \pm 1.46$ & $82.62 \pm 1.07$ & $47.34 \pm 0.70$ & $31.02 \pm 0.60$ & $63.13 \pm 0.79$ \\
 ResU-Net & 3.26M & $76.60 \pm 1.30$ & $62.09 \pm 1.71$ & $76.92 \pm 4.83$ & $49.25 \pm 3.39$ & $32.74 \pm 2.96$ & $62.92 \pm 1.42$ \\
-Swin-UNet (AvalCD Benchmark) & 2.29M & $78.09 \pm 0.99$ & $64.07 \pm 1.33$ & $79.20 \pm 2.45$ & $48.73 \pm 2.74$ & $32.26 \pm 2.38$ & $63.41 \pm 1.03$ \\
+Swin-UNet & 2.29M & $78.09 \pm 0.99$ & $64.07 \pm 1.33$ & $79.20 \pm 2.45$ & $48.73 \pm 2.74$ & $32.26 \pm 2.38$ & $63.41 \pm 1.03$ \\
 \midrule
-\textbf{TopoRadar-Net (Ours, Seed 42)} & 3.46M & $79.35$ & $65.76$ & $74.36$ & $51.23$ & $34.44$ & $65.29$ \\
-\textbf{TopoRadar-Net (Ours, 3-Seed Mean)} & \textbf{3.46M} & $\mathbf{77.40 \pm 1.86}$ & $\mathbf{63.16 \pm 2.45}$ & $\mathbf{75.50 \pm 1.61}$ & $\mathbf{50.18 \pm 4.40}$ & $\mathbf{33.61 \pm 3.89}$ & $\mathbf{63.79 \pm 1.88}$ \\
+\textbf{TopoRadar-Net (Seed 42)} & 3.46M & $79.35$ & $65.76$ & $74.36$ & $51.23$ & $34.44$ & $65.29$ \\
+\textbf{TopoRadar-Net (3-Seed)} & \textbf{3.46M} & $\mathbf{77.40 \pm 1.86}$ & $\mathbf{63.16 \pm 2.45}$ & $\mathbf{75.50 \pm 1.61}$ & $\mathbf{50.18 \pm 4.40}$ & $\mathbf{33.61 \pm 3.89}$ & $\mathbf{63.79 \pm 1.88}$ \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table*}
 
 As detailed in Table~\ref{tab:cross_system_performance}, TopoRadar-Net achieves competitive, robust cross-system generalization across both unobserved mountain regimes. On the extreme high-relief Pamir Mountains test scene (Pish, Tajikistan), which represents an unseen high-altitude continental cryospheric regime with $>2,000$~m vertical chute drops, TopoRadar-Net attains the highest cross-system pixel F1 among full-model baselines ($50.18\% \pm 4.40\%$ F1, reaching $51.23\%$ on Seed 42 and $54.97\%$ on Seed 456), establishing an edge over Swin-UNet ($48.73\% \pm 2.74\%$), ResU-Net ($49.25\% \pm 3.39\%$), and SiamUNet-conc ($47.34\% \pm 0.70\%$), while dramatically outperforming SiamUNet-diff ($37.11\% \pm 2.44\%$, a $+13.07\%$ F1 gain). On the pooled cross-system benchmark (averaging both unseen mountain systems), TopoRadar-Net achieves a leading macro F1 of $\mathbf{63.79\% \pm 1.88\%}$ (reaching $65.29\%$ on Seed 42), outperforming Swin-UNet ($63.41\% \pm 1.03\%$), SiamUNet-conc ($63.13\% \pm 0.79\%$), ResU-Net ($62.92\% \pm 1.42\%$), and SiamUNet-diff ($54.87\% \pm 1.03\%$).
@@ -60,10 +60,11 @@ On the Scandinavian Arctic test scene (Troms{\o}), TopoRadar-Net reaches $77.40\
 Because satellite remote sensing pixels within mountain regions exhibit strong spatial clustering, naive pixel-level hypothesis tests artificially underestimate uncertainty. To rigorously assess whether TopoRadar-Net's performance gains are statistically significant, we execute a 1,000-draw paired cluster-bootstrap test over independent spatial blocks of the held-out test scenes. Table~\ref{tab:bootstrap_significance} summarizes the paired bootstrap estimates, 95\% confidence intervals, and empirical two-tailed $p$-values.
 
 \begin{table*}[t]
-\centering
 \caption{Paired statistical significance testing of TopoRadar-Net versus baselines: (a) 1,000-draw spatial block cluster bootstrap on the held-out Scandinavian Arctic test scene (Seed 42, $n=143$ blocks); (b) 1,000-draw spatial block cluster bootstrap pooling all 339 independent $128 \times 128$ geographic blocks across both unseen mountain regimes (Seed 42, pixel-pooled micro-F1); and (c) Paired $t$-test across 3 independent training seeds on pooled macro-F1.}
 \label{tab:bootstrap_significance}
-\resizebox{\textwidth}{!}{%
+\centering
+\footnotesize
+\setlength{\tabcolsep}{7pt}
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Comparison} & \textbf{Mean $\Delta$F1 (\%)} & \textbf{95\% CI Lower} & \textbf{95\% CI Upper} & \textbf{$p$-value} \\
@@ -91,8 +92,7 @@ vs. ResU-Net & $+0.86\%$ & $-3.23\%$ & $+4.96\%$ & $0.459$ \\
 vs. SiamUNet-conc & $+0.65\%$ & $-4.69\%$ & $+5.99\%$ & $0.651$ \\
 vs. Swin-UNet & $+0.38\%$ & $-8.28\%$ & $+9.04\%$ & $0.869$ \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table*}
 
 The bootstrap confidence intervals and seed-level tests demonstrate a clear distinction between spatial-sampling stability and training-seed variance. In the coastal Scandinavian Arctic setting (Part A), against Swin-UNet (the reference AvalCD benchmark architecture), TopoRadar-Net achieves a mean paired regional gain of $+2.30\%$ with a 95\% CI of $[+0.27\%, +4.41\%]$ ($p = 0.030$), $+4.35\%$ over ResU-Net ($p = 0.010$), and $+6.39\%$ over SiamUNet-diff ($p < 0.001$). Under spatial-sampling resampling across all 339 independent $128 \times 128$ spatial blocks conditional on Seed 42 (Part B), TopoRadar-Net exhibits positive micro-F1 margins over all four baselines (Swin-UNet $+3.27\%$, ResU-Net $+4.30\%$, SiamUNet-conc $+2.47\%$, SiamUNet-diff $+12.77\%$).
@@ -105,10 +105,11 @@ However, evaluating the paired $t$-test across all three independent training se
 For alpine risk assessment and emergency management, detecting individual avalanche release and runout polygons is critical \citep{eaws2022size, techel2018spatial}. Table~\ref{tab:instance_metrics} evaluates instance-level detection completeness on the Troms{\o} inventory (117 polygons), categorized by European Avalanche Warning Services (EAWS) destructive size classes: Class D1 (Small, $n=5$), Class D2 (Medium, $n=25$), Class D3 (Large, $n=71$), and Class D4 (Very Large, $n=16$).
 
 \begin{table*}[t]
-\centering
 \caption{Instance-level avalanche detection hit rates across EAWS size classes on the Troms{\o} benchmark ($n=117$ polygons), evaluated at minimum $30\%$ (HR@0.3) and $50\%$ (HR@0.5) polygon area overlap across true 3-seed means.}
 \label{tab:instance_metrics}
-\resizebox{\textwidth}{!}{%
+\centering
+\footnotesize
+\setlength{\tabcolsep}{6pt}
 \begin{tabular}{lcccccc}
 \toprule
 \multirow{2}{*}{\textbf{Method}} & \multicolumn{2}{c}{\textbf{Overall Hit Rate}} & \multicolumn{4}{c}{\textbf{Size-Disaggregated Hit Rate (HR@0.3)}} \\
@@ -122,8 +123,7 @@ Swin-UNet & $79.20 \pm 2.45\%$ & $69.52 \pm 2.10\%$ & $6.7\%$ & $58.7\%$ & $86.9
 \midrule
 \textbf{TopoRadar-Net (Ours)} & $\mathbf{75.50 \pm 1.61\%}$ & $\mathbf{68.09 \pm 1.95\%}$ & $\mathbf{20.0\%}$ & $\mathbf{49.3\%}$ & $\mathbf{84.0\%}$ & $\mathbf{95.8\%}$ \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table*}
 
 At the operational threshold ($\ge 30\%$ polygon overlap), TopoRadar-Net achieves an overall hit rate of $\mathbf{75.50\% \pm 1.61\%}$ on the held-out Scandinavian Arctic test scene (reaching 87, 87, and 91 detected polygons across the three seeds; 3-seed mean $88.3/117$), with $95.8\%$ detection completeness on the largest Class D4 avalanches ($100\%$ on seeds 42 and 123; $87.5\%$ on seed 456; 3-seed mean $95.8\%$), $84.0\%$ completeness on Class D3 avalanches, $49.3\%$ on Class D2, and $20.0\%$ on Class D1. On the extreme high-relief Pamir Mountains (Pish, Tajikistan), polygon-level metadata lacks EAWS size classifications, resulting in zero matching polygon boundaries under EAWS metrics ($0.0\%$), whereas pixel-level F1 is preserved at $50.18\% \pm 4.40\%$ (reaching $54.97\%$), maintaining physical sensitivity across massive $2,000$~m vertical chutes.
@@ -140,15 +140,16 @@ To isolate the individual contribution of each physical mechanism and architectu
 \end{enumerate}
 
 \begin{table*}[t]
-\centering
 \caption{Systematic ablation analysis of TopoRadar-Net components across unseen mountain test regions and the pooled benchmark (Mean $\pm$ Standard Deviation across 3 independent training seeds).}
 \label{tab:ablation_results}
-\resizebox{\textwidth}{!}{%
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{lcccccc}
 \toprule
-\multirow{2}{*}{\textbf{Configuration}} & \multicolumn{3}{c}{\textbf{Scandinavian Arctic (Troms{\o})}} & \multicolumn{2}{c}{\textbf{Pamir Mountains (Pish)}} & \textbf{Pooled Benchmark} \\
+\multirow{2}{*}{\textbf{Ablation Variant}} & \multicolumn{3}{c}{\textbf{Troms{\o} (Scandinavian Arctic)}} & \multicolumn{2}{c}{\textbf{Pamirs (Central Asia)}} & \textbf{Pooled Benchmark} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-6} \cmidrule(lr){7-7}
- & \textbf{Pixel F1 (\%)} & \textbf{IoU (\%)} & \textbf{Precision (\%)} & \textbf{Pixel F1 (\%)} & \textbf{IoU (\%)} & \textbf{Macro F1 (\%)} \\
+ & \textbf{Pixel F1 (\%)} & \textbf{IoU (\%)} & \textbf{Prec. (\%)} & \textbf{Pixel F1 (\%)} & \textbf{IoU (\%)} & \textbf{Macro F1 (\%)} \\
 \midrule
 Full TopoRadar-Net & $\mathbf{77.40 \pm 1.86}$ & $\mathbf{63.16 \pm 2.45}$ & $\mathbf{75.48 \pm 1.15}$ & $50.18 \pm 4.40$ & $33.61 \pm 3.89$ & $63.79 \pm 1.88$ \\
 w/o Local Incidence Angle (No-LIA) & $75.67 \pm 1.76$ & $60.89 \pm 2.26$ & $71.02 \pm 2.80$ & $52.13 \pm 1.11$ & $35.26 \pm 1.01$ & $63.90 \pm 1.37$ \\
@@ -156,8 +157,7 @@ w/o Cross-Attention (No-CrossAttn) & $76.85 \pm 0.80$ & $62.41 \pm 1.06$ & $70.7
 w/o Geomorphic Loss (No-GeoLoss) & $76.70 \pm 0.91$ & $62.22 \pm 1.20$ & $72.50 \pm 2.15$ & $51.99 \pm 1.31$ & $35.14 \pm 1.20$ & $64.35 \pm 1.05$ \\
 w/o Aspect Alignment (No-Aspect) & $77.38 \pm 2.66$ & $63.18 \pm 3.49$ & $71.19 \pm 3.40$ & $\mathbf{53.32 \pm 0.42}$ & $\mathbf{36.35 \pm 0.39}$ & $\mathbf{65.35 \pm 1.54}$ \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table*}
 
 The ablation results in Table~\ref{tab:ablation_results} provide nuanced empirical insights into the regional dependence of radar-topographic conditioning:
@@ -174,36 +174,36 @@ The ablation results in Table~\ref{tab:ablation_results} provide nuanced empiric
 To definitively isolate the physical mechanism of Radar-Topographic Aspect-Incidence Conditioning and evaluate its stability across differing terrain morphologies, Table~\ref{tab:stratification} provides a fine-grained stratification analysis across two key physical axes on both held-out test scenes: (1) Radar Look Aspect Alignment ($\theta_{\text{align}} = \cos(\alpha - \phi)$), partitioning terrain into radar-facing foreslopes ($\theta_{\text{align}} > 0.3$), perpendicular cross-slopes ($|\theta_{\text{align}}| \le 0.3$), and backslopes facing away from the radar look vector ($\theta_{\text{align}} < -0.3$); and (2) Terrain Slope Steepness, segmenting the landscape into runout and valley floors ($< 25^\circ$), primary avalanche release chutes and track slopes ($25^\circ$--$45^\circ$), and extreme steep cliff faces ($> 45^\circ$).
 
 \begin{table*}[t]
-\centering
 \caption{Topographic radar geometry and slope gradient stratification analysis on the held-out test scenes (Scandinavian Arctic Troms{\o} and Central Asian Pamir Mountains, evaluated on Seed 42 full-scene inference). Performance compares TopoRadar-Net against the benchmark Swin-UNet across Radar Look Aspect Alignment strata and Terrain Slope Steepness zones.}
 \label{tab:stratification}
-\resizebox{\textwidth}{!}{%
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.2pt}
 \begin{tabular}{llcccccc}
 \toprule
-\multirow{2}{*}{\textbf{Test Region}} & \multirow{2}{*}{\textbf{Topographic Stratum}} & \multirow{2}{*}{\textbf{Debris Area (px)}} & \multicolumn{2}{c}{\textbf{TopoRadar-Net (Ours)}} & \multicolumn{2}{c}{\textbf{Swin-UNet (Benchmark)}} & \multirow{2}{*}{\textbf{$\Delta$F1 (\%)}} \\
+\multirow{2}{*}{\textbf{Region}} & \multirow{2}{*}{\textbf{Terrain Stratum}} & \multirow{2}{*}{\textbf{Area (px)}} & \multicolumn{2}{c}{\textbf{TopoRadar-Net (Ours)}} & \multicolumn{2}{c}{\textbf{Swin-UNet (Benchmark)}} & \multirow{2}{*}{\textbf{$\Delta$F1 (\%)}} \\
 \cmidrule(lr){4-5} \cmidrule(lr){6-7}
- & & & \textbf{Pixel F1 (\%)} & \textbf{Precision (\%)} & \textbf{Pixel F1 (\%)} & \textbf{Precision (\%)} & \\
+ & & & \textbf{Pixel F1} & \textbf{Precision} & \textbf{Pixel F1} & \textbf{Precision} & \\
 \midrule
-\multirow{6}{*}{Scandinavian Arctic (Troms{\o})} 
- & Foreslopes (Radar-Facing, $\theta_{\text{align}} > 0.3$) & 15,480 & $79.94\%$ & $73.05\%$ & $80.01\%$ & $77.44\%$ & $-0.07\%$ \\
+\multirow{6}{*}{Troms{\o} (Arctic)} 
+ & Foreslopes ($\theta_{\text{align}} > 0.3$) & 15,480 & $79.94\%$ & $73.05\%$ & $80.01\%$ & $77.44\%$ & $-0.07\%$ \\
  & Cross-slopes ($|\theta_{\text{align}}| \le 0.3$) & 3,113 & $68.93\%$ & $63.19\%$ & $69.43\%$ & $73.57\%$ & $-0.50\%$ \\
- & \textbf{Backslopes (Facing Away, $\theta_{\text{align}} < -0.3$)} & \textbf{15,376} & $\mathbf{81.08\%}$ & $\mathbf{85.03\%}$ & $75.23\%$ & $88.90\%$ & $\mathbf{+5.85\%}$ \\
+ & \textbf{Backslopes ($\theta_{\text{align}} < -0.3$)} & \textbf{15,376} & $\mathbf{81.08\%}$ & $\mathbf{85.03\%}$ & $75.23\%$ & $88.90\%$ & $\mathbf{+5.85\%}$ \\
 \cmidrule(lr){2-8}
- & Runout \& Valley Floors ($< 25^\circ$) & 12,360 & $76.76\%$ & $70.68\%$ & $77.91\%$ & $76.23\%$ & $-1.15\%$ \\
- & \textbf{Avalanche Chutes \& Slopes ($25^\circ$--$45^\circ$)} & \textbf{21,118} & $\mathbf{81.34\%}$ & $\mathbf{80.94\%}$ & $77.00\%$ & $85.33\%$ & $\mathbf{+4.34\%}$ \\
- & Extreme Steep Slopes ($> 45^\circ$) & 491 & $63.37\%$ & $67.05\%$ & $54.23\%$ & $68.21\%$ & $\mathbf{+9.14\%}$ \\
+ & Runout \& Valley ($< 25^\circ$) & 12,360 & $76.76\%$ & $70.68\%$ & $77.91\%$ & $76.23\%$ & $-1.15\%$ \\
+ & \textbf{Avalanche Chutes ($25^\circ$--$45^\circ$)} & \textbf{21,118} & $\mathbf{81.34\%}$ & $\mathbf{80.94\%}$ & $77.00\%$ & $85.33\%$ & $\mathbf{+4.34\%}$ \\
+ & Extreme Steep ($> 45^\circ$) & 491 & $63.37\%$ & $67.05\%$ & $54.23\%$ & $68.21\%$ & $\mathbf{+9.14\%}$ \\
 \midrule
-\multirow{6}{*}{Pamir Mountains (Pish)}
- & Foreslopes (Radar-Facing, $\theta_{\text{align}} > 0.3$) & 14,743 & $51.27\%$ & $43.87\%$ & $50.13\%$ & $42.84\%$ & $+1.14\%$ \\
+\multirow{6}{*}{Pamirs (Tajikistan)}
+ & Foreslopes ($\theta_{\text{align}} > 0.3$) & 14,743 & $51.27\%$ & $43.87\%$ & $50.13\%$ & $42.84\%$ & $+1.14\%$ \\
  & Cross-slopes ($|\theta_{\text{align}}| \le 0.3$) & 2,614 & $46.96\%$ & $43.37\%$ & $46.92\%$ & $37.60\%$ & $+0.03\%$ \\
- & \textbf{Backslopes (Facing Away, $\theta_{\text{align}} < -0.3$)} & \textbf{5,222} & $\mathbf{53.42\%}$ & $\mathbf{52.36\%}$ & $48.33\%$ & $38.41\%$ & $\mathbf{+5.09\%}$ \\
+ & \textbf{Backslopes ($\theta_{\text{align}} < -0.3$)} & \textbf{5,222} & $\mathbf{53.42\%}$ & $\mathbf{52.36\%}$ & $48.33\%$ & $38.41\%$ & $\mathbf{+5.09\%}$ \\
 \cmidrule(lr){2-8}
- & Runout \& Valley Floors ($< 25^\circ$) & 6,501 & $45.97\%$ & $38.49\%$ & $38.22\%$ & $28.40\%$ & $+7.75\%$ \\
- & Avalanche Chutes \& Slopes ($25^\circ$--$45^\circ$) & 15,875 & $55.82\%$ & $52.33\%$ & $56.25\%$ & $50.55\%$ & $-0.44\%$ \\
- & Extreme Steep Slopes ($> 45^\circ$, Radar Shadow) & 203 & $8.85\%$ & $5.04\%$ & $16.65\%$ & $10.74\%$ & $-7.80\%$ \\
+ & Runout \& Valley ($< 25^\circ$) & 6,501 & $45.97\%$ & $38.49\%$ & $38.22\%$ & $28.40\%$ & $+7.75\%$ \\
+ & Avalanche Chutes ($25^\circ$--$45^\circ$) & 15,875 & $55.82\%$ & $52.33\%$ & $56.25\%$ & $50.55\%$ & $-0.44\%$ \\
+ & Extreme Steep ($> 45^\circ$, Shadow) & 203 & $8.85\%$ & $5.04\%$ & $16.65\%$ & $10.74\%$ & $-7.80\%$ \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table*}
 
 The empirical stratification provides conclusive, physics-aligned evidence:
@@ -219,10 +219,11 @@ The empirical stratification provides conclusive, physics-aligned evidence:
 To evaluate model stability across the broader AvalCD distribution beyond the zero-shot test scenes, Table~\ref{tab:nuuk_validation} reports performance on the polar maritime validation cohort in Southwest Greenland (\texttt{Nuuk\_20210411}, used for checkpoint selection and threshold calibration; $n=129$ polygons, 81,595 debris pixels).
 
 \begin{table*}[t]
-\centering
 \caption{Performance comparison on the polar maritime validation scene in Southwest Greenland (\texttt{Nuuk\_20210411}, used for checkpoint selection and threshold calibration; $n=129$ verified avalanche polygons, 81,595 debris pixels) across 3 independent training seeds (Mean $\pm$ Standard Deviation).}
 \label{tab:nuuk_validation}
-\resizebox{\textwidth}{!}{%
+\centering
+\footnotesize
+\setlength{\tabcolsep}{8pt}
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Method} & \textbf{Pixel F1 (\%)} & \textbf{IoU (\%)} & \textbf{Precision (\%)} & \textbf{Recall (\%)} \\
@@ -234,8 +235,7 @@ Swin-UNet & $67.01 \pm 1.98\%$ & $50.43 \pm 2.22\%$ & $57.06 \pm 2.94\%$ & $81.3
 \midrule
 \textbf{TopoRadar-Net (Ours)} & $\mathbf{66.75 \pm 1.96\%}$ & $\mathbf{50.13 \pm 2.22\%}$ & $56.63 \pm 3.31\%$ & $\mathbf{81.50 \pm 1.10\%}$ \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table*}
 
 In this polar maritime alpine regime, characterized by open fjord expanses and rounded permafrost massifs without extreme knife-edge ridge shadows, all four modern deep change detection architectures cluster within $0.63\%$ of each other on F1 ($66.53\%$--$67.16\%$). TopoRadar-Net achieves the highest detection sensitivity of all models ($81.50 \pm 1.10\%$ recall), successfully capturing the vast majority of the 129 dispersed avalanche tracks, while Swin-UNet ($67.01\%$) and ResU-Net ($67.16\%$) achieve marginally higher precision due to fewer false alarms on open plateau terrain. All deep architectures decisively outperform unguided differencing ($59.35\%$, yielding a $+7.40\%$ to $+7.81\%$ F1 margin). This empirical finding corroborates the regime-dependent sensitivity documented in Section~\ref{sec:res:ablation}: in open sub-polar terrain with moderate relief, unguided vision transformers and physics-conditioned networks perform with statistical parity, whereas rigid topographic priors provide their most decisive advantages in steep, fjord-adjacent coastal mountains (Troms{\o}) and high-relief continental massifs (Pamir).

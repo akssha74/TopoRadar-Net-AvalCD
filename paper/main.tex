@@ -9,9 +9,11 @@
 \usepackage{tabularx}
 \usepackage{xcolor}
 
-\geometry{a4paper, margin=20mm}
+\geometry{a4paper, textwidth=176mm, textheight=252mm, margin=17mm}
 \let\table\tableorg
 \let\endtable\endtableorg
+\renewenvironment{table}[1][t]{\begin{tableorg}[#1]\centering\footnotesize}{\end{tableorg}}
+\renewenvironment{table*}[1][t]{\begin{tableorg}[#1]\centering\footnotesize}{\end{tableorg}}
 
 \graphicspath{{figures/}}
 

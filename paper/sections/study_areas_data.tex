@@ -7,13 +7,14 @@
 To rigorously assess the generalizability of deep change detection models across diverse mountain environments, this study leverages the open-access \textbf{AvalCD} benchmark \citep{avalcd_dataset, gatti2026avalanche}. The benchmark spans four prominent, geographically disparate mountain ranges across Europe, Central Asia, and the Arctic (Table~\ref{tab:dataset_summary}):
 
 \begin{table*}[t]
-\centering
 \caption{Summary of the AvalCD benchmark across four global mountain systems and seven avalanche events.}
 \label{tab:dataset_summary}
-\resizebox{\textwidth}{!}{%
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
 \begin{tabular}{lllcrrr}
 \toprule
-\textbf{Mountain System} & \textbf{Event Name} & \textbf{Region / Country} & \textbf{Elevation Range (m)} & \textbf{Grid Size (px)} & \textbf{Polygons} & \textbf{Debris Area (px)} \\
+\shortstack{\textbf{Mountain}\\\textbf{System}} & \textbf{Event Name} & \textbf{Region / Country} & \shortstack{\textbf{Elevation}\\\textbf{Range (m)}} & \shortstack{\textbf{Grid Size}\\\textbf{(px)}} & \textbf{Polygons} & \shortstack{\textbf{Debris}\\\textbf{Area (px)}} \\
 \midrule
 \multirow{3}{*}{European Alps} & Livigno\_20240403 & Lombardy, Italy & 1,250--3,890 & $2462 \times 2091$ & 231 & 32,606 \\
  & Livigno\_20250129 & Lombardy, Italy & 1,310--3,890 & $2388 \times 1629$ & 207 & 11,438 \\
@@ -28,8 +29,7 @@ Scandinavian Arctic & Tromso\_20241220 & Troms, Norway & 0--1,830 & $1691 \times
 \midrule
 \textbf{Total / Benchmark} & \textbf{7 Events} & \textbf{4 Mountain Ranges} & \textbf{0--5,420} & \textbf{48.7M px} & \textbf{993} & \textbf{254,404} \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table*}
 
 \begin{enumerate}

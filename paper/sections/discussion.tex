@@ -33,32 +33,36 @@ For alpine emergency managers, highway maintenance authorities, and search-and-r
 In operational disaster response, detection accuracy across different avalanche magnitude classes is of paramount importance. Small sluffs (EAWS Class D1) pose localized risks to backcountry recreationists, whereas large and very large avalanches (Classes D3 and D4) destroy buildings, block transportation arteries, and bury infrastructure. TopoRadar-Net exhibits high instance-level detection hit rates on Class D3 and D4 avalanches, ensuring that major life-threatening events are identified for civil protection authorities.
 
 \begin{table*}[t]
-\centering
 \caption{Operational triage matrix and quantitative false-alarm clutter footprint across regional mountain regimes in physical land-management units (hectares and $\text{km}^2$).}
 \label{tab:operational_triage}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lllcc}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{llc>{\raggedright\arraybackslash}Xl}
 \toprule
-\textbf{Triage Level} & \textbf{Predicted Prob. ($p$)} & \textbf{Debris Area Range} & \textbf{Operational Response Action} & \textbf{Target Stakeholder} \\
+\textbf{Triage Level} & \textbf{Prob. ($p$)} & \textbf{Debris Area} & \textbf{Operational Response Action} & \textbf{Target Stakeholder} \\
 \midrule
-\textbf{Alert Level 1} & $p < 0.40$ & $< 0.1 \text{ ha}$ ($< 10 \text{ px}$) & Background surveillance; zero mobilization; $98.4\%$ valley clutter filtered & Warning Services (SLF, NVE) \\
-\textbf{Alert Level 2} & $0.40 \le p < 0.70$ & $0.1\text{--}1.0 \text{ ha}$ ($10\text{--}100 \text{ px}$) & Automated tasking of local UAV patrols or high-resolution optical cueing & Regional Avalanche Forecasters \\
-\textbf{Alert Level 3} & $p \ge 0.70$ & $\ge 1.0 \text{ ha}$ (EAWS D3/D4) & Immediate dispatch to highway authorities for transport corridor closure & Civil Protection / Police / Road Auth. \\
-\midrule
-\multicolumn{5}{l}{\textbf{Regional False-Alarm Footprint in Physical Units (Scene Area: Troms{\o} $98.6 \text{ km}^2$, Pamir $143.8 \text{ km}^2$)}} \\
-\midrule
-\textbf{Region} & \textbf{Method} & \textbf{Detected Debris (ha)} & \textbf{False-Alarm Area (ha / $\text{km}^2$)} & \textbf{False-Alarm Rate (ha / $\text{km}^2$)} \\
-\midrule
-\multirow{3}{*}{Scandinavian Arctic (Troms{\o})} & SiamUNet-diff & $218.33 \text{ ha}$ & $43.13 \text{ ha}$ ($0.43 \text{ km}^2$) & $0.44 \text{ ha} / \text{km}^2$ (Misses $121.39 \text{ ha}$) \\
- & Swin-UNet & $261.49 \text{ ha}$ & $68.34 \text{ ha}$ ($0.68 \text{ km}^2$) & $0.69 \text{ ha} / \text{km}^2$ \\
- & \textbf{TopoRadar-Net (Ours)} & $\mathbf{270.09 \text{ ha}}$ & $\mathbf{87.82 \text{ ha}}$ ($\mathbf{0.88 \text{ km}^2}$) & $\mathbf{0.89 \text{ ha} / \text{km}^2}$ (Detects $95.8\%$ D4) \\
-\midrule
-\multirow{3}{*}{Pamir Mountains (Pish)} & SiamUNet-conc & $163.76 \text{ ha}$ & $302.63 \text{ ha}$ ($3.03 \text{ km}^2$) & $2.10 \text{ ha} / \text{km}^2$ (Severe Clutter) \\
- & Swin-UNet & $150.43 \text{ ha}$ & $242.77 \text{ ha}$ ($2.43 \text{ km}^2$) & $1.69 \text{ ha} / \text{km}^2$ \\
- & \textbf{TopoRadar-Net (Ours)} & $\mathbf{130.25 \text{ ha}}$ & $\mathbf{169.89 \text{ ha}}$ ($\mathbf{1.70 \text{ km}^2}$) & $\mathbf{1.18 \text{ ha} / \text{km}^2}$ ($\mathbf{30.0\%}$ Clutter Reduction) \\
+\textbf{Alert Level 1} & $p < 0.40$ & $< 0.1\text{ ha}$ & Background surveillance; zero mobilization; $98.4\%$ valley clutter filtered. & Warning Services (SLF, NVE) \\
+\textbf{Alert Level 2} & $0.40 \le p < 0.70$ & $0.1\text{--}1.0\text{ ha}$ & Automated tasking of local UAV patrols or high-resolution optical cueing. & Regional Forecasters \\
+\textbf{Alert Level 3} & $p \ge 0.70$ & $\ge 1.0\text{ ha}$ & Immediate dispatch to highway authorities for transport corridor closure. & Civil Protection / Police \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabularx}
+
+\vspace{0.8em}
+
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{llccc}
+\toprule
+\textbf{Region} & \textbf{Method} & \textbf{Detected Debris} & \textbf{False-Alarm Area} & \textbf{False-Alarm Rate} \\
+\midrule
+\multirow{3}{*}{Troms{\o} (Arctic Norway)} & SiamUNet-diff & 218.33 ha & 43.13 ha (0.43 km$^2$) & 0.44 ha/km$^2$ \\
+ & Swin-UNet & 261.49 ha & 68.34 ha (0.68 km$^2$) & 0.69 ha/km$^2$ \\
+ & \textbf{TopoRadar-Net (Ours)} & \textbf{270.09 ha} & \textbf{87.82 ha} (0.88 km$^2$) & \textbf{0.89 ha/km$^2$} \\
+\midrule
+\multirow{3}{*}{Pamir (Tajikistan)} & SiamUNet-conc & 163.76 ha & 302.63 ha (3.03 km$^2$) & 2.10 ha/km$^2$ \\
+ & Swin-UNet & 150.43 ha & 242.77 ha (2.43 km$^2$) & 1.69 ha/km$^2$ \\
+ & \textbf{TopoRadar-Net (Ours)} & \textbf{130.25 ha} & \textbf{169.89 ha} (1.70 km$^2$) & \textbf{1.18 ha/km$^2$} \\
+\bottomrule
+\end{tabular}
 \end{table*}
 
 Table~\ref{tab:operational_triage} translates model predictions directly into practitioner units, defining a three-tier decision matrix aligned with European Avalanche Warning Services standards:
