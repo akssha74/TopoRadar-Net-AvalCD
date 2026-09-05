@@ -7,9 +7,10 @@
 To rigorously assess the generalizability of deep change detection models across diverse mountain environments, this study leverages the open-access \textbf{AvalCD} benchmark \citep{avalcd_dataset, gatti2026avalanche}. The benchmark spans four prominent, geographically disparate mountain ranges across Europe, Central Asia, and the Arctic (Table~\ref{tab:dataset_summary}):
 
 \begin{table*}[t]
+\centering
 \caption{Summary of the AvalCD benchmark across four global mountain systems and seven avalanche events.}
 \label{tab:dataset_summary}
-\setlength{\tabcolsep}{6pt}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lllcrrr}
 \toprule
 \textbf{Mountain System} & \textbf{Event Name} & \textbf{Region / Country} & \textbf{Elevation Range (m)} & \textbf{Grid Size (px)} & \textbf{Polygons} & \textbf{Debris Area (px)} \\
@@ -27,7 +28,8 @@ Scandinavian Arctic & Tromso\_20241220 & Troms, Norway & 0--1,830 & $1691 \times
 \midrule
 \textbf{Total / Benchmark} & \textbf{7 Events} & \textbf{4 Mountain Ranges} & \textbf{0--5,420} & \textbf{48.7M px} & \textbf{993} & \textbf{254,404} \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table*}
 
 \begin{enumerate}
