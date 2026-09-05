@@ -1,0 +1,72 @@
+{
+  "manuscript_title": "Topographic Radar Geometry-Guided Cross-Attention for Alpine Avalanche Debris Mapping in Sentinel-1 SAR: Cross-System Generalization Across the Alps, Pamirs, and Arctic",
+  "short_title": "TopoRadar-Net for Alpine Avalanche Debris Mapping in Sentinel-1 SAR",
+  "target_journal": "Journal of Mountain Science",
+  "publisher": "Science Press China / Springer Nature",
+  "issn": "1672-6316",
+  "article_type": "Original Research Article",
+  "submission_portal": "https://mc03.manuscriptcentral.com/jmsjournal",
+  "submission_status": "ready-to-submit",
+  "authors": [
+    {
+      "name": "Akshay Sharma",
+      "email": "akssha74@gmail.com",
+      "affiliation": "Department of Computer Science and Engineering, SAGE University, Indore 452020, Madhya Pradesh, India",
+      "role": "Corresponding Author",
+      "is_corresponding": true
+    },
+    {
+      "name": "Lalji Prasad",
+      "email": "lalji.research@gmail.com",
+      "affiliation": "Department of Computer Science and Engineering, SAGE University, Indore 452020, Madhya Pradesh, India",
+      "role": "Co-Author",
+      "is_corresponding": false
+    }
+  ],
+  "keywords": [
+    "Snow avalanche mapping",
+    "Sentinel-1 SAR",
+    "Mountain hazards",
+    "Radar-topographic geometry",
+    "Cross-attention network",
+    "Cross-system generalization",
+    "Disaster response"
+  ],
+  "suggested_reviewers": [
+    {
+      "name": "Dr. Markus Eckerstorfer",
+      "institution": "NORCE Norwegian Research Centre, Tromsø, Norway",
+      "email": "maec@norceresearch.no",
+      "expertise": "Sentinel-1 SAR change detection for snow avalanches, Arctic cryospheric hazards"
+    },
+    {
+      "name": "Dr. Yves Bühler",
+      "institution": "WSL Institute for Snow and Avalanche Research SLF, Davos, Switzerland",
+      "email": "buehler@slf.ch",
+      "expertise": "Automated regional avalanche mapping, alpine optical and radar remote sensing"
+    },
+    {
+      "name": "Dr. Achille Gatti",
+      "institution": "Department of Electronics, Information and Bioengineering, Politecnico di Milano, Milan, Italy",
+      "email": "achille.gatti@polimi.it",
+      "expertise": "AvalCD benchmark lead author, deep learning change detection on SAR imagery"
+    },
+    {
+      "name": "Dr. Silvan Leinss",
+      "institution": "Institute of Environmental Engineering, ETH Zurich, Switzerland",
+      "email": "leinss@ifu.baug.ethz.ch",
+      "expertise": "Microwave radar backscatter characteristics of snow avalanches, SAR polarimetry"
+    },
+    {
+      "name": "Dr. Elisabeth D. Hafner",
+      "institution": "Avalanche Warning and Remote Sensing, WSL Institute for Snow and Avalanche Research SLF, Davos, Switzerland",
+      "email": "elisabeth.hafner@slf.ch",
+      "expertise": "Large-scale satellite avalanche mapping, EAWS size classification inventories"
+    }
+  ],
+  "public_code_repo": "https://github.com/akssha74/TopoRadar-Net-AvalCD",
+  "public_release_url": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.0",
+  "dataset_doi": "https://doi.org/10.5281/zenodo.15863589",
+  "manuscript_pdf": "studies/mountain-avalcd-toporadar/paper/main.pdf",
+  "cover_letter_pdf": "studies/mountain-avalcd-toporadar/submission/cover_letter.pdf"
+}
