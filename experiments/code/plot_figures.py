@@ -42,7 +42,7 @@ def plot_performance_barchart():
     ax.set_ylabel("Pixel F1-Score (%)", fontsize=14)
     ax.set_xticks(x)
     ax.set_xticklabels(models, fontsize=14, weight="medium")
-    ax.tick_params(axis="y", labelsize=13)
+    ax.tick_params(axis="y", labelsize=13.5)
     ax.legend(frameon=True, facecolor="white", edgecolor="#cbd5e0", fontsize=13.5)
     ax.set_ylim(0, 95)
     ax.grid(axis="y", color=GRID, linestyle="--", linewidth=0.7, alpha=0.8)
@@ -78,7 +78,7 @@ def plot_instance_eaws_hitrate():
     ax.set_ylabel("Hit Rate (%) [Area Overlap ≥ 30%]", fontsize=14)
     ax.set_xticks(x)
     ax.set_xticklabels(classes, fontsize=14, weight="medium")
-    ax.tick_params(axis="y", labelsize=13)
+    ax.tick_params(axis="y", labelsize=13.5)
     ax.legend(frameon=True, facecolor="white", edgecolor="#cbd5e0", fontsize=13.5, ncol=2, loc="upper left")
     ax.set_ylim(0, 115)
     ax.grid(axis="y", color=GRID, linestyle="--", linewidth=0.7, alpha=0.8)
@@ -111,14 +111,14 @@ def plot_ablation_contributions():
     ax.set_yticks(y)
     ax.set_yticklabels(components, fontsize=13.5, weight="medium")
     ax.set_xlabel("Pixel F1-Score on Scandinavian Arctic Test Scene (%)", fontsize=14)
-    ax.tick_params(axis="x", labelsize=13)
+    ax.tick_params(axis="x", labelsize=13.5)
     ax.set_xlim(70, 80)
     ax.grid(axis="x", color=GRID, linestyle="--", linewidth=0.7, alpha=0.8)
 
     for i, (b, d) in enumerate(zip(bars, drops)):
         val = b.get_width()
         text = f"{val:.2f}% (Baseline)" if d == 0.0 else f"{val:.2f}% ({d:+.2f}%)"
-        ax.text(val + 0.15, b.get_y() + b.get_height()/2, text, va="center", fontsize=13, weight="semibold", color="#384655")
+        ax.text(val + 0.15, b.get_y() + b.get_height()/2, text, va="center", fontsize=13.5, weight="semibold", color="#384655")
 
 
     plt.tight_layout()

@@ -60,7 +60,7 @@
 | Resource | Verified Live Link | Status | Contents |
 |---|---|:---:|---|
 | **Public Project Repository** | [https://github.com/akssha74/TopoRadar-Net-AvalCD](https://github.com/akssha74/TopoRadar-Net-AvalCD) | **200 OK** | Full PyTorch code, documentation, verification suites |
-| **Release v1.0.19 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.19](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.19) | **200 OK** | Versioned post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, the formatted anonymous DOCX, comprehensive source ZIP, and `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net + No-GeoLoss, 3 seeds) |
+| **Release v1.0.20 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.20](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.20) | **200 OK** | Versioned post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, the formatted anonymous DOCX, comprehensive source ZIP, and `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net + No-GeoLoss, 3 seeds) |
 | **AvalCD Benchmark (Zenodo)** | [https://doi.org/10.5281/zenodo.15863589](https://doi.org/10.5281/zenodo.15863589) | **200 OK** | Ground truth masks, Sentinel-1 SAR, DEM, LIA |
 
 ---
