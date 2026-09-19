@@ -54,7 +54,7 @@ Representing directional terrain coordinates via the continuous vector $\mathcal
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.96\textwidth]{fig_architecture.pdf}
-\caption{Overall architecture of TopoRadar-Net. Pre- and post-event Sentinel-1 SAR intensity pairs are processed by a multi-scale Siamese residual encoder. Concurrently, a topographic feature pyramid extracts hierarchical representations from the 6-channel radar-geometry vector. At each decoder stage, the Radar-Topographic Cross-Attention Block (RTCAB) uses SAR difference features to query regionally-pooled terrain geometry, followed by spatial gating that conditions pixel features on terrain context.}
+\caption{Overall architecture of TopoRadar-Net. Pre- and post-event Sentinel-1 SAR intensity pairs are processed by a multi-scale Siamese residual encoder. Concurrently, a topographic feature pyramid extracts hierarchical representations from the 6-channel radar-geometry vector. At each decoder stage, the Radar-Topographic Cross-Attention Block (RTCAB) uses SAR difference features to query regionally-pooled terrain geometry, followed by spatial gating that conditions pixel features on terrain context. This simplified training schematic omits the ground-truth target input to Geo-Loss for clarity.}
 \label{fig:architecture}
 \end{figure*}
 

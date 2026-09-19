@@ -9,18 +9,18 @@ FIGS_DIR = Path("studies/mountain-avalcd-toporadar/paper/figures")
 FIGS_DIR.mkdir(parents=True, exist_ok=True)
 
 plt.rcParams["font.family"] = "sans-serif"
-plt.rcParams["font.size"] = 10
+plt.rcParams["font.size"] = 14
 plt.rcParams["axes.linewidth"] = 0.8
 
 EDGE = "#748292"
 GRID = "#D6DEE6"
 PASTEL_BLUE = "#AFCBE6"
-PASTEL_ORANGE = "#F3C49D"
-PASTEL_GREEN = "#B8DCC6"
+PASTEL_ORANGE = "#EDB47F"
+PASTEL_GREEN = "#C3E0CE"
 
 def plot_performance_barchart():
     """Figure: Comparative Cross-System Performance Bar Chart."""
-    models = ["SiamUNet-diff", "SiamUNet-conc", "ResU-Net", "Attention U-Net", "TopoRadar-Net (Ours)"]
+    models = ["SiamUNet-\ndiff", "SiamUNet-\nconc", "ResU-Net", "Attention\nU-Net", "TopoRadar-Net\n(Ours)"]
     tromso_f1 = [72.64, 78.92, 76.60, 78.09, 77.40]
     tromso_err = [0.39, 1.07, 1.30, 0.99, 1.86]
     
@@ -33,17 +33,17 @@ def plot_performance_barchart():
     x = np.arange(len(models))
     width = 0.26
 
-    fig, ax = plt.subplots(figsize=(10, 5), dpi=300)
+    fig, ax = plt.subplots(figsize=(6.5, 4.0), dpi=300)
 
     rects1 = ax.bar(x - width, tromso_f1, width, yerr=tromso_err, label="Scandinavian Arctic (Tromsø)", color=PASTEL_BLUE, capsize=3, edgecolor=EDGE, lw=0.7)
-    rects2 = ax.bar(x, pamir_f1, width, yerr=pamir_err, label="Pamir Mountains (Pish)", color=PASTEL_ORANGE, capsize=3, edgecolor=EDGE, lw=0.7)
-    rects3 = ax.bar(x + width, pooled_f1, width, yerr=pooled_err, label="Pooled Cross-System Benchmark", color=PASTEL_GREEN, capsize=3, edgecolor=EDGE, lw=0.7)
+    rects2 = ax.bar(x, pamir_f1, width, yerr=pamir_err, label="Pamir Mountains (Pish)", color=PASTEL_ORANGE, capsize=3, edgecolor=EDGE, lw=0.7, hatch="//")
+    rects3 = ax.bar(x + width, pooled_f1, width, yerr=pooled_err, label="Pooled Cross-System Benchmark", color=PASTEL_GREEN, capsize=3, edgecolor=EDGE, lw=0.7, hatch="..")
 
-    ax.set_ylabel("Pixel F1-Score (%)", fontsize=11)
-    ax.set_title("Zero-Shot Cross-System Generalization on Unseen Mountain Ranges", fontsize=12, weight="semibold", pad=12)
+    ax.set_ylabel("Pixel F1-Score (%)", fontsize=14)
     ax.set_xticks(x)
-    ax.set_xticklabels(models, fontsize=10, weight="medium")
-    ax.legend(frameon=True, facecolor="white", edgecolor="#cbd5e0", fontsize=9.5)
+    ax.set_xticklabels(models, fontsize=14, weight="medium")
+    ax.tick_params(axis="y", labelsize=13)
+    ax.legend(frameon=True, facecolor="white", edgecolor="#cbd5e0", fontsize=13.5)
     ax.set_ylim(0, 95)
     ax.grid(axis="y", color=GRID, linestyle="--", linewidth=0.7, alpha=0.8)
 
@@ -58,7 +58,7 @@ def plot_performance_barchart():
 
 def plot_instance_eaws_hitrate():
     """Figure: Instance-level hit rate across EAWS avalanche size classes."""
-    classes = ["D1: Small\n(<100 m³)", "D2: Medium\n(100-1,000 m³)", "D3: Large\n(1,000-10,000 m³)", "D4: Very Large\n(>10,000 m³)", "Overall\n(n=117)"]
+    classes = ["D1\n<10² m³", "D2\n10²–10³ m³", "D3\n10³–10⁴ m³", "D4\n>10⁴ m³", "Overall\nn=117"]
     siam_diff = [6.7, 33.3, 71.8, 89.6, 63.2]
     resunet = [6.7, 53.3, 85.9, 95.8, 76.9]
     swin = [6.7, 58.7, 86.9, 100.0, 79.2]
@@ -68,18 +68,18 @@ def plot_instance_eaws_hitrate():
     x = np.arange(len(classes))
     width = 0.16
 
-    fig, ax = plt.subplots(figsize=(11, 5), dpi=300)
+    fig, ax = plt.subplots(figsize=(7.0, 4.0), dpi=300)
     ax.bar(x - 2.0*width, siam_diff, width, label="SiamUNet-diff", color="#D5DDE5", edgecolor=EDGE, lw=0.7)
-    ax.bar(x - 1.0*width, resunet, width, label="ResU-Net", color="#BDD7EE", edgecolor=EDGE, lw=0.7)
-    ax.bar(x, swin, width, label="Attention U-Net", color="#F6D0A8", edgecolor=EDGE, lw=0.7)
-    ax.bar(x + 1.0*width, siam_conc, width, label="SiamUNet-conc", color="#D8C7EA", edgecolor=EDGE, lw=0.7)
-    ax.bar(x + 2.0*width, toporadar, width, label="TopoRadar-Net (Ours)", color="#B9DFC8", edgecolor="#5F7F70", lw=1.1)
+    ax.bar(x - 1.0*width, resunet, width, label="ResU-Net", color="#BDD7EE", edgecolor=EDGE, lw=0.7, hatch="//")
+    ax.bar(x, swin, width, label="Attention U-Net", color="#F1B982", edgecolor=EDGE, lw=0.7, hatch="\\\\")
+    ax.bar(x + 1.0*width, siam_conc, width, label="SiamUNet-conc", color="#D6C4EA", edgecolor=EDGE, lw=0.7, hatch="..")
+    ax.bar(x + 2.0*width, toporadar, width, label="TopoRadar-Net (Ours)", color="#B9DFC8", edgecolor="#5F7F70", lw=1.1, hatch="xx")
 
-    ax.set_ylabel("Instance Detection Hit Rate (%) [Area Overlap ≥ 30%]", fontsize=11)
-    ax.set_title("Instance-Level Avalanche Detection Completeness across EAWS Hazard Scales", fontsize=12, weight="semibold", pad=12)
+    ax.set_ylabel("Hit Rate (%) [Area Overlap ≥ 30%]", fontsize=14)
     ax.set_xticks(x)
-    ax.set_xticklabels(classes, fontsize=10, weight="medium")
-    ax.legend(frameon=True, facecolor="white", edgecolor="#cbd5e0", fontsize=9.0, ncol=3, loc="upper left")
+    ax.set_xticklabels(classes, fontsize=14, weight="medium")
+    ax.tick_params(axis="y", labelsize=13)
+    ax.legend(frameon=True, facecolor="white", edgecolor="#cbd5e0", fontsize=13.5, ncol=2, loc="upper left")
     ax.set_ylim(0, 115)
     ax.grid(axis="y", color=GRID, linestyle="--", linewidth=0.7, alpha=0.8)
 
@@ -97,29 +97,29 @@ def plot_ablation_contributions():
         "w/o Local Incidence Angle",
         "w/o Geomorphic Loss",
         "w/o Cross-Attention",
-        "w/o Directional Aspect",
+        "w/o Aspect Alignment",
         "Full TopoRadar-Net"
     ]
     f1_scores = [75.67, 76.70, 76.85, 77.38, 77.40]
     drops = [-1.73, -0.70, -0.55, -0.02, 0.0]
-    colors = ["#F3C2C2", "#F5D0AD", "#F7DDB8", "#C7DDF0", "#AECBE5"]
+    colors = ["#E7B2C2", "#F1D18B", "#F2B982", "#C7DDF0", "#AECBE5"]
 
-    fig, ax = plt.subplots(figsize=(8, 4.5), dpi=300)
+    fig, ax = plt.subplots(figsize=(6.5, 4.2), dpi=300)
     y = np.arange(len(components))
 
     bars = ax.barh(y, f1_scores, color=colors, edgecolor=EDGE, lw=0.7, height=0.55)
     ax.set_yticks(y)
-    ax.set_yticklabels(components, fontsize=10, weight="medium")
-    ax.set_xlabel("Pixel F1-Score on Scandinavian Arctic Test Scene (%)", fontsize=11)
+    ax.set_yticklabels(components, fontsize=13.5, weight="medium")
+    ax.set_xlabel("Pixel F1-Score on Scandinavian Arctic Test Scene (%)", fontsize=14)
+    ax.tick_params(axis="x", labelsize=13)
     ax.set_xlim(70, 80)
     ax.grid(axis="x", color=GRID, linestyle="--", linewidth=0.7, alpha=0.8)
 
     for i, (b, d) in enumerate(zip(bars, drops)):
         val = b.get_width()
         text = f"{val:.2f}% (Baseline)" if d == 0.0 else f"{val:.2f}% ({d:+.2f}%)"
-        ax.text(val + 0.15, b.get_y() + b.get_height()/2, text, va="center", fontsize=9.5, weight="semibold", color="#384655")
+        ax.text(val + 0.15, b.get_y() + b.get_height()/2, text, va="center", fontsize=13, weight="semibold", color="#384655")
 
-    ax.set_title("Systematic Ablation: Component Sensitivity", fontsize=11, weight="semibold", pad=10)
 
     plt.tight_layout()
     fig.savefig(FIGS_DIR / "fig_ablation_breakdown.pdf", bbox_inches="tight")

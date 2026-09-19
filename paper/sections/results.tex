@@ -35,7 +35,7 @@ On the Scandinavian Arctic test scene (Troms{\o}), TopoRadar-Net reaches $77.40\
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.82\columnwidth]{fig_performance_comparison.pdf}
+\includegraphics[width=\columnwidth]{fig_performance_comparison.pdf}
 \caption{Quantitative cross-system generalization performance across evaluated deep architectures on unseen mountain ranges (Scandinavian Arctic in Troms{\o} and Central Asian Pamir Mountains in Tajikistan), reporting Mean $\pm$ Standard Deviation across 3 independent training seeds.}
 \label{fig:performance}
 \end{figure}
@@ -83,7 +83,7 @@ vs. Attention U-Net & $+0.38\%$ & $-8.28\%$ & $+9.04\%$ & $0.869$ \\
 
 The bootstrap confidence intervals and seed-level tests distinguish spatial-sampling stability from training-seed variance. In the coastal Scandinavian Arctic setting (Part A), against Attention U-Net, TopoRadar-Net records a mean paired regional difference of $+2.30\%$ with a 95\% CI of $[+0.27\%, +4.41\%]$ ($p = 0.030$), $+4.35\%$ versus ResU-Net ($p = 0.010$), and $+6.39\%$ versus SiamUNet-diff ($p < 0.001$). Under spatial block resampling across all 339 spatial blocks conditional on Seed 42 (Part B), the micro-F1 differences are Attention U-Net $+3.27\%$, ResU-Net $+4.30\%$, SiamUNet-conc $+2.47\%$, and SiamUNet-diff $+12.77\%$.
 
-Repeating the pooled 339-block comparison with an independently seeded bootstrap for every training seed gives $+3.26\%$ (95\% CI $[+1.32,+5.33]$, $p=0.002$), $-2.99\%$ ($[-6.67,+0.08]$, $p=0.060$), and $+4.16\%$ ($[+1.00,+7.27]$, $p=0.016$) for Seeds 42, 123, and 456, respectively. The Seed-42 value differs from Part B's $+3.27\%$ only because R003 and R008 use independent deterministic bootstrap streams over the same 339 blocks. The descriptive across-seed mean is $+1.48\% \pm 3.18\%$, positive in two of three seeds. Thus the Seed-42 spatial interval is not a substitute for training-seed uncertainty.
+Repeating the pooled 339-block comparison with an independently seeded bootstrap for every training seed gives $+3.26\%$ (95\% CI $[+1.32,+5.33]$, $p=0.002$), $-2.99\%$ ($[-6.67,+0.08]$, $p=0.060$), and $+4.16\%$ ($[+1.00,+7.27]$, $p=0.016$) for Seeds 42, 123, and 456, respectively. The Seed-42 value differs from Part B's $+3.27\%$ only because the primary and seed-repeated analyses use independent deterministic bootstrap streams over the same 339 blocks. The descriptive across-seed mean is $+1.48\% \pm 3.18\%$, positive in two of three seeds. Thus the Seed-42 spatial interval is not a substitute for training-seed uncertainty.
 
 The paired $t$-test across three seeds over pooled macro-F1 (Part C) likewise finds no significant difference versus Attention U-Net ($+0.38\%$, $p = 0.869$), ResU-Net ($+0.86\%$, $p = 0.459$), or SiamUNet-conc ($+0.65\%$, $p = 0.651$); only SiamUNet-diff differs significantly ($+8.92\%$, 95\% CI: $[+3.25\%, +14.59\%]$, $p = 0.021$). Attention U-Net leads on Seed 123 ($64.78\%$ vs $61.14\%$), showing that initialization changes the competitive ordering. Part-A component comparisons quantify Seed-42 sensitivity to No-LIA ($+2.04\%$, $p < 0.001$), No-CrossAttn ($+1.42\%$, $p = 0.010$), and No-GeoLoss ($+3.16\%$, $p = 0.002$), without isolating causal mechanisms.
 
@@ -118,7 +118,7 @@ At the operational threshold ($\ge 30\%$ polygon overlap), TopoRadar-Net achieve
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.82\columnwidth]{fig_instance_hitrate_eaws.pdf}
+\includegraphics[width=\columnwidth]{fig_instance_hitrate_eaws.pdf}
 \caption{Instance-level avalanche detection completeness across European Avalanche Warning Services (EAWS) destructive size classes (D1 through D4) on the held-out Scandinavian Arctic test benchmark ($n=117$ polygons), evaluated at minimum $30\%$ polygon overlap (HR@0.3).}
 \label{fig:instance_hitrate}
 \end{figure}
@@ -165,7 +165,7 @@ The ablation results in Table~\ref{tab:ablation_results} provide nuanced empiric
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.82\columnwidth]{fig_ablation_breakdown.pdf}
+\includegraphics[width=\columnwidth]{fig_ablation_breakdown.pdf}
 \caption{Systematic component-wise ablation breakdown on the Scandinavian Arctic test scene, showing performance sensitivity to Local Incidence Angle (LIA), Aspect-Look Alignment, Radar-Topographic Cross-Attention (RTCAB), and Geomorphically Bounded Loss (Geo-Loss). The x-axis is truncated to the 70\%--80\% F1 dynamic range.}
 \label{fig:ablation}
 \end{figure}

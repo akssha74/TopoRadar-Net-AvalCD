@@ -45,6 +45,17 @@ def set_fixed_layout(table):
     layout.set(qn("w:type"), "fixed")
 
 
+def set_column_widths(table, widths_mm):
+    """Set both the OOXML grid and cell widths so renderers honor the layout."""
+    set_fixed_layout(table)
+    grid_columns = table._tbl.tblGrid.gridCol_lst
+    for grid_column, width in zip(grid_columns, widths_mm):
+        grid_column.set(qn("w:w"), str(int(Mm(width).twips)))
+    for row in table.rows:
+        for cell, width in zip(row.cells, widths_mm):
+            cell.width = Mm(width)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -87,24 +98,28 @@ def main():
         style.paragraph_format.space_after = Pt(0)
         style.paragraph_format.line_spacing = 1.0
 
+    in_references = False
     for paragraph in document.paragraphs:
+        is_reference_heading = paragraph.text.strip().lower() == "references"
+        if is_reference_heading:
+            in_references = True
         paragraph.paragraph_format.space_after = Pt(0)
-        paragraph.paragraph_format.line_spacing = 1.0
+        paragraph.paragraph_format.line_spacing = (
+            0.95 if in_references and not is_reference_heading else 1.0
+        )
+        run_size = 9.0 if in_references and not is_reference_heading else 10.0
         for run in paragraph.runs:
-            set_run_font(run, 10.0)
+            set_run_font(run, run_size)
 
     header_rows = (1, 2, 1, 2, 2, 2, 1, 1)
     widths_mm = {
-        1: (32, 13, 22, 18, 18, 22, 16, 18),  # Table 2
-        4: (38, 20, 18, 18, 22, 18, 18),      # Table 5
-        5: (17, 45, 15, 16, 16, 16, 16, 14),  # Table 6
+        1: (40, 12, 18, 18, 18, 18, 17, 17),  # Table 2
+        4: (50, 18, 18, 18, 18, 18, 18),      # Table 5
+        5: (15, 45, 14, 17, 17, 17, 17, 17),  # Table 6
     }
     for table_index, table in enumerate(document.tables):
         if table_index in widths_mm:
-            set_fixed_layout(table)
-            for row in table.rows:
-                for cell, width in zip(row.cells, widths_mm[table_index]):
-                    cell.width = Mm(width)
+            set_column_widths(table, widths_mm[table_index])
         else:
             table.autofit = True
         for row_index, row in enumerate(table.rows):
@@ -119,12 +134,15 @@ def main():
                     paragraph.paragraph_format.space_after = Pt(0)
                     paragraph.paragraph_format.line_spacing = 1.0
                     for run in paragraph.runs:
-                        set_run_font(run, 8.5)
+                        set_run_font(
+                            run,
+                            8.0 if table_index in widths_mm else 8.5,
+                        )
 
     document.save(path)
     print(
         f"Formatted {path}: A4, 25.4 mm margins, Times New Roman 10 pt, "
-        "single-spaced, 0 pt paragraph-after; tables 8.5 pt with repeated "
+        "single-spaced, 0 pt paragraph-after; tables 8–8.5 pt with repeated "
         "headers and non-splitting rows."
     )
 

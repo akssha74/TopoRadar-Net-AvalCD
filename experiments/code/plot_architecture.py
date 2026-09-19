@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 OUT_DIR = Path("studies/mountain-avalcd-toporadar/paper/figures")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-fig, ax = plt.subplots(figsize=(10, 5.1), dpi=300)
+fig, ax = plt.subplots(figsize=(8.5, 4.31), dpi=300)
 ax.set_xlim(0, 15)
 ax.set_ylim(0, 7.6)
 ax.axis("off")
@@ -26,8 +26,8 @@ PALETTE = {
     "output": ("#E7EBF0", "#9DA9B5", "#34404C"),
     "loss": ("#F8E5E3", "#CE928D", "#793D38"),
 }
-ARROW_COLOR = "#9AA9B9"
-TRAINING_ARROW_COLOR = "#C3A09C"
+ARROW_COLOR = "#74869A"
+TRAINING_ARROW_COLOR = "#A97874"
 
 
 def stage_panel(x, width, title):
@@ -91,7 +91,7 @@ def draw_box(x, y, width, height, text, key, fontsize=9, subtext=""):
             subtext,
             ha="center",
             va="center",
-            fontsize=fontsize - 1.0,
+            fontsize=fontsize - 0.4,
             color="#5F6D7A",
             zorder=4,
         )
@@ -119,7 +119,7 @@ draw_box(
     1.35,
     "Radar–topographic\ntensor",
     "topo",
-    subtext="LIA · slope · aspect\nDEM · look alignment",
+    subtext="LIA · slope · aspect\nDEM · alignment",
 )
 
 # Stage 2 — encoders.
@@ -130,7 +130,7 @@ draw_box(
     1.55,
     "Shared SAR\nencoder",
     "sar",
-    subtext="shared weights\nmulti-scale features",
+    subtext="shared weights\nmultiscale features",
 )
 draw_box(
     3.45,
@@ -139,7 +139,7 @@ draw_box(
     1.15,
     "Topographic\npyramid",
     "topo",
-    subtext="multi-scale conv + pooling",
+    subtext="conv + pooling",
 )
 
 # Stage 3 — conditioning.
@@ -150,7 +150,7 @@ draw_box(
     0.95,
     "Difference\nfusion",
     "fusion",
-    subtext="[post−pre, post, pre]",
+    subtext="pre · post · difference",
 )
 draw_box(
     6.45,
@@ -159,7 +159,7 @@ draw_box(
     0.95,
     "Pooled topo\nK / V",
     "topo",
-    subtext="8×8 regional context",
+    subtext="8×8 context",
 )
 draw_box(
     6.45,
@@ -168,7 +168,7 @@ draw_box(
     0.95,
     "Spatial topo\ngate",
     "gate",
-    subtext="pixel-wise conditioning",
+    subtext="pixel gate",
 )
 draw_box(
     9.15,
@@ -177,7 +177,7 @@ draw_box(
     1.15,
     "RTCAB",
     "attention",
-    subtext="SAR queries ×\ntopographic K / V",
+    subtext="SAR queries\nterrain K / V",
 )
 
 # Stage 4 — decoder and outputs.
@@ -188,7 +188,7 @@ draw_box(
     1.0,
     "Progressive\ndecoder",
     "decoder",
-    subtext="upsampling + skip features",
+    subtext="upsampling + skips",
 )
 draw_box(
     11.80,
@@ -266,7 +266,7 @@ ax.text(
     10.0,
     0.75,
     "solid: inference path",
-    fontsize=8,
+    fontsize=9,
     color="#6F7D8B",
     ha="right",
 )
@@ -274,7 +274,7 @@ ax.text(
     10.15,
     0.75,
     "– –  training-only loss",
-    fontsize=8,
+    fontsize=9,
     color=TRAINING_ARROW_COLOR,
     ha="left",
 )
