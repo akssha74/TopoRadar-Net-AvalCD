@@ -17,7 +17,7 @@ Automated mapping of snow avalanche debris in steep alpine terrain using spacebo
 3. **Geomorphic Inadmissibility:** Standard deep networks lack physical landform constraints, frequently predicting false alarms on flat valley bottoms ($<5^\circ$, e.g., frozen lakes and riverbeds) or sheer vertical cliffs ($>65^\circ$).
 
 ### Key Innovations of TopoRadar-Net
-- **Physical & Geometric Formulation (Proposition 2):** We formulate that 2D shift-invariant spatial linear convolutions operating purely on SAR intensity space cannot invert the non-stationary geometric projection $\frac{\cos \psi}{\sin \theta_{\text{inc}}}$, establishing an inherent ambiguity between foreslope layover clutter and true debris. We show that projecting terrain into a continuous 4D aspect-look manifold $\mathcal{M} = [\sin \alpha, \cos \alpha, \cos \psi, \theta_{\text{align}}]^T$ eliminates circular branch cuts and provides continuous orientation coordinates for dynamic cross-attention.
+- **Physical & Geometric Formulation (Proposition 2):** We characterize the limitations of shift-invariant 2D linear convolutions across mountain facets under non-stationary radiometric terrain projection. The continuous 4D aspect-look coordinates $\mathcal{M} = [\sin \alpha, \cos \alpha, \cos \psi, \theta_{\text{align}}]^T$ avoid circular branch cuts and provide terrain context for cross-attention.
 - **Multi-Scale Radar-Topographic Cross-Attention Block (RTCAB):** Full-resolution SAR change features serve as Queries ($\mathbf{Q}$) to interrogate adaptively-pooled regional topographic keys ($\mathbf{K}$) and values ($\mathbf{V}$), dynamically suppressing foreslope clutter while amplifying backslope debris contrast.
 - **Geomorphically Bounded Loss (Geo-Loss):** Regularizes network training by penalizing non-zero probability mass in physically impossible terrain ($<5^\circ$ valley floors and $>65^\circ$ sheer cliffs).
 - **Lightweight Model-Forward Inference:** Only **3.46M parameters** (3,455,729 parameters), achieving full-scene sliding-window model inference in **$1.80 \pm 0.02\text{ s}$** ($668.5\text{ patches/s}$) on Apple Silicon MPS hardware.
@@ -140,7 +140,7 @@ python reviews/harness.py
 ```
 
 ### 3. Pretrained Model Checkpoints
-Download the 3-seed trained model weights (`toporadar_checkpoints_3seeds.tar.gz`, 37 MB) from [Release v1.0.1](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.1):
+Download the 3-seed trained model weights (`toporadar_checkpoints_3seeds.tar.gz`, 37 MB) from [Release v1.0.2](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.2):
 ```bash
 # Extract into experiments/derived/checkpoints/
 mkdir -p experiments/derived/checkpoints
@@ -151,6 +151,9 @@ tar -xzvf toporadar_checkpoints_3seeds.tar.gz -C experiments/derived/checkpoints
 1. Download the AvalCD benchmark from Zenodo: [DOI: 10.5281/zenodo.15863589](https://doi.org/10.5281/zenodo.15863589).
 2. Configure `RAW_DATA_DIR` in `experiments/code/dataset.py`.
 3. Execute end-to-end training and evaluation:
+
+The released checkpoints use the preserved checkpoint-era augmentation convention documented in the manuscript: aspect sine/cosine signs change under reflections, while the precomputed orbital look-alignment channel is spatially transformed without directional recomputation. This exact convention is retained for result identity and is not claimed to be fully reflection/rotation equivariant.
+
 ```bash
 # Train and evaluate TopoRadar-Net and baselines across 3 seeds
 python experiments/code/train_eval.py --epochs 6

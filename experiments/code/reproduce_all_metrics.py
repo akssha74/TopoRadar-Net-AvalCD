@@ -141,11 +141,12 @@ def main():
         import models
         param_counts = {
             "TopoRadar-Net": sum(p.numel() for p in models.TopoRadarNet().parameters()),
-            "Attention U-Net": sum(p.numel() for p in models.SwinUNetAval().parameters()),
+            "Attention U-Net": sum(p.numel() for p in models.AttentionUNetAval().parameters()),
             "ResU-Net": sum(p.numel() for p in models.ResUNet().parameters()),
             "SiamUNet-conc": sum(p.numel() for p in models.SiamUNetConc().parameters()),
             "SiamUNet-diff": sum(p.numel() for p in models.SiamUNetDiff().parameters()),
         }
+        parameter_check = "instantiated from models.py"
     except ImportError:
         param_counts = {
             "TopoRadar-Net": 3455729,
@@ -154,33 +155,17 @@ def main():
             "SiamUNet-conc": 2360321,
             "SiamUNet-diff": 2014209,
         }
+        parameter_check = "checked against declared constants (PyTorch unavailable)"
     assert param_counts["TopoRadar-Net"] == 3455729, f"TopoRadar-Net param count mismatch: {param_counts['TopoRadar-Net']}"
     assert param_counts["Attention U-Net"] == 2287425, f"Attention U-Net param count mismatch: {param_counts['Attention U-Net']}"
     assert param_counts["ResU-Net"] == 2014849, f"ResU-Net param count mismatch: {param_counts['ResU-Net']}"
     assert param_counts["SiamUNet-conc"] == 2360321, f"SiamUNet-conc param count mismatch: {param_counts['SiamUNet-conc']}"
     assert param_counts["SiamUNet-diff"] == 2014209, f"SiamUNet-diff param count mismatch: {param_counts['SiamUNet-diff']}"
-    print(f"  Model Parameters Verified: TopoRadar={param_counts['TopoRadar-Net']:,} (3.46M), Attention U-Net={param_counts['Attention U-Net']:,} (2.29M), ResU-Net={param_counts['ResU-Net']:,} (2.01M), SiamConc={param_counts['SiamUNet-conc']:,} (2.36M), SiamDiff={param_counts['SiamUNet-diff']:,} (2.01M)")
-
-    # 9. Verify Directional Augmentation Reflection Consistency
-    print("\n--- 9. Verifying Directional Augmentation Trigonometric Consistency ---")
-    alpha_rad = math.radians(30.0)
-    LOOK_RAD = math.radians(78.0)
-    sin_a = math.sin(alpha_rad)
-    cos_a = math.cos(alpha_rad)
-    # Horizontal flip: alpha -> -alpha, sin -> -sin, cos -> cos
-    sin_h, cos_h = -sin_a, cos_a
-    align_h_calc = cos_h * math.cos(LOOK_RAD) + sin_h * math.sin(LOOK_RAD)
-    align_h_true = math.cos(-alpha_rad - LOOK_RAD)
-    assert abs(align_h_calc - align_h_true) < 1e-6, f"H-flip mismatch: {align_h_calc} vs {align_h_true}"
-    # Vertical flip: alpha -> 180 - alpha, sin -> sin, cos -> -cos
-    sin_v, cos_v = sin_a, -cos_a
-    align_v_calc = cos_v * math.cos(LOOK_RAD) + sin_v * math.sin(LOOK_RAD)
-    align_v_true = math.cos((math.pi - alpha_rad) - LOOK_RAD)
-    assert abs(align_v_calc - align_v_true) < 1e-6, f"V-flip mismatch: {align_v_calc} vs {align_v_true}"
-    print("  Directional reflection augmentation trigonometrically verified on sentinel angle alpha=30 deg.")
+    print(f"  Parameter source: {parameter_check}")
+    print(f"  Parameter counts checked: TopoRadar={param_counts['TopoRadar-Net']:,} (3.46M), Attention U-Net={param_counts['Attention U-Net']:,} (2.29M), ResU-Net={param_counts['ResU-Net']:,} (2.01M), SiamConc={param_counts['SiamUNet-conc']:,} (2.36M), SiamDiff={param_counts['SiamUNet-diff']:,} (2.01M)")
 
     print("\n================================================================================")
-    print(" ALL PRIMARY NUMERICAL SUMMARY METRICS AND MODEL PROFILES VERIFIED!")
+    print(" STORED-SUMMARY ARITHMETIC VERIFIED; PARAMETER-CHECK SOURCE REPORTED ABOVE")
     print("================================================================================")
 
 if __name__ == "__main__":
