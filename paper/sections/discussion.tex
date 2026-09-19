@@ -23,7 +23,7 @@ A primary challenge in machine learning for natural hazards is model overfitting
     \item \textbf{Polar Fjord Alpine Regime (Nuuk, Greenland):} Sub-polar maritime conditions with persistent high-velocity winds and coastal fjord relief.
 \end{enumerate}
 
-When evaluated zero-shot on the unseen Pamir Mountains and Scandinavian Arctic, TopoRadar-Net maintains robust segmentation fidelity and high polygon completeness. This cross-system resilience confirms that conditioning on fundamental physical coordinates ($[\cos \psi, \theta, \sin \alpha, \cos \alpha, \theta_{\text{align}}]$) acts as a domain-invariant normalizer. Because the physical laws governing radar wave reflection and terrain slope are invariant across continents, TopoRadar-Net transfers seamlessly from European training data to Central Asian and Arctic mountain environments without requiring site-specific re-tuning or retraining.
+When evaluated zero-shot on the unseen Pamir Mountains and Scandinavian Arctic, TopoRadar-Net maintains robust segmentation fidelity and high polygon completeness. This cross-system resilience suggests that conditioning on fundamental physical coordinates ($[\cos \psi, \theta, \sin \alpha, \cos \alpha, \theta_{\text{align}}]$) acts as a domain-invariant coordinate representation. Because the physical laws governing radar wave reflection and terrain slope are invariant across continents, TopoRadar-Net transfers effectively from European training data to Central Asian and Arctic mountain environments without requiring site-specific re-tuning or retraining.
 
 \subsection{Operational Implications for Alpine Civil Protection and Search-and-Rescue}
 \label{sec:disc:operational}
@@ -33,18 +33,18 @@ For alpine emergency managers, highway maintenance authorities, and search-and-r
 In operational disaster response, detection accuracy across different avalanche magnitude classes is of paramount importance. Small sluffs (EAWS Class D1) pose localized risks to backcountry recreationists, whereas large and very large avalanches (Classes D3 and D4) destroy buildings, block transportation arteries, and bury infrastructure. TopoRadar-Net exhibits high instance-level detection hit rates on Class D3 and D4 avalanches, ensuring that major life-threatening events are identified for civil protection authorities.
 
 \begin{table*}[t]
-\caption{Operational triage matrix and quantitative false-alarm clutter footprint across regional mountain regimes in physical land-management units (hectares and $\text{km}^2$), computed on the evaluated Sentinel-1 valid scene footprint (Troms{\o} $245.87 \text{ km}^2$, Pamir $359.10 \text{ km}^2$ on nominal 10~m grid; affine-scaled areas scale proportionally with identical ha/$\text{km}^2$ rates).}
+\caption{Conceptual decision-support triage matrix (illustrative framework) and quantitative false-alarm clutter footprint across regional mountain regimes in physical land-management units (hectares and $\text{km}^2$), computed on the evaluated Sentinel-1 valid scene footprint (Troms{\o} $245.87 \text{ km}^2$, Pamir $359.10 \text{ km}^2$ on nominal 10~m grid; affine-scaled areas scale proportionally with identical ha/$\text{km}^2$ rates).}
 \label{tab:operational_triage}
 \centering
 \footnotesize
 \setlength{\tabcolsep}{5pt}
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lp{2.2cm}p{2.3cm}p{4.7cm}p{3.4cm}@{}}
 \toprule
-\textbf{Triage Level} & \textbf{Prob. ($p$)} & \textbf{Debris Area} & \textbf{Operational Action} & \textbf{Target Stakeholder} \\
+\textbf{Triage Level} & \textbf{Prob. ($p$)} & \textbf{Debris Area} & \textbf{Illustrative Action} & \textbf{Target Stakeholder} \\
 \midrule
 \textbf{Alert Level 1} & $p < 0.40$ & $< 0.1 \text{ ha}$ ($< 10 \text{ px}$) & Background surveillance; zero mobilization; routine noise suppressed & Warning Services (SLF, NVE) \\
 \textbf{Alert Level 2} & $0.40 \le p < 0.70$ & $0.1\text{--}1.0 \text{ ha}$ ($10\text{--}100 \text{ px}$) & Automated tasking of local UAV patrols or optical satellite cueing & Regional Forecasters \\
-\textbf{Alert Level 3} & $p \ge 0.70$ & $\ge 1.0 \text{ ha}$ (EAWS D3/D4) & Immediate dispatch to road authorities for transport corridor closure & Civil Protection / Police / Road Auth. \\
+\textbf{Alert Level 3} & $p \ge 0.70$ & $\ge 1.0 \text{ ha}$ (Major debris) & Notification to road authorities for transport corridor inspection & Civil Protection / Road Auth. \\
 \midrule
 \multicolumn{5}{l}{\textbf{Regional False-Alarm Footprint in Evaluated Scene (Valid Area: Troms{\o} $245.87 \text{ km}^2$, Pamir $359.10 \text{ km}^2$)}} \\
 \midrule

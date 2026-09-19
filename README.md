@@ -17,11 +17,11 @@ Automated mapping of snow avalanche debris in steep alpine terrain using spacebo
 3. **Geomorphic Inadmissibility:** Standard deep networks lack physical landform constraints, frequently predicting false alarms on flat valley bottoms ($<5^\circ$, e.g., frozen lakes and riverbeds) or sheer vertical cliffs ($>65^\circ$).
 
 ### Key Innovations of TopoRadar-Net
-- **Theoretical Foundation (Theorem 1):** We prove analytically that 2D shift-invariant spatial convolutions operating purely on SAR intensity space cannot invert the non-stationary geometric projection $\frac{\cos \psi}{\sin \theta_{\text{inc}}}$, establishing an irreducible lower bound on false-alarm ambiguity between foreslope layover clutter and true debris. We prove that projecting terrain into a continuous 4D aspect-look manifold $\mathcal{M} = [\sin \alpha, \cos \alpha, \cos \psi, \theta_{\text{align}}]^T$ eliminates circular branch cuts and provides a mathematically principled representation for dynamic cross-attention.
+- **Physical & Geometric Formulation (Proposition 2):** We formulate that 2D shift-invariant spatial linear convolutions operating purely on SAR intensity space cannot invert the non-stationary geometric projection $\frac{\cos \psi}{\sin \theta_{\text{inc}}}$, establishing an inherent ambiguity between foreslope layover clutter and true debris. We show that projecting terrain into a continuous 4D aspect-look manifold $\mathcal{M} = [\sin \alpha, \cos \alpha, \cos \psi, \theta_{\text{align}}]^T$ eliminates circular branch cuts and provides continuous orientation coordinates for dynamic cross-attention.
 - **Multi-Scale Radar-Topographic Cross-Attention Block (RTCAB):** Full-resolution SAR change features serve as Queries ($\mathbf{Q}$) to interrogate adaptively-pooled regional topographic keys ($\mathbf{K}$) and values ($\mathbf{V}$), dynamically suppressing foreslope clutter while amplifying backslope debris contrast.
 - **Geomorphically Bounded Loss (Geo-Loss):** Regularizes network training by penalizing non-zero probability mass in physically impossible terrain ($<5^\circ$ valley floors and $>65^\circ$ sheer cliffs).
-- **Lightweight & Real-Time:** Only **3.46M parameters** ($\approx 20\times$ more compact than multimodal vision transformers), achieving full-scene inference in **$1.80 \pm 0.02\text{ s}$** ($668.5\text{ patches/s}$) with $2.14\text{ GB}$ peak VRAM.
-- **Operational EAWS Triage Matrix:** Maps calibrated model probabilities to European Avalanche Warning Services alert tiers, demonstrating a **$30.0\%$ ($72.88\text{ ha}$) clutter reduction** in continental high-relief terrain.
+- **Lightweight Model-Forward Inference:** Only **3.46M parameters** (3,455,729 parameters), achieving full-scene sliding-window model inference in **$1.80 \pm 0.02\text{ s}$** ($668.5\text{ patches/s}$) on Apple Silicon MPS hardware.
+- **Operational Decision-Support Triage Framework:** Translates model predictions into a 3-tier conceptual triage framework, demonstrating a **$30.0\%$ ($72.88\text{ ha}$ nominal grid, $55.63\text{ ha}$ affine physical reduction) clutter reduction** in continental high-relief terrain.
 
 ---
 
@@ -34,9 +34,9 @@ Evaluated across 3 independent training seeds under strict zero-shot regional do
 
 | Architecture / Model | Parameters | Scandinavian Arctic (Tromsø) | Pamir Mountains (Pish) | Pooled Benchmark Macro F1 (%) |
 | :--- | :---: | :---: | :---: | :---: |
-| SiamUNet-diff | 1.54M | $72.64 \pm 0.39\%$ | $37.11 \pm 2.44\%$ | $54.87 \pm 1.03\%$ |
-| SiamUNet-conc | 1.54M | $78.92 \pm 1.07\%$ | $47.34 \pm 0.70\%$ | $63.13 \pm 0.79\%$ |
-| ResU-Net Baseline | 3.26M | $76.60 \pm 1.30\%$ | $49.25 \pm 3.39\%$ | $62.92 \pm 1.42\%$ |
+| SiamUNet-diff | 2.01M | $72.64 \pm 0.39\%$ | $37.11 \pm 2.44\%$ | $54.87 \pm 1.03\%$ |
+| SiamUNet-conc | 2.36M | $78.92 \pm 1.07\%$ | $47.34 \pm 0.70\%$ | $63.13 \pm 0.79\%$ |
+| ResU-Net Baseline | 2.01M | $76.60 \pm 1.30\%$ | $49.25 \pm 3.39\%$ | $62.92 \pm 1.42\%$ |
 | Attention U-Net | 2.29M | $78.09 \pm 0.99\%$ | $48.73 \pm 2.74\%$ | $63.41 \pm 1.03\%$ |
 | **TopoRadar-Net (Ours, Seed 42)** | **3.46M** | **79.35%** | **51.23%** | **65.29%** |
 | **TopoRadar-Net (Ours, 3-Seed Mean)** | **3.46M** | $\mathbf{77.40 \pm 1.86\%}$ | $\mathbf{50.18 \pm 4.40\%}$ | $\mathbf{63.79 \pm 1.88\%}$ |
@@ -69,8 +69,8 @@ Evaluated across 3 independent training seeds under strict zero-shot regional do
 - **Active Avalanche Chutes ($25^\circ\text{--}45^\circ$ slope):** $+4.34\%$ F1 in Tromsø ($81.34\%$ vs $77.00\%$).
 - **Extreme Steep Shadow Boundary ($>45^\circ$ in Pamir):** Both networks drop precipitously ($8.85\%$ vs $16.65\%$, $\Delta = -7.80\%$), honestly identifying the geomorphic boundary condition where radar shadow signal voids prevent reliable SAR mapping.
 
-### 5. Operational Decision-Support Triage Matrix (Table 8)
-- **Pamir Mountains ($359.10\text{ km}^2$ valid mask):** TopoRadar-Net achieves a **$30.0\%$ ($72.88\text{ ha}$) false-alarm clutter reduction** ($169.89\text{ ha}$, $0.47\text{ ha/km}^2$) compared to Attention U-Net ($242.77\text{ ha}$, $0.68\text{ ha/km}^2$) and a $43.9\%$ reduction compared to SiamUNet-conc ($302.63\text{ ha}$, $0.84\text{ ha/km}^2$).
+### 5. Operational Decision-Support Triage Framework (Table 8)
+- **Pamir Mountains ($359.10\text{ km}^2$ valid mask):** TopoRadar-Net achieves a **$30.0\%$ ($72.88\text{ ha}$ nominal grid, $55.63\text{ ha}$ affine physical reduction) false-alarm clutter reduction** ($169.89\text{ ha}$, $0.47\text{ ha/km}^2$) compared to Attention U-Net ($242.77\text{ ha}$, $0.68\text{ ha/km}^2$) and a $43.9\%$ reduction compared to SiamUNet-conc ($302.63\text{ ha}$, $0.84\text{ ha/km}^2$).
 - **Tromsø ($245.87\text{ km}^2$ valid mask):** Detects $270.09\text{ ha}$ of true avalanche debris ($95.8\%$ Class D4 events) at $0.36\text{ ha/km}^2$ false-alarm density ($87.82\text{ ha}$), reflecting an operational trade-off prioritizing catastrophic event completeness over coastal fringe clutter.
 
 ---
@@ -105,6 +105,7 @@ TopoRadar-Net-AvalCD/
 │           └── inference_profile.json                # Runtime and memory profiling
 ├── paper/
 │   ├── main.tex                        # Springer Nature template root
+│   ├── main_anonymous.tex              # Anonymized double-blind manuscript root
 │   ├── main.pdf                        # Compiled publication manuscript (13 pages, two-column sn-jnl layout)
 │   ├── references.bib                  # 100% Crossref-verified bibliography (22 DOIs)
 │   ├── sn-jnl.cls                      # Official Springer Nature class
@@ -113,8 +114,8 @@ TopoRadar-Net-AvalCD/
 │   └── sections/                       # Modular LaTeX section sources
 └── reviews/
     ├── harness.py                      # Reviewer recomputation and assertion harness
-    ├── review-log.json                 # Complete 16-round review and convergence ledger
-    └── review-16.md                    # Round 16 converged review report (27/30 exceeds)
+    ├── review-log.json                 # Complete review and convergence ledger
+    └── review-20-opus.md               # Round 20 independent review report (28/30 exceeds)
 ```
 
 ---
@@ -139,7 +140,7 @@ python reviews/harness.py
 ```
 
 ### 3. Pretrained Model Checkpoints
-Download the 3-seed trained model weights (`toporadar_checkpoints_3seeds.tar.gz`, 37 MB) from [Release v1.0.0](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.0):
+Download the 3-seed trained model weights (`toporadar_checkpoints_3seeds.tar.gz`, 37 MB) from [Release v1.0.1](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.1):
 ```bash
 # Extract into experiments/derived/checkpoints/
 mkdir -p experiments/derived/checkpoints

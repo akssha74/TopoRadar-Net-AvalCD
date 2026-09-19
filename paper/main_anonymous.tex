@@ -1,0 +1,86 @@
+\documentclass[pdflatex,sn-basic,iicol]{sn-jnl}
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage{xcolor}
+
+\geometry{a4paper, textwidth=185mm, textheight=274mm, top=11mm, bottom=12mm, left=12.5mm, right=12.5mm}
+\setlength{\columnsep}{5.5mm}
+\let\table\tableorg
+\let\endtable\endtableorg
+\renewenvironment{table}[1][t]{\begin{tableorg}[#1]\centering\footnotesize}{\end{tableorg}}
+
+\setlength{\textfloatsep}{4pt plus 1pt minus 1pt}
+\setlength{\floatsep}{4pt plus 1pt minus 1pt}
+\setlength{\intextsep}{4pt plus 1pt minus 1pt}
+\setlength{\dbltextfloatsep}{4pt plus 1pt minus 1pt}
+\setlength{\dblfloatsep}{4pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{2pt}
+\setlength{\abovedisplayskip}{3pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{3pt plus 1pt minus 1pt}
+
+\makeatletter
+\AtBeginDocument{
+  \setlength{\bibsep}{0pt}
+  \def\bibfont{\fontsize{7.0pt}{8.1pt}\selectfont}
+}
+\makeatother
+
+\makeatletter
+\renewcommand{\@maketitle}{%
+  \hsize\textwidth\parindent0pt
+  \ifx\@title\empty\else
+    {\Titlefont\@title\par}
+  \fi
+  \ifnum\aucount>0
+    \global\punctcount\aucount
+    \vskip8pt
+    \artauthors\par
+    {\vskip3pt\addressfont\auaddress\par}
+  \fi
+  \vskip6pt
+  {\printabstract\par}
+  {\printkeywords\par}
+  \vskip10pt
+}
+\makeatother
+
+\graphicspath{{figures/}}
+
+\begin{document}
+
+\title[TopoRadar-Net for Alpine Avalanche Debris Mapping in Sentinel-1 SAR]{Topographic Radar Geometry-Guided Cross-Attention for Alpine Avalanche Debris Mapping in Sentinel-1 SAR: Cross-System Generalization Across the Alps, Pamirs, and Arctic}
+
+%% ------------------------------------------------------------------
+%% DOUBLE-BLIND SUBMISSION: author names, affiliations, and e-mail
+%% addresses are intentionally removed from the main document as
+%% required by the Journal of Mountain Science editorial office.
+%% ------------------------------------------------------------------
+\author[1]{\fnm{}\sur{}}
+\affil[1]{\orgname{Author affiliations withheld for double-blind peer review}}
+
+\abstract{
+\input{sections/abstract}
+}
+
+\keywords{Snow avalanche mapping, Sentinel-1 SAR, Mountain hazards, Radar-topographic geometry, Cross-attention network, Cross-system generalization, Disaster response}
+
+\maketitle
+
+\input{sections/introduction}
+\input{sections/study_areas_data}
+\input{sections/methodology}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion_anon}
+\input{sections/declarations_anon}
+
+\bibliography{references}
+
+\end{document}
