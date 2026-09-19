@@ -7,10 +7,11 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 
 
-OUT_DIR = Path("studies/mountain-avalcd-toporadar/paper/figures")
+STUDY_ROOT = Path(__file__).resolve().parents[2]
+OUT_DIR = STUDY_ROOT / "paper" / "figures"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-fig, ax = plt.subplots(figsize=(8.5, 4.31), dpi=300)
+fig, ax = plt.subplots(figsize=(8.0, 4.06), dpi=300)
 ax.set_xlim(0, 15)
 ax.set_ylim(0, 7.6)
 ax.axis("off")
@@ -60,7 +61,7 @@ stage_panel(6.15, 5.05, "3  Conditioning")
 stage_panel(11.45, 3.25, "4  Outputs")
 
 
-def draw_box(x, y, width, height, text, key, fontsize=9, subtext=""):
+def draw_box(x, y, width, height, text, key, fontsize=9.2, subtext=""):
     fill, edge, text_color = PALETTE[key]
     box = patches.FancyBboxPatch(
         (x, y),
@@ -95,7 +96,7 @@ def draw_box(x, y, width, height, text, key, fontsize=9, subtext=""):
             ha="center",
             va="center",
             multialignment="center",
-            fontsize=fontsize - 0.4,
+            fontsize=fontsize,
             color="#5F6D7A",
             linespacing=1.0,
             zorder=4,
@@ -274,7 +275,7 @@ ax.text(
     10.0,
     0.75,
     "solid: inference path",
-    fontsize=9,
+    fontsize=9.2,
     color="#6F7D8B",
     ha="right",
 )
@@ -282,7 +283,7 @@ ax.text(
     10.15,
     0.75,
     "– –  training-only loss",
-    fontsize=9,
+    fontsize=9.2,
     color=TRAINING_ARROW_COLOR,
     ha="left",
 )

@@ -77,6 +77,14 @@ def main():
         section.header_distance = Mm(12.7)
         section.footer_distance = Mm(12.7)
 
+    # Keep the architecture schematic near the full printable width so its
+    # smallest labels remain at least 7 pt in the editable Word vehicle.
+    if document.inline_shapes:
+        architecture = document.inline_shapes[0]
+        aspect_ratio = architecture.height / architecture.width
+        architecture.width = Mm(157)
+        architecture.height = int(architecture.width * aspect_ratio)
+
     styles = document.styles
     normal = styles["Normal"]
     normal.font.name = "Times New Roman"
