@@ -351,10 +351,10 @@ class ResUNet(nn.Module):
         return self.head(d1)
 
 # -----------------------------------------------------------------------------
-# Baseline 4: Swin-UNet (Gatti et al. 2026 Reference Benchmark Architecture)
+# Baseline 4: Attention U-Net / Swin-UNet (Bottleneck Attention Architecture)
 # -----------------------------------------------------------------------------
 
-class SwinUNetAval(nn.Module):
+class AttentionUNetAval(nn.Module):
     def __init__(self, in_sar_ch: int = 2, base_ch: int = 32):
         super().__init__()
         self.diff_conv = nn.Sequential(
@@ -402,6 +402,9 @@ class SwinUNetAval(nn.Module):
         d1 = self.dec1(torch.cat([self.up1(d2), e1], dim=1))
 
         return self.head(d1)
+
+# Backward-compatibility alias
+SwinUNetAval = AttentionUNetAval
 
 # -----------------------------------------------------------------------------
 # Loss Formulation: BCE + Dice + Geomorphically Bounded Loss

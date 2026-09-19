@@ -11,10 +11,10 @@ To rigorously assess the generalizability of deep change detection models across
 \label{tab:dataset_summary}
 \centering
 \footnotesize
-\setlength{\tabcolsep}{5pt}
-\begin{tabular}{lllcrrr}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l@{\hspace{4pt}}l@{\hspace{4pt}}l@{\hspace{4pt}}c@{\hspace{4pt}}r@{\hspace{4pt}}r@{\hspace{4pt}}r@{}}
 \toprule
-\shortstack{\textbf{Mountain}\\\textbf{System}} & \textbf{Event Name} & \textbf{Region / Country} & \shortstack{\textbf{Elevation}\\\textbf{Range (m)}} & \shortstack{\textbf{Grid Size}\\\textbf{(px)}} & \textbf{Polygons} & \shortstack{\textbf{Debris}\\\textbf{Area (px)}} \\
+\textbf{Mountain System} & \textbf{Event Name} & \textbf{Region / Country} & \textbf{Elevation (m)} & \textbf{Grid Size (px)} & \textbf{Polygons} & \textbf{Debris (px)} \\
 \midrule
 \multirow{3}{*}{European Alps} & Livigno\_20240403 & Lombardy, Italy & 1,250--3,890 & $2462 \times 2091$ & 231 & 32,606 \\
  & Livigno\_20250129 & Lombardy, Italy & 1,310--3,890 & $2388 \times 1629$ & 207 & 11,438 \\
@@ -27,16 +27,16 @@ Pamir Mountains & Pish\_20230221 & Shughnon, Tajikistan & 2,100--5,420 & $1894 \
 \midrule
 Scandinavian Arctic & Tromso\_20241220 & Troms, Norway & 0--1,830 & $1691 \times 1454$ & 117 & 33,972 \\
 \midrule
-\textbf{Total / Benchmark} & \textbf{7 Events} & \textbf{4 Mountain Ranges} & \textbf{0--5,420} & \textbf{48.7M px} & \textbf{993} & \textbf{254,404} \\
+\textbf{Total / Benchmark} & \textbf{7 Events} & \textbf{4 Ranges} & \textbf{0--5,420} & \textbf{48.7M px} & \textbf{993} & \textbf{254,404} \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table*}
 
 \begin{enumerate}
-    \item \textbf{European Alps (Livigno, Italy):} Located in the central Italian Alps near the Swiss border, the Livigno region represents a temperate alpine mountain system characterized by steep glacial troughs, U-shaped valleys, and elevations ranging from 1,250~m to over 3,890~m. The region features intensive human recreation, ski infrastructure, and transportation corridors. The dataset encompasses three distinct avalanche cycles: a spring slab cycle in April 2024, a mid-winter powder cycle in January 2025, and a complex wet-snow avalanche cycle in March 2025.
-    \item \textbf{Pamir Mountains (Pish, Tajikistan):} The Pamir knot in Central Asia represents an extreme high-altitude, continental mountain regime characterized by deep arid valleys, narrow gorges, and rugged peaks exceeding 5,400~m in relief. In February 2023, extreme anomalous snowfall triggered a catastrophic avalanche cycle across the Shughnon District, resulting in severe infrastructure destruction and humanitarian emergencies. The snowpack is continental and facetted, with avalanche paths spanning massive vertical descents ($>2,000$~m).
-    \item \textbf{Scandinavian Arctic (Troms{\o}, Norway):} Situated at $69^\circ\text{N}$ in Northern Norway, this region features coastal maritime Arctic mountains rising directly from fjords to rugged alpine massifs. The snowpack is heavily influenced by cyclonic storms, freezing rain, and high winds, producing complex slab avalanches and wet debris. The Troms{\o} inventory provides detailed polygon annotations categorized according to the European Avalanche Warning Services (EAWS) destructive size scale (classes D1 through D4).
-    \item \textbf{Greenland Sub-Polar Alpine (Nuuk, Greenland):} Surrounding the capital region of Nuuk, this coastal sub-polar environment consists of rugged coastal mountains, deep fjords, and permafrost terrain. Two events (April 2016 and April 2021) capture widespread avalanche releases in a polar maritime regime under intense wind-drift conditions.
+    \item \textbf{European Alps (Livigno, Italy):} Located in the central Italian Alps near the Swiss border ($46^\circ32'\text{N}$, $10^\circ08'\text{E}$), the Livigno region represents a temperate alpine mountain system characterized by steep glacial troughs, U-shaped valleys, and elevations ranging from 1,250~m to over 3,890~m. The region features intensive human recreation, ski infrastructure, and transportation corridors. The dataset encompasses three distinct avalanche cycles: a spring slab cycle in April 2024, a mid-winter powder cycle in January 2025, and a complex wet-snow avalanche cycle in March 2025.
+    \item \textbf{Pamir Mountains (Pish, Tajikistan):} The Pamir knot in Central Asia ($37^\circ35'\text{N}$, $71^\circ39'\text{E}$) represents an extreme high-altitude, continental mountain regime characterized by deep arid valleys, narrow gorges, and rugged peaks exceeding 5,400~m in relief. In February 2023, extreme anomalous snowfall triggered a catastrophic avalanche cycle across the Shughnon District, resulting in severe infrastructure destruction and humanitarian emergencies. The snowpack is continental and facetted, with avalanche paths spanning massive vertical descents ($>2,000$~m).
+    \item \textbf{Scandinavian Arctic (Troms{\o}, Norway):} Situated at $69^\circ39'\text{N}$, $18^\circ57'\text{E}$ in Northern Norway, this region features coastal maritime Arctic mountains rising directly from fjords to rugged alpine massifs. The snowpack is heavily influenced by cyclonic storms, freezing rain, and high winds, producing complex slab avalanches and wet debris. The Troms{\o} inventory provides detailed polygon annotations categorized according to the European Avalanche Warning Services (EAWS) destructive size scale (classes D1 through D4).
+    \item \textbf{Greenland Sub-Polar Alpine (Nuuk, Greenland):} Surrounding the capital region of Nuuk ($64^\circ11'\text{N}$, $51^\circ44'\text{W}$), this coastal sub-polar environment consists of rugged coastal mountains, deep fjords, and permafrost terrain. Two events (April 2016 and April 2021) capture widespread avalanche releases in a polar maritime regime under intense wind-drift conditions.
 \end{enumerate}
 
 \subsection{Remote Sensing and Topographic Data Modalities}
@@ -54,6 +54,4 @@ For each of the seven events, the benchmark provides co-registered, multi-modal 
 \subsection{Partitioning for Cross-System Generalization}
 \label{sec:data:split}
 
-To prevent spatial autocorrelation and test real-world deployment viability, we partition the dataset strictly at the regional mountain system level. The European Alps (Livigno 2024 and Jan 2025 events) and Greenland (Nuuk 2016 event) serve as the training cohort (555 polygons). Model selection, hyperparameter tuning, and threshold calibration are performed exclusively on the validation cohort: Livigno March 2025 (wet-snow cycle) and Nuuk 2021 (208 polygons). 
-
-The remaining two mountain systems—the Scandinavian Arctic (Troms{\o}, 117 polygons) and the Pamir Mountains (Pish, 113 polygons)—are held out as completely unobserved, zero-shot test systems. No pixel, tile, or hyperparameter adjustment from these two mountain systems is ever accessed during model training or checkpoint selection.
+To prevent spatial autocorrelation and test real-world deployment viability, we partition the dataset strictly at the regional mountain system level. The European Alps (Livigno 2024 and Jan 2025 events) and Greenland (Nuuk 2016 event) serve as the training cohort (555 polygons). Model selection, hyperparameter tuning, and threshold calibration are performed exclusively on the validation cohort: Livigno March 2025 (wet-snow cycle) and Nuuk 2021 (208 polygons). The remaining two mountain systems—the Scandinavian Arctic (Troms{\o}, 117 polygons) and the Pamir Mountains (Pish, 113 polygons)—are held out as completely unobserved, zero-shot test systems. No pixel, tile, or hyperparameter adjustment from these two mountain systems is ever accessed during model training or checkpoint selection. Note that in Table~\ref{tab:operational_triage}, physical area conversions are reported on the standard nominal 10~m Sentinel-1 resampled grid ($100\text{ m}^2/\text{pixel}$), with evaluated scene areas corresponding to the full valid raster footprints ($245.87\text{ km}^2$ in Troms{\o} and $359.10\text{ km}^2$ in Pamir). When evaluated on the local GeoTIFF affine resolutions ($85.15\text{ m}^2/\text{px}$ in Troms{\o} and $76.34\text{ m}^2/\text{px}$ in Pamir), absolute false-alarm areas scale proportionally ($74.77\text{ ha}$ in Troms{\o} and $129.69\text{ ha}$ in Pamir), yielding mathematically identical false-alarm rates per unit area ($0.36$ and $0.47\text{ ha/km}^2$).

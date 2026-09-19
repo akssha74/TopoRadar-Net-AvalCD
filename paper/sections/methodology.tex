@@ -4,14 +4,14 @@
 \subsection{Physical Principles of Radar-Topographic Interaction}
 \label{sec:method:physics}
 
-In spaceborne Synthetic Aperture Radar (SAR), the calibrated radar backscatter coefficient $\sigma^0$ reflects the complex interaction between transmitted microwave pulses (wavelength $\lambda \approx 5.55$~cm for Sentinel-1 C-band) and surface dielectric and geometric roughness properties \citep{small2011flattening}. When a slab avalanche releases, the rapid down-slope displacement of snow breaks the cohesive winter mantle into fragmented clods and chaotic debris piles. In dry snow regimes, smooth undisturbed snow behaves largely as a volume-scattering or specular surface, yielding low backscatter ($\sigma^0_{\text{VH}} \approx -20$~dB to $-24$~dB) depending on winter terrain roughness \citep{veitinger2014large}. In contrast, granulated avalanche debris exhibits intense diffuse surface scattering and multiple internal reflections, typically resulting in an anomalous positive backscatter delta:
+In spaceborne Synthetic Aperture Radar (SAR), the calibrated radar backscatter coefficient $\sigma^0$ reflects the complex interaction between transmitted microwave pulses (wavelength $\lambda \approx 5.55$~cm for Sentinel-1 C-band) and surface dielectric and geometric roughness properties \citep{small2011flattening}. When a slab avalanche releases, the rapid down-slope displacement of snow breaks the cohesive winter mantle into fragmented clods and chaotic debris piles. In dry snow regimes, smooth undisturbed snow behaves largely as a volume-scattering or specular surface, yielding low backscatter ($\sigma^0_{\text{VH}} \approx -20$~dB to $-24$~dB) \citep{tompkin2021backscatter}, while terrain topography influences winter snow depth and microtopographic roughness \citep{veitinger2014large}. In contrast, granulated avalanche debris exhibits intense diffuse surface scattering and multiple internal reflections, typically resulting in an anomalous positive backscatter delta:
 \begin{align}
 \Delta \sigma^0_{\text{VH}} &= \sigma^0_{\text{post,VH}} - \sigma^0_{\text{pre,VH}} \label{eq:diff_vh} \\
 \Delta \sigma^0_{\text{VV}} &= \sigma^0_{\text{post,VV}} - \sigma^0_{\text{pre,VV}} \label{eq:diff_vv}
 \end{align}
 Additionally, depolarizing volume scattering in rough debris modifies the cross-polarization ratio, yielding an informative differential metric:
 \begin{equation}
-\Delta \text{CR} = (\sigma^0_{\text{post,VH}} - \sigma^0_{\text{post,VV}}) - (\sigma^0_{\text{pre,VH}} - \sigma^0_{\text{pre,VV}}) = \Delta \sigma^0_{\text{VH}} - \Delta \sigma^0_{\text{VV}} \label{eq:diff_cr}
+\Delta \text{CR} = (\sigma^0_{\text{post,VH}} - \sigma^0_{\text{post,VV}}) - (\sigma^0_{\text{pre,VH}} - \sigma^0_{\text{pre,VV}}) \label{eq:diff_cr}
 \end{equation}
 
 However, in steep alpine topography, this backscatter anomaly is heavily modulated by local radar illumination geometry \citep{tompkin2021backscatter}. Let $\mathbf{n} = (-\sin \theta \sin \alpha, -\sin \theta \cos \alpha, \cos \theta)^T$ denote the terrain surface unit normal defined by slope steepness $\theta$ and aspect azimuth $\alpha$. Let $\mathbf{s} = (\sin \theta_{\text{inc}} \sin \phi_{\text{look}}, \sin \theta_{\text{inc}} \cos \phi_{\text{look}}, \cos \theta_{\text{inc}})^T$ denote the incident radar unit vector pointing toward the satellite antenna at nominal incidence angle $\theta_{\text{inc}}$ and look azimuth $\phi_{\text{look}}$. The cosine of the local incidence angle (LIA) $\psi$ is governed by their inner product:
@@ -28,44 +28,32 @@ To provide the neural network with a complete, continuous, and singularity-free 
 \end{align}
 where $\theta_{\text{ref}} = 60^\circ$ is a characteristic alpine scaling factor, and $\mu_H, \sigma_H$ normalize digital elevation $H$.
 
-\subsection{Theoretical Foundations: Irreducible Ambiguity of 2D Convolutions and Manifold Invariance}
+\subsection{Physical and Geometric Formulation of Radar-Topographic Distortion}
 \label{sec:method:theory}
 
-To establish why standard 2D computer vision backbones fail to resolve SAR radar-topographic distortions, we formalize the mapping between terrain geometry and observed backscatter intensity.
+To formalize why standard 2D convolutional and self-attention backbones face inherent geometric limits in rugged alpine terrain, we analyze the mapping between terrain orientation and observed backscatter intensity.
 
-\noindent\textbf{Proposition 1 (Radar-Topographic Radiometric-Geometric Distortion).} 
-Let $z = H(u, v)$ be a twice-differentiable topographic surface defined on spatial coordinates $(u, v) \in \Omega \subset \mathbb{R}^2$, illuminated by an incident radar look vector $\mathbf{s}(\theta_{\text{inc}}, \phi_{\text{look}})$. The calibrated radar backscatter $\sigma^0(u, v)$ is related to the true scattering reflectivity $\sigma^0_{\text{true}}(u, v)$ by the geometric projection factor \citep{small2011flattening}:
+\noindent\textbf{Proposition 1 (Geometric Radar-Topographic Distortion).} 
+Let $z = H(u, v)$ be a twice-differentiable topographic surface defined on spatial coordinates $(u, v) \in \Omega \subset \mathbb{R}^2$, illuminated by an incident radar look vector $\mathbf{s}(\theta_{\text{inc}}, \phi_{\text{look}})$. The calibrated radar backscatter $\sigma^0(u, v)$ is geometrically modulated by the projection ratio \citep{small2011flattening}:
 \begin{equation}
-\sigma^0(u, v) = \sigma^0_{\text{true}}(u, v) \cdot \frac{\cos \psi(u, v)}{\sin \theta_{\text{inc}}}
+\sigma^0(u, v) \propto \sigma^0_{\text{true}}(u, v) \cdot \frac{\cos \psi(u, v)}{\sin \theta_{\text{inc}}}
 \end{equation}
-where the local incidence angle $\psi(u, v)$ satisfies:
-\begin{equation}
-\cos \psi(u, v) = \cos \theta \cos \theta_{\text{inc}} - \sin \theta \sin \theta_{\text{inc}} \cos(\alpha(u, v) - \phi_{\text{look}})
-\end{equation}
-with local slope $\theta = \arctan(\|\nabla H(u, v)\|)$ and aspect $\alpha = \text{atan2}(-\partial_u H, -\partial_v H)$.
+where the local incidence angle $\psi(u, v)$ satisfies Eq.~(\ref{eq:lia_physics}), with local slope $\theta = \arctan(\|\nabla H(u, v)\|)$ and aspect $\alpha = \text{atan2}(-\partial_u H, -\partial_v H)$.
 
 \vspace{0.5em}
-\noindent\textbf{Theorem 1 (Irreducible Ambiguity of 2D Shift-Invariant Convolutions on SAR Topography).} 
-Let $\mathcal{K} * I$ denote any 2D spatial convolution with shift-invariant kernel $\mathcal{K} \in \mathbb{R}^{(2k+1) \times (2k+1)}$ operating on bitemporal SAR channels $I = (\sigma^0_{\text{pre}}, \sigma^0_{\text{post}})$. For any classification decision boundary $\tau \in \mathbb{R}$, there exists a non-empty subset of steep foreslope facets $\Omega_{\text{fore}} = \{(u, v) : \theta(u, v) > \theta_{\text{inc}}, \, \cos(\alpha - \phi_{\text{look}}) > 0\}$ and debris deposition facets $\Omega_{\text{debris}}$ such that:
-\begin{equation}
-\Delta \sigma^0(u, v)_{\text{clutter}} \ge \Delta \sigma^0(u', v')_{\text{debris}}, \quad \forall (u, v) \in \Omega_{\text{fore}}, \, (u', v') \in \Omega_{\text{debris}}
-\end{equation}
-Furthermore, because the geometric modulation field $\mathcal{G}(u, v) = \frac{\cos \psi(u, v)}{\sin \theta_{\text{inc}}}$ is non-stationary and non-linearly dependent on the spatial gradient field $\nabla H(u, v)$, there exists no shift-invariant 2D convolutional filter $\mathcal{K}$ operating exclusively on SAR intensity space that can invert $\mathcal{G}(u, v)$ or decouple foreslope compression clutter from true debris roughness anomalies.
+\noindent\textbf{Proposition 2 (Geometric Ambiguity of Shift-Invariant 2D Linear Convolutions).} 
+Let $\mathcal{K} * I$ denote any 2D spatial convolution with shift-invariant kernel $\mathcal{K}$ operating purely on bitemporal SAR channels $I = (\sigma^0_{\text{pre}}, \sigma^0_{\text{post}})$. Because the geometric modulation factor $\mathcal{G}(u, v) = \frac{\cos \psi(u, v)}{\sin \theta_{\text{inc}}}$ depends on localized directional aspect alignment $\cos(\alpha(u, v) - \phi_{\text{look}})$, it is spatially non-stationary and lacks translational symmetry across arbitrary mountain ridgelines. On steep radar-facing foreslopes ($\theta_{\text{align}} > 0, \psi \to 0^\circ$), foreshortening compression elevates backscatter, creating ambiguous clutter that mimics rough debris. Conversely, on backslopes facing away from the radar ($\theta_{\text{align}} < 0, \psi > 50^\circ$), the background snowpack is radiometrically dark. Consequently, a spatially shift-invariant 2D linear convolutional kernel operating exclusively on SAR intensity channels cannot dynamically invert $\mathcal{G}(u, v)$ across opposing mountain facets.
 
-\begin{proof}
-Let $(u, v) \in \Omega_{\text{fore}}$. When $\theta(u, v) \to \theta_{\text{inc}}$ and $\alpha(u, v) \to \phi_{\text{look}}$, Eq.~(\ref{eq:lia_physics}) yields $\psi \to 0^\circ$, causing the radiometric projection ratio $\frac{\cos \psi}{\sin \theta_{\text{inc}}} \to \frac{1}{\sin \theta_{\text{inc}}} > 1$. Temporal variations in atmospheric moisture, wind-scouring, or sub-resolution surface roughness alter $\sigma^0_{\text{true}}$ by $\delta \sigma^0$, producing an observed backscatter change $\Delta \sigma^0_{\text{fore}} = \delta \sigma^0 \cdot \frac{\cos \psi}{\sin \theta_{\text{inc}}}$. For rough debris deposits in backslope terrain $(u', v') \in \Omega_{\text{debris}}$ where $\psi > 50^\circ$, physical debris roughness produces a true change $\Delta \sigma^0_{\text{phys}}$, resulting in observed change $\Delta \sigma^0_{\text{debris}} = \Delta \sigma^0_{\text{phys}} \cdot \frac{\cos \psi'}{\sin \theta_{\text{inc}}}$. Because $\cos \psi' < \cos \psi$, the condition $\Delta \sigma^0_{\text{fore}} \ge \Delta \sigma^0_{\text{debris}}$ is satisfied whenever $\delta \sigma^0 \ge \Delta \sigma^0_{\text{phys}} \cdot \frac{\cos \psi'}{\cos \psi}$.
-Since $\frac{\cos \psi'}{\cos \psi} \ll 1$ in steep relief, even subtle pre/post surface shifts on foreslopes exceed the observed delta of true debris. Under shift invariance, $\mathcal{K}(u - \xi, v - \eta) = \mathcal{K}(u - \xi + \delta_u, v - \eta + \delta_v)$ is spatially uniform. However, $\mathcal{G}(u, v)$ depends non-locally on the directional aspect alignment $\cos(\alpha(u, v) - \phi_{\text{look}})$. Because the mapping $(u, v) \mapsto \alpha(u, v)$ varies arbitrarily with mountain ridgeline orientation, $\mathcal{G}(u, v)$ is non-stationary and lacks translational symmetry. Hence, no shift-invariant 2D convolutional kernel can simultaneously cancel $\mathcal{G}(u, v)$ on foreslopes while preserving $\Delta \sigma^0_{\text{phys}}$ on backslopes.
-\end{proof}
-
-\noindent\textbf{Proposition 2 (Coordinate Invariance via Continuous Manifold $\mathcal{M}$).} 
-Let $\mathcal{M}(u, v) = [\sin \alpha, \cos \alpha, \cos \psi, \theta_{\text{align}}]^T \in [-1, 1]^4$. The manifold $\mathcal{M}$ is $C^\infty$-smooth and continuous everywhere on $\mathbb{R}^2 \setminus \{\nabla H = 0\}$, eliminating the $0^\circ / 360^\circ$ circular branch-cut discontinuity of modular aspect representation $\alpha \pmod{360^\circ}$. Furthermore, the cross-attention kernel $\mathbf{A}_{i, j} = \text{softmax}\left(\frac{(\mathbf{F}^l_{\text{diff}} \mathbf{W}_Q)(\mathbf{T}^l \mathbf{W}_K)^T}{\sqrt{d_k}}\right)$ provides a universal non-linear gating mechanism that dynamically parameterizes $\mathcal{G}^{-1}(u, v)$, attenuating feature activations over $\Omega_{\text{fore}}$ while amplifying debris contrast over $\Omega_{\text{back}}$.
+\vspace{0.5em}
+\noindent\textbf{Proposition 3 (Continuous Aspect-Look Representation via Manifold $\mathcal{M}$).} 
+Representing directional terrain coordinates via the continuous vector $\mathcal{M}(u, v) = [\sin \alpha, \cos \alpha, \cos \psi, \theta_{\text{align}}]^T \in [-1, 1]^4$ removes the $0^\circ / 360^\circ$ circular branch-cut discontinuity of modular aspect representation $\alpha \pmod{360^\circ}$. In TopoRadar-Net, the multi-scale cross-attention mechanism uses SAR change features to query these regionally pooled geometric representations, dynamically conditioning feature activations on local terrain orientation.
 
 \subsection{TopoRadar-Net Architecture}
 \label{sec:method:arch}
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=\textwidth]{fig_architecture.pdf}
+\includegraphics[width=0.68\textwidth]{fig_architecture.pdf}
 \caption{Overall architecture of TopoRadar-Net. Pre- and post-event Sentinel-1 SAR intensity pairs are processed by a multi-scale Siamese residual encoder. Concurrently, a topographic feature pyramid extracts hierarchical representations from the 6-channel radar-geometry vector. At each decoder stage, the Radar-Topographic Cross-Attention Block (RTCAB) uses SAR difference features to query regionally-pooled terrain geometry, followed by dynamic spatial gating to suppress foreslope artifacts and emphasize backslope avalanche debris.}
 \label{fig:architecture}
 \end{figure*}
@@ -81,7 +69,7 @@ yielding feature representations at spatial resolutions $H/2^{l-1} \times W/2^{l
 
 At each scale, the bi-temporal features are fused by concatenating the signed difference, the post-event features, and the pre-event features, followed by a $1 \times 1$ linear projection:
 \begin{equation}
-\mathbf{F}^l_{\text{diff}} = \text{Conv}_{1 \times 1} \left( \left[ \mathbf{F}^l_{\text{post}} - \mathbf{F}^l_{\text{pre}}, \, \mathbf{F}^l_{\text{post}}, \, \mathbf{F}^l_{\text{pre}} \right] \right) \in \mathbb{R}^{C_l \times H_l \times W_l}
+\mathbf{F}^l_{\text{diff}} = \text{Conv}_{1 \times 1} \left( \left[ \mathbf{F}^l_{\text{post}} - \mathbf{F}^l_{\text{pre}}, \, \mathbf{F}^l_{\text{post}}, \, \mathbf{F}^l_{\text{pre}} \right] \right)
 \end{equation}
 This formulation preserves both directional backscatter changes ($\mathbf{F}^l_{\text{post}} - \mathbf{F}^l_{\text{pre}}$) and baseline radiometric context ($\mathbf{F}^l_{\text{pre}}, \mathbf{F}^l_{\text{post}}$).
 
@@ -108,7 +96,7 @@ The attended geometric context $\mathbf{O} = \mathbf{A} \mathbf{V}$ allows every
 
 To further inject pixel-level boundary constraints, we compute a dynamic spatial topographic gate:
 \begin{equation}
-\mathbf{W}_{\text{gate}} = \sigma \left( \text{Conv}_{1 \times 1} \left( \text{GELU} \left( \text{Conv}_{3 \times 3} (\mathbf{T}^l) \right) \right) \right) \in \mathbb{R}^{C_l \times H_l \times W_l}
+\mathbf{W}_{\text{gate}} = \sigma \left( \text{Conv}_{1 \times 1} \left( \text{GELU} \left( \text{Conv}_{3 \times 3} (\mathbf{T}^l) \right) \right) \right)
 \end{equation}
 The final conditioned feature map is computed as:
 \begin{equation}
@@ -142,6 +130,6 @@ where $\hat{y}_i = \sigma(z_i)$ is the predicted probability, $\theta_i$ is terr
 \subsection{Training Protocol and Optimization Details}
 \label{sec:method:training}
 
-All models are implemented in PyTorch and trained on an Apple Silicon M-series unified memory GPU environment using Metal Performance Shaders (MPS). Patch-based training utilizes $128 \times 128$ pixel spatial windows extracted with a 64-pixel stride. Training patches are balanced with a 1:1 ratio between positive patches (containing $\ge 5$ avalanche debris pixels) and negative background patches, yielding 2,054 training patches per epoch across the three training events (Livigno 2024, Livigno Jan 2025, Nuuk 2016). Data augmentation consists of random horizontal flips (with aspect sine coordinates appropriately negated), random vertical flips (with aspect cosine coordinates negated), and random orthogonal $90^\circ$ rotations.
+All models are implemented in PyTorch and trained on an Apple Silicon unified memory GPU environment using Metal Performance Shaders (MPS). Patch-based training utilizes $128 \times 128$ pixel spatial windows extracted with a 64-pixel stride. Training patches are balanced with a 1:1 ratio between positive patches (containing $\ge 5$ avalanche debris pixels) and negative background patches, yielding 2,054 training patches per epoch across the three training events (Livigno 2024, Livigno Jan 2025, Nuuk 2016). Sentinel-1 ascending acquisitions feature a canonical nominal look azimuth of $\phi_{\text{look}} \approx 78^\circ$, which defines the aspect-look alignment coordinate $\theta_{\text{align}} = \cos(\alpha - 78^\circ)$. Data augmentation incorporates random horizontal reflections (negating aspect sine), vertical reflections (negating aspect cosine), and random orthogonal rotations.
 
-Network parameters are optimized using AdamW ($\beta_1 = 0.9, \beta_2 = 0.999$, weight decay $10^{-4}$) with an initial learning rate of $2 \times 10^{-4}$ decayed via cosine annealing over 6 epochs (batch size 16) with gradient clipping at norm 5.0. Checkpoint selection is governed by full-scene F1-score evaluated on the validation cohort (Livigno March 2025 and Nuuk 2021). The operating decision threshold $\tau$ is calibrated on validation scenes using a grid search over $\tau \in [0.20, 0.80]$ in steps of 0.02, maximizing validation F1. This frozen threshold is then applied directly to full-scene zero-shot inference on Troms{\o} and the Pamir Mountains using sliding-window inference with 2D Hanning-window blending (stride 64). Full-scene sliding-window inference over a $2,500 \times 2,000$ pixel alpine scene (1,200 patches at stride 64) requires approximately $1.80 \pm 0.02$ seconds on Apple MPS hardware (profiling artifact preserved in \texttt{inference\_profile.json}), with TopoRadar-Net comprising 3.46M parameters (3,455,729 parameters; compared to 70.58M in multimodal Swin-V2).
+To isolate the specific architectural benefits of multi-scale radar-topographic cross-attention and continuous aspect-look manifold modeling under controlled conditions, all comparative baselines and TopoRadar-Net variants are trained using the identical optimization schedule and loss formulation (Eq.~\ref{eq:total_loss}), with $\lambda_{\text{geom}} = 0.5$ (except in the No-GeoLoss ablation where $\lambda_{\text{geom}} = 0$). Network parameters are optimized using AdamW ($\beta_1 = 0.9, \beta_2 = 0.999$, weight decay $10^{-4}$) with an initial learning rate of $2 \times 10^{-4}$ decayed via cosine annealing over 6 epochs (batch size 16) with gradient clipping at norm 5.0. Checkpoint selection is governed by full-scene F1-score evaluated on the validation cohort (Livigno March 2025 and Nuuk 2021). The operating decision threshold $\tau$ is calibrated on validation scenes using a grid search over $\tau \in [0.20, 0.80]$ in steps of 0.02, maximizing validation F1. This frozen threshold is then applied directly to full-scene zero-shot inference on Troms{\o} and the Pamir Mountains using sliding-window inference with 2D Hanning-window blending (stride 64). Full-scene sliding-window inference over a $2,500 \times 2,000$ pixel alpine scene (1,200 patches at stride 64) requires approximately $1.80 \pm 0.02$ seconds on Apple MPS hardware (profiling artifact preserved in \texttt{inference\_profile.json}), with TopoRadar-Net maintaining a compact parameter footprint of 3.46M parameters (3,455,729 parameters).

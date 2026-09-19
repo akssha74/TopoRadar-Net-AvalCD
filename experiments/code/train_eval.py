@@ -264,8 +264,8 @@ def train_one_model(
         model = TopoRadarNet(use_lia=True, use_aspect=True, use_cross_attn=False).to(device)
     elif model_name == "Ablation-NoGeoLoss":
         model = TopoRadarNet(use_lia=True, use_aspect=True, use_cross_attn=True).to(device)
-    elif model_name == "Swin-UNet":
-        model = SwinUNetAval().to(device)
+    elif model_name in ["Swin-UNet", "Attention U-Net"]:
+        model = AttentionUNetAval().to(device)
     elif model_name == "ResU-Net":
         model = ResUNet().to(device)
     elif model_name == "SiamUNet-diff":
@@ -297,7 +297,7 @@ def train_one_model(
             mask = batch["mask"].to(device)
 
             optimizer.zero_grad()
-            if isinstance(model, (SiamUNetDiff, SiamUNetConc, ResUNet, SwinUNetAval)):
+            if isinstance(model, (SiamUNetDiff, SiamUNetConc, ResUNet, AttentionUNetAval)):
                 logits = model(pre, post)
             else:
                 logits = model(pre, post, topo)

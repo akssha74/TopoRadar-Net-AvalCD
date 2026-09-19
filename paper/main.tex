@@ -1,4 +1,4 @@
-\documentclass[pdflatex,sn-basic]{sn-jnl}
+\documentclass[pdflatex,sn-basic,iicol]{sn-jnl}
 
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb,amsfonts}
@@ -9,17 +9,58 @@
 \usepackage{tabularx}
 \usepackage{xcolor}
 
-\geometry{a4paper, textwidth=176mm, textheight=252mm, margin=17mm}
+\geometry{a4paper, textwidth=185mm, textheight=274mm, top=11mm, bottom=12mm, left=12.5mm, right=12.5mm}
+\setlength{\columnsep}{5.5mm}
 \let\table\tableorg
 \let\endtable\endtableorg
 \renewenvironment{table}[1][t]{\begin{tableorg}[#1]\centering\footnotesize}{\end{tableorg}}
-\renewenvironment{table*}[1][t]{\begin{tableorg}[#1]\centering\footnotesize}{\end{tableorg}}
+
+\setlength{\textfloatsep}{4pt plus 1pt minus 1pt}
+\setlength{\floatsep}{4pt plus 1pt minus 1pt}
+\setlength{\intextsep}{4pt plus 1pt minus 1pt}
+\setlength{\dbltextfloatsep}{4pt plus 1pt minus 1pt}
+\setlength{\dblfloatsep}{4pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{2pt}
+\setlength{\abovedisplayskip}{3pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{3pt plus 1pt minus 1pt}
+
+\makeatletter
+\AtBeginDocument{
+  \setlength{\bibsep}{0.2pt}
+  \def\bibfont{\fontsize{7.5pt}{8.8pt}\selectfont}
+}
+\makeatother
+
+\makeatletter
+\renewcommand{\@maketitle}{%
+  \hsize\textwidth\parindent0pt
+  \ifx\@title\empty\else
+    {\Titlefont\@title\par}
+  \fi
+  \ifnum\aucount>0
+    \global\punctcount\aucount
+    \vskip8pt
+    \artauthors\par
+    {\vskip3pt\addressfont\auaddress\par
+     \ifnum\emailcnt>0\relax
+       \ifx\corrauthemail\@empty\else{\ifnum\aucount>1*\fi}
+       \textbf{Corresponding author:} \corrauthemail\par\fi
+     \fi
+    }
+  \fi
+  \vskip6pt
+  {\printabstract\par}
+  {\printkeywords\par}
+  \vskip10pt
+}
+\makeatother
 
 \graphicspath{{figures/}}
 
 \begin{document}
 
-\title[TopoRadar-Net for Sentinel-1 Avalanche Mapping]{Topographic Radar Geometry-Guided Cross-Attention for Alpine Avalanche Debris Mapping in Sentinel-1 SAR: Cross-System Generalization Across the Alps, Pamirs, and Arctic}
+\title[TopoRadar-Net for Alpine Avalanche Debris Mapping in Sentinel-1 SAR]{Topographic Radar Geometry-Guided Cross-Attention for Alpine Avalanche Debris Mapping in Sentinel-1 SAR: Cross-System Generalization Across the Alps, Pamirs, and Arctic}
 
 \author*[1]{\fnm{Akshay} \sur{Sharma}}\email{akssha74@gmail.com}
 \author[1]{\fnm{Lalji} \sur{Prasad}}\email{lalji.research@gmail.com}

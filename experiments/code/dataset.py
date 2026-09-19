@@ -17,7 +17,8 @@ import torchvision.transforms.functional as TF
 from scipy.ndimage import binary_fill_holes
 from torchvision.transforms import InterpolationMode
 
-RAW_DATA_DIR = Path("research/broad-physical-truth-corpus-shortlist-gpt56/pilot_avalcd_event_equal_f2_01/raw/AvalCD")
+import os
+RAW_DATA_DIR = Path(os.environ.get("AVALCD_RAW_DIR", "research/broad-physical-truth-corpus-shortlist-gpt56/pilot_avalcd-event-equal-f2_01/raw/AvalCD" if not Path("research/broad-physical-truth-corpus-shortlist-gpt56/pilot_avalcd_event_equal_f2_01/raw/AvalCD").exists() else "research/broad-physical-truth-corpus-shortlist-gpt56/pilot_avalcd_event_equal_f2_01/raw/AvalCD"))
 
 EVENTS_TRAIN = ["Livigno_20240403", "Livigno_20250129", "Nuuk_20160413"]
 EVENTS_VAL = ["Livigno_20250318", "Nuuk_20210411"]
@@ -239,6 +240,20 @@ class AvalPatchDataset(torch.utils.data.Dataset):
                 diff = torch.rot90(diff, k, [1, 2])
                 topo = torch.rot90(topo, k, [1, 2])
                 mask = torch.rot90(mask, k, [1, 2])
+                # When rotated by k * 90 degrees counter-clockwise:
+                # new_sin = sin(alpha + k*90) = sin(alpha)*cos(k*90) + cos(alpha)*sin(k*90)
+                # new_cos = cos(alpha + k*90) = cos(alpha)*cos(k*90) - sin(alpha)*sin(k*90)
+                old_sin = topo[2, :, :].clone()
+                old_cos = topo[3, :, :].clone()
+                if k == 1:
+                    topo[2, :, :] = old_cos
+                    topo[3, :, :] = -old_sin
+                elif k == 2:
+                    topo[2, :, :] = -old_sin
+                    topo[3, :, :] = -old_cos
+                elif k == 3:
+                    topo[2, :, :] = -old_cos
+                    topo[3, :, :] = old_sin
 
         return {
             "pre": pre,       # (2, 128, 128)

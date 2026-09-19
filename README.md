@@ -70,8 +70,8 @@ Evaluated across 3 independent training seeds under strict zero-shot regional do
 - **Extreme Steep Shadow Boundary ($>45^\circ$ in Pamir):** Both networks drop precipitously ($8.85\%$ vs $16.65\%$, $\Delta = -7.80\%$), honestly identifying the geomorphic boundary condition where radar shadow signal voids prevent reliable SAR mapping.
 
 ### 5. Operational Decision-Support Triage Matrix (Table 8)
-- **Pamir Mountains ($143.8\text{ km}^2$):** TopoRadar-Net achieves a **$30.0\%$ ($72.88\text{ ha}$) false-alarm clutter reduction** ($169.89\text{ ha}$, $1.18\text{ ha/km}^2$) compared to Swin-UNet ($242.77\text{ ha}$, $1.69\text{ ha/km}^2$) and a $43.9\%$ reduction compared to SiamUNet-conc ($302.63\text{ ha}$, $2.10\text{ ha/km}^2$).
-- **Tromsø ($98.6\text{ km}^2$):** Detects $270.09\text{ ha}$ of true avalanche debris ($95.8\%$ Class D4 events) at $0.89\text{ ha/km}^2$ false-alarm density ($87.82\text{ ha}$), reflecting a deliberate operational trade-off prioritizing catastrophic event completeness over coastal fringe clutter.
+- **Pamir Mountains ($359.10\text{ km}^2$ valid mask):** TopoRadar-Net achieves a **$30.0\%$ ($72.88\text{ ha}$) false-alarm clutter reduction** ($169.89\text{ ha}$, $0.47\text{ ha/km}^2$) compared to Attention U-Net ($242.77\text{ ha}$, $0.68\text{ ha/km}^2$) and a $43.9\%$ reduction compared to SiamUNet-conc ($302.63\text{ ha}$, $0.84\text{ ha/km}^2$).
+- **Tromsø ($245.87\text{ km}^2$ valid mask):** Detects $270.09\text{ ha}$ of true avalanche debris ($95.8\%$ Class D4 events) at $0.36\text{ ha/km}^2$ false-alarm density ($87.82\text{ ha}$), reflecting an operational trade-off prioritizing catastrophic event completeness over coastal fringe clutter.
 
 ---
 
@@ -105,7 +105,7 @@ TopoRadar-Net-AvalCD/
 │           └── inference_profile.json                # Runtime and memory profiling
 ├── paper/
 │   ├── main.tex                        # Springer Nature template root
-│   ├── main.pdf                        # Compiled publication manuscript (29 pages)
+│   ├── main.pdf                        # Compiled publication manuscript (13 pages, two-column sn-jnl layout)
 │   ├── references.bib                  # 100% Crossref-verified bibliography (22 DOIs)
 │   ├── sn-jnl.cls                      # Official Springer Nature class
 │   ├── sn-basic.bst                    # Springer Nature reference style
