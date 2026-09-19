@@ -43,6 +43,8 @@ def main():
         corridor_runtime = json.load(f)
     with open(RESULTS_DIR / "geoloss_construct_audit.json") as f:
         geoloss_audit = json.load(f)
+    with open(RESULTS_DIR / "valid_mask_area_audit.json") as f:
+        valid_area_audit = json.load(f)
 
     # 1. Verify Table 2: Cross-System Zero-Shot Evaluation
     print("--- 1. Verifying Table 2: Cross-System Zero-Shot Performance ---")
@@ -52,6 +54,14 @@ def main():
         s_pa = conf_summary[m_key]["summary"]["regions"]["Pamir_HighMountain"]
         s_po = conf_summary[m_key]["summary"]["pooled"]
         print(f"  {m:18s} | Tromso F1: {s_tr['f1']['mean']*100:.2f} +- {s_tr['f1']['std']*100:.2f}% | Pamir F1: {s_pa['f1']['mean']*100:.2f} +- {s_pa['f1']['std']*100:.2f}% | Pooled: {s_po['f1']['mean']*100:.2f} +- {s_po['f1']['std']*100:.2f}%")
+    for model_name, model in conf_summary.items():
+        if not isinstance(model, dict) or "seeds" not in model:
+            continue
+        for seed_record in model["seeds"].values():
+            for region, region_record in seed_record["regions"].items():
+                metrics = region_record["pixel"]
+                total = metrics["tp"] + metrics["fp"] + metrics["fn"] + metrics["tn"]
+                assert total == valid_area_audit["regions"][region]["valid_pixels"]
 
     # 2. Verify Table 3: Statistical Significance (Part A, Part B, Part C)
     print("\n--- 2. Verifying Table 3: Paired Statistical Significance Testing ---")

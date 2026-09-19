@@ -23,17 +23,17 @@ A primary challenge in machine learning for natural hazards is model overfitting
     \item \textbf{Polar Fjord Alpine Regime (Nuuk, Greenland):} Sub-polar maritime conditions with persistent high-velocity winds and coastal fjord relief.
 \end{enumerate}
 
-When evaluated zero-shot on the unseen Pamir Mountains and Scandinavian Arctic, TopoRadar-Net maintains robust segmentation fidelity and high polygon completeness. This cross-system resilience suggests that conditioning on fundamental physical coordinates ($[\cos \psi, \theta, \sin \alpha, \cos \alpha, \theta_{\text{align}}]$) provides consistent topographic coordinates. Because the physical laws governing radar wave reflection and terrain slope apply across mountain systems, TopoRadar-Net generalizes well from European training data to Central Asian and Arctic mountain environments without requiring site-specific re-tuning or retraining.
+The model was trained on Alps and Greenland events, selected on Alps and Greenland validation events, and evaluated without site-specific tuning on held-out Troms{\o} and Pamir scenes. It records $77.40\% \pm 1.86\%$ and $50.18\% \pm 4.40\%$ F1, respectively. These observed held-out results change climate, relief, acquisition geometry, and avalanche population simultaneously and therefore do not identify physical coordinates as the cause of transfer.
 
 \subsection{Operational Implications for Alpine Civil Protection and Search-and-Rescue}
 \label{sec:disc:operational}
 
 For alpine emergency managers, highway maintenance authorities, and search-and-rescue teams, satellite-based avalanche detection is only valuable if it provides reliable, actionable intelligence during crisis cycles \citep{eckerstorfer2019near, eaws2022size, techel2018spatial}. Optical remote sensing is consistently thwarted during major blizzard events when rapid avalanche detection is most urgently needed. Sentinel-1 C-band SAR provides the only freely accessible, all-weather observation platform capable of continuous winter surveillance.
 
-In operational disaster response, detection accuracy across different avalanche magnitude classes is of paramount importance. Small sluffs (EAWS Class D1) pose localized risks to backcountry recreationists, whereas large and very large avalanches (Classes D3 and D4) destroy buildings, block transportation arteries, and bury infrastructure. TopoRadar-Net exhibits high instance-level detection hit rates on Class D3 and D4 avalanches, ensuring that major life-threatening events are identified for civil protection authorities.
+Large avalanches can block transportation arteries and bury infrastructure, motivating size-stratified evaluation. On the single held-out Troms{\o} inventory, TopoRadar-Net records mean hit rates of $84.0\%$ for D3 and $95.8\%$ for D4. These retrospective scene-bounded rates neither guarantee identification of future events nor measure civil-protection outcomes.
 
 \begin{table*}[t]
-\caption{Conceptual decision-support triage framework (illustrative design, unvalidated for automated operational dispatch) and quantitative false-alarm clutter footprint across regional mountain regimes in physical land-management units (hectares and $\text{km}^2$), computed on the evaluated Sentinel-1 valid scene footprint (Troms{\o} $245.87 \text{ km}^2$, Pamir $359.10 \text{ km}^2$ on nominal 10~m grid; affine-scaled areas scale proportionally with identical ha/$\text{km}^2$ rates).}
+\caption{Conceptual decision-support framework and false-alarm footprint on the evaluated finite-raster valid masks (Troms{\o}: $231.151~\text{km}^2$; Pamir: $350.338~\text{km}^2$ on the nominal 10 m grid). The framework is illustrative and unvalidated for automated dispatch; affine areas scale proportionally with identical ha/$\text{km}^2$ rates.}
 \label{tab:operational_triage}
 \centering
 \footnotesize
@@ -46,24 +46,24 @@ In operational disaster response, detection accuracy across different avalanche 
 \textbf{Tier 2} & $0.40 \le p < 0.70$ & $0.1\text{--}1.0 \text{ ha}$ ($10\text{--}100 \text{ px}$) & Moderate confidence; recommended expert review or optical cueing & Regional Forecasters \\
 \textbf{Tier 3} & $p \ge 0.70$ & $\ge 1.0 \text{ ha}$ (Major debris) & High confidence; prioritized inspection along transport corridors & Civil Protection / Road Auth. \\
 \midrule
-\multicolumn{5}{l}{\textbf{Regional False-Alarm Footprint in Evaluated Scene (Valid Area: Troms{\o} $245.87 \text{ km}^2$, Pamir $359.10 \text{ km}^2$)}} \\
+\multicolumn{5}{l}{\textbf{Regional False-Alarm Footprint (Valid Area: Troms{\o} $231.151 \text{ km}^2$, Pamir $350.338 \text{ km}^2$)}} \\
 \midrule
 \textbf{Region} & \textbf{Method} & \textbf{Detected Debris (ha)} & \textbf{False-Alarm Area (ha / $\text{km}^2$)} & \textbf{False-Alarm Rate (ha / $\text{km}^2$)} \\
 \midrule
-\multirow{3}{*}{Scandinavian Arctic (Troms{\o})} & SiamUNet-diff & $218.33 \text{ ha}$ & $43.13 \text{ ha}$ ($0.43 \text{ km}^2$) & $0.18 \text{ ha} / \text{km}^2$ (Misses $121.36 \text{ ha}$) \\
- & Attention U-Net & $261.49 \text{ ha}$ & $68.34 \text{ ha}$ ($0.68 \text{ km}^2$) & $0.28 \text{ ha} / \text{km}^2$ \\
- & \textbf{TopoRadar-Net (Ours)} & $\mathbf{270.09 \text{ ha}}$ & $\mathbf{87.82 \text{ ha}}$ ($\mathbf{0.88 \text{ km}^2}$) & $\mathbf{0.36 \text{ ha} / \text{km}^2}$ (Detects $95.8\%$ D4) \\
+\multirow{3}{*}{Scandinavian Arctic (Troms{\o})} & SiamUNet-diff & $218.33 \text{ ha}$ & $43.13 \text{ ha}$ ($0.43 \text{ km}^2$) & $0.19 \text{ ha} / \text{km}^2$ (Misses $121.36 \text{ ha}$) \\
+ & Attention U-Net & $261.49 \text{ ha}$ & $68.34 \text{ ha}$ ($0.68 \text{ km}^2$) & $0.30 \text{ ha} / \text{km}^2$ \\
+ & \textbf{TopoRadar-Net (Ours)} & $\mathbf{270.09 \text{ ha}}$ & $\mathbf{87.82 \text{ ha}}$ ($\mathbf{0.88 \text{ km}^2}$) & $\mathbf{0.38 \text{ ha} / \text{km}^2}$ (Detects $95.8\%$ D4) \\
 \midrule
-\multirow{3}{*}{Pamir Mountains (Pish)} & SiamUNet-conc & $163.76 \text{ ha}$ & $302.63 \text{ ha}$ ($3.03 \text{ km}^2$) & $0.84 \text{ ha} / \text{km}^2$ (Severe Clutter) \\
- & Attention U-Net & $150.43 \text{ ha}$ & $242.77 \text{ ha}$ ($2.43 \text{ km}^2$) & $0.68 \text{ ha} / \text{km}^2$ \\
- & \textbf{TopoRadar-Net (Ours)} & $\mathbf{130.25 \text{ ha}}$ & $\mathbf{169.89 \text{ ha}}$ ($\mathbf{1.70 \text{ km}^2}$) & $\mathbf{0.47 \text{ ha} / \text{km}^2}$ ($\mathbf{30.0\%}$ Clutter Reduction) \\
+\multirow{3}{*}{Pamir Mountains (Pish)} & SiamUNet-conc & $163.76 \text{ ha}$ & $302.63 \text{ ha}$ ($3.03 \text{ km}^2$) & $0.86 \text{ ha} / \text{km}^2$ (Severe Clutter) \\
+ & Attention U-Net & $150.43 \text{ ha}$ & $242.77 \text{ ha}$ ($2.43 \text{ km}^2$) & $0.69 \text{ ha} / \text{km}^2$ \\
+ & \textbf{TopoRadar-Net (Ours)} & $\mathbf{130.25 \text{ ha}}$ & $\mathbf{169.89 \text{ ha}}$ ($\mathbf{1.70 \text{ km}^2}$) & $\mathbf{0.48 \text{ ha} / \text{km}^2}$ ($\mathbf{30.0\%}$ Clutter Reduction) \\
 \bottomrule
 \end{tabular*}
 \end{table*}
 
 Table~\ref{tab:operational_triage} summarizes the quantitative clutter footprint across mountain regimes and outlines an illustrative conceptual triage framework:
 \begin{enumerate}
-    \item \textbf{Physical-Unit Footprints:} In Pamir ($359.10~\text{km}^2$), TopoRadar-Net records $169.89$ ha of false alarms, $72.88$ ha ($30.0\%$) below Attention U-Net and $132.73$ ha ($43.9\%$) below SiamUNet-conc on the nominal grid; affine physical differences are $55.63$ and $101.33$ ha. In Troms{\o}, its false-alarm footprint ($87.82$ ha) exceeds Attention U-Net ($68.34$ ha), despite $95.8\%$ D4 completeness, so the trade-off is region dependent.
+    \item \textbf{Physical-Unit Footprints:} On the Pamir valid mask ($350.338~\text{km}^2$ nominal), TopoRadar-Net records $169.89$ ha of false alarms ($0.48~\text{ha/km}^2$), $72.88$ ha ($30.0\%$) below Attention U-Net and $132.73$ ha ($43.9\%$) below SiamUNet-conc; affine physical differences are $55.63$ and $101.33$ ha. In Troms{\o}, its density is $0.38~\text{ha/km}^2$ and its false-alarm area exceeds Attention U-Net, so the trade-off is region dependent.
     \item \textbf{Calibrated Corridor Proxy:} We fit Platt calibration and an F2-weighted component threshold only on the two validation scenes, then intersect $\ge0.1$ ha test components with a frozen OpenStreetMap major-road snapshot (30 m buffer) \citep{openstreetmap2026}. In Pamir (8 road-intersecting ground-truth components), TopoRadar-Net achieves $83.0\% \pm 2.3\%$ alert precision and $62.5\% \pm 10.2\%$ recall; Attention U-Net achieves $77.4\% \pm 6.1\%$ and $70.8\% \pm 5.9\%$. Both models miss the single Troms{\o} corridor component in all seeds. TopoRadar Brier score improves from $0.282$ to $0.208$ in Troms{\o} and $0.462$ to $0.198$ in Pamir after calibration. This post-hoc proxy falsifies automated-dispatch readiness while quantifying a bounded Pamir use case.
     \item \textbf{Cached End-to-End Profile:} With the OSM snapshot cached, all measured TopoRadar-Net runs for raster loading, road-buffer rasterization, full-scene inference, calibration, connected components, and corridor intersection remain below 5 s per scene on Apple MPS. Wall-clock values vary with device warm state and are verified by bounds rather than byte identity. The profile excludes data acquisition and human review and therefore does not establish response latency or decision benefit.
 \end{enumerate}

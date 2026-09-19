@@ -10,27 +10,14 @@ RESULTS_DIR = EXP_DIR / "derived/results"
 def main():
     with open(RESULTS_DIR / "confirmatory_results_summary.json") as f:
         d = json.load(f)
+    with open(RESULTS_DIR / "valid_mask_area_audit.json") as f:
+        area_audit = json.load(f)["regions"]
 
     # Pixel resolution on standard 10m grid: 100 m^2 = 0.01 ha = 0.0001 km^2
-    # Total evaluated valid scene pixels from primary evaluation records:
-    # Tromso: 2,458,714 valid px = 245.87 km^2 (nominal) | affine: 85.15 m^2/px -> 209.35 km^2
-    # Pamir:  3,591,024 valid px = 359.10 km^2 (nominal) | affine: 76.34 m^2/px -> 274.13 km^2
     operational_data = {
         "unit_scale": "1 pixel = 100 m^2 = 0.01 ha = 0.0001 km^2 (nominal grid); affine areas scale proportionally",
-        "regions": {
-            "Tromso_Arctic": {
-                "valid_pixels": 2458714,
-                "scene_area_km2": 245.87,
-                "debris_ground_truth_ha": 339.72,
-                "models": {}
-            },
-            "Pamir_HighMountain": {
-                "valid_pixels": 3591024,
-                "scene_area_km2": 359.10,
-                "debris_ground_truth_ha": 225.79,
-                "models": {}
-            }
-        },
+        "area_authority": "valid_mask_area_audit.json derived from raw finite-raster valid masks",
+        "regions": {},
         "triage_matrix": [
             {"tier": "Tier 1 (Low Confidence)", "prob_range": "p < 0.40", "area_ha": "< 0.1 ha", "interpretation": "Routine background monitoring."},
             {"tier": "Tier 2 (Moderate Confidence)", "prob_range": "0.40 <= p < 0.70", "area_ha": "0.1 - 1.0 ha", "interpretation": "Recommended expert review or optical cross-examination."},
@@ -39,6 +26,17 @@ def main():
     }
 
     for reg, reg_key in [("Tromso_Arctic", "Tromso_Arctic"), ("Pamir_HighMountain", "Pamir_HighMountain")]:
+        audit = area_audit[reg]
+        gt_metrics = d["TopoRadar-Net"]["seeds"]["42"]["regions"][reg_key]["pixel"]
+        gt_pixels = int(gt_metrics["tp"] + gt_metrics["fn"])
+        operational_data["regions"][reg] = {
+            "full_grid_pixels": audit["full_grid_pixels"],
+            "valid_pixels": audit["valid_pixels"],
+            "scene_area_km2": round(audit["nominal_valid_area_km2"], 4),
+            "affine_valid_area_km2": round(audit["affine_valid_area_km2"], 4),
+            "debris_ground_truth_ha": round(gt_pixels * 0.01, 2),
+            "models": {},
+        }
         scene_area = operational_data["regions"][reg]["scene_area_km2"]
         for m in ["TopoRadar-Net", "Swin-UNet", "ResU-Net", "SiamUNet-conc", "SiamUNet-diff"]:
             fps = [d[m]["seeds"][s]["regions"][reg_key]["pixel"]["fp"] for s in ["42", "123", "456"]]

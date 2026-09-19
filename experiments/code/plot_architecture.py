@@ -71,7 +71,7 @@ draw_box(7.5, 2.0, 2.4, 0.7, "Spatial Topo Gate W_gate", "#319795", subtext="σ(
 # 5. Decoder & Loss
 draw_box(10.9, 5.8, 2.6, 0.8, "Progressive Decoder", c_dec, subtext="ConvTranspose2d + Skips")
 draw_box(10.9, 4.4, 2.6, 0.8, "Avalanche Mask Ŷ", "#4a5568", subtext="Full-Scene Probabilities")
-draw_box(10.9, 2.8, 2.6, 1.2, "Geomorphic Loss L_geom", c_loss, subtext="Soft Inadmissibility:\nSlope < 5° or > 65°")
+draw_box(10.9, 2.8, 2.6, 1.2, "Geomorphic Loss L_geom", c_loss, subtext="Heuristic Slope Prior:\nSlope < 5° or > 65°")
 
 # Arrows
 def draw_arrow(x1, y1, x2, y2, color="#4a5568", lw=1.5):

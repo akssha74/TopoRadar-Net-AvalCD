@@ -59,7 +59,7 @@
 | Resource | Verified Live Link | Status | Contents |
 |---|---|:---:|---|
 | **Public Project Repository** | [https://github.com/akssha74/TopoRadar-Net-AvalCD](https://github.com/akssha74/TopoRadar-Net-AvalCD) | **200 OK** | Full PyTorch code, documentation, verification suites |
-| **Release v1.0.10 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.10](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.10) | **200 OK** | Versioned post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, submission-support sources/PDFs, comprehensive source ZIP, and `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net + No-GeoLoss, 3 seeds) |
+| **Release v1.0.11 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.11](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.11) | **200 OK** | Versioned post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, JMS-formatted anonymous DOCX support, comprehensive source ZIP, and `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net + No-GeoLoss, 3 seeds) |
 | **AvalCD Benchmark (Zenodo)** | [https://doi.org/10.5281/zenodo.15863589](https://doi.org/10.5281/zenodo.15863589) | **200 OK** | Ground truth masks, Sentinel-1 SAR, DEM, LIA |
 
 ---
@@ -75,9 +75,9 @@
 ## 6. Pre-Submission Quality & Review History
 
 * **Reviewer Model Parity (Latest Completed Independent State):**
-  * **GLM-5.2 Round 27:** **28 / 30 (`accept`)** — 0 findings on v1.0.8.
-  * **Claude Opus 4.8 Round 27:** **28 / 30 (`accept`)** — 0 findings on v1.0.8.
-  * **GPT-5.6 Round 27:** **26 / 30 (`major revision`)** — construct, metadata, scope, and limitations findings are addressed in v1.0.9; re-verification pending.
+  * **GLM-5.2 Round 28:** **29 / 30 (`accept`)** — 0 findings on v1.0.10.
+  * **Claude Opus 4.8 Round 28:** **29 / 30 (`accept`)** — 0 findings on v1.0.10.
+  * **GPT-5.6 Round 28:** **26 / 30 (`major revision`)** — valid-mask, scope, figure, and DOCX findings are addressed in v1.0.11; re-verification pending. GPT identifies a repair-only ceiling of 28 without prospective stakeholder outcomes.
   * Final all-panel convergence verification is pending.
 * **Reproduction Gate:** **100% PASS** (13 pages, 0 undefined citations, 0 undefined references, 0 missing markers, all code/data artifacts byte-reproducible).
 * **Convergence Status:** **Pending Round-24 confirmation.**

@@ -4,7 +4,7 @@
 \subsection{Cross-System Performance on Unseen Mountain Systems}
 \label{sec:res:performance}
 
-To evaluate the generalization capability of TopoRadar-Net under genuine operational deployment conditions, all models are trained on the European Alps (Livigno) and sub-polar Greenland (Nuuk), and evaluated zero-shot across two completely unseen mountain systems: the Scandinavian Arctic (Troms{\o}, Norway) and the high-altitude Pamir Mountains (Pish, Tajikistan). Table~\ref{tab:cross_system_performance} reports quantitative pixel-level and instance-level metrics across three independent training seeds (seeds 42, 123, and 456), showing mean $\pm$ standard deviation.
+To characterize cross-system transfer, all models are trained on European Alps (Livigno) and Greenland (Nuuk) events and evaluated without site-specific tuning on two held-out scenes: Troms{\o}, Norway, and Pish, Tajikistan. Table~\ref{tab:cross_system_performance} reports pixel-level metrics across three independent training seeds (42, 123, and 456; mean $\pm$ standard deviation).
 
 \begin{table*}[t]
 \caption{Cross-system zero-shot evaluation on unseen mountain systems (Scandinavian Arctic Troms{\o} and Central Asian Pamir Mountains), reporting Mean $\pm$ Standard Deviation across 3 independent training seeds. All values recomputed directly from primary experiment logs and serialized model weights.}

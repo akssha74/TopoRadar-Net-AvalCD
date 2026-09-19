@@ -14,7 +14,7 @@ Official PyTorch implementation, replication artifacts, trained model checkpoint
 Automated mapping of snow avalanche debris in steep alpine terrain using spaceborne Synthetic Aperture Radar (Sentinel-1 C-band SAR) provides an all-weather, day-and-night remote sensing solution during severe winter storm cycles when optical satellites are blinded by persistent cloud cover and blizzard conditions. However, bitemporal SAR change detection in steep mountainous topography suffers from acute geometric distortions:
 1. **Local Incidence Angle (LIA) Compression:** Mountain slopes tilted toward the satellite experience extreme ground-range foreshortening and layover, producing artificially elevated backscatter that unguided neural networks misclassify as avalanche debris.
 2. **Directional Aspect-Look Anisotropy:** Avalanche backscatter contrast is strongly anisotropic relative to radar look azimuth ($\phi_{\text{look}}$); backslopes ($\theta_{\text{align}} = \cos(\alpha - \phi_{\text{look}}) < 0$) exhibit high local incidence angles ($55^\circ \pm 20^\circ$) where rough debris creates strong diffuse scattering against dark undisturbed snow, whereas foreslopes generate severe layover clutter.
-3. **Geomorphic Inadmissibility:** Standard deep networks lack physical landform constraints, frequently predicting false alarms on flat valley bottoms ($<5^\circ$, e.g., frozen lakes and riverbeds) or sheer vertical cliffs ($>65^\circ$).
+3. **Slope-Prior Trade-off:** Flat and very steep terrain can contain clutter, but the benchmark also contains genuine positives in those ranges. The released audit therefore treats slope regularization as a heuristic precision–recall trade-off, not a physical-validity constraint.
 
 ### Key Innovations of TopoRadar-Net
 - **Physical & Geometric Formulation (Proposition 2):** We characterize the limitations of shift-invariant 2D linear convolutions across mountain facets under non-stationary radiometric terrain projection. The continuous 4D aspect-look coordinates $\mathcal{M} = [\sin \alpha, \cos \alpha, \cos \psi, \theta_{\text{align}}]^T$ avoid circular branch cuts and provide terrain context for cross-attention.
@@ -68,8 +68,8 @@ Evaluated across 3 independent training seeds under strict zero-shot regional do
 - **Extreme-steep strata:** highly seed-variable, delimiting directional-conditioning claims rather than establishing a causal mechanism.
 
 ### 5. Operational Decision-Support Triage Framework (Table 8)
-- **Pamir Mountains ($359.10\text{ km}^2$ valid mask):** TopoRadar-Net records a **$30.0\%$ ($72.88\text{ ha}$ nominal-grid equivalent, $55.63\text{ ha}$ affine physical difference) lower false-alarm footprint** ($169.89\text{ ha}$, $0.47\text{ ha/km}^2$) than Attention U-Net ($242.77\text{ ha}$, $0.68\text{ ha/km}^2$).
-- **Tromsø ($245.87\text{ km}^2$ valid mask):** Detects $270.09\text{ ha}$ of true avalanche debris ($95.8\%$ Class D4 events) at $0.36\text{ ha/km}^2$ false-alarm density ($87.82\text{ ha}$), reflecting an operational trade-off prioritizing catastrophic event completeness over coastal fringe clutter.
+- **Pamir Mountains ($350.338\text{ km}^2$ finite-raster valid mask):** TopoRadar-Net records a **$30.0\%$ ($72.88\text{ ha}$ nominal-grid equivalent, $55.63\text{ ha}$ affine physical difference) lower false-alarm footprint** ($169.89\text{ ha}$, $0.48\text{ ha/km}^2$) than Attention U-Net ($242.77\text{ ha}$, $0.69\text{ ha/km}^2$).
+- **Tromsø ($231.151\text{ km}^2$ finite-raster valid mask):** Detects $270.09\text{ ha}$ of true avalanche debris ($95.8\%$ Class D4 events) at $0.38\text{ ha/km}^2$ false-alarm density ($87.82\text{ ha}$), reflecting an operational trade-off prioritizing catastrophic event completeness over coastal fringe clutter.
 - **Calibrated corridor proxy:** Validation-only calibration yields $83.0\%$ precision and $62.5\%$ recall for Pamir road-corridor alerts, but all seeds miss the single Tromsø corridor avalanche. This is a retrospective proxy, not stakeholder or dispatch validation.
 
 ---
@@ -147,7 +147,7 @@ python reviews/harness.py
 ```
 
 ### 3. Pretrained Model Checkpoints
-Download the nine publication-bound model weights (`publication_checkpoints_3seeds.tar.gz`: TopoRadar-Net, Attention U-Net, and No-GeoLoss for seeds 42, 123, and 456) from [Release v1.0.10](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.10):
+Download the nine publication-bound model weights (`publication_checkpoints_3seeds.tar.gz`: TopoRadar-Net, Attention U-Net, and No-GeoLoss for seeds 42, 123, and 456) from [Release v1.0.11](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.11):
 ```bash
 # Extract into experiments/derived/checkpoints/
 mkdir -p experiments/derived/checkpoints

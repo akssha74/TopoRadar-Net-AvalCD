@@ -84,6 +84,13 @@ def load_geoloss_construct_audit() -> dict:
     with open(path) as f:
         return json.load(f)
 
+def load_valid_mask_area_audit() -> dict:
+    path = RESULTS_DIR / "valid_mask_area_audit.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Missing valid-mask area audit: {path}")
+    with open(path) as f:
+        return json.load(f)
+
 def verify_all_bounds():
     """Verify all stated macro-bounds and statistical bounds hold."""
     summary = load_summary()
@@ -92,6 +99,15 @@ def verify_all_bounds():
     res = summary["ResU-Net"]["summary"]["pooled"]["f1"]["mean"]
     assert topo > attn_u, f"TopoRadar-Net ({topo:.4f}) does not beat Attention U-Net ({attn_u:.4f})"
     assert topo > res, f"TopoRadar-Net ({topo:.4f}) does not beat ResU-Net ({res:.4f})"
+    areas = load_valid_mask_area_audit()["regions"]
+    for model in summary.values():
+        if not isinstance(model, dict) or "seeds" not in model:
+            continue
+        for seed_record in model["seeds"].values():
+            for region, region_record in seed_record["regions"].items():
+                metrics = region_record["pixel"]
+                total = metrics["tp"] + metrics["fp"] + metrics["fn"] + metrics["tn"]
+                assert total == areas[region]["valid_pixels"]
 
     # Verify 339-block spatial multi-region cluster bootstrap
     spatial_boot = load_spatial_multiregion_bootstrap()
@@ -168,7 +184,9 @@ def verify_all_bounds():
     pamir_fp_attn = op_res["regions"]["Pamir_HighMountain"]["models"]["Attention U-Net"]["fp_ha"]
     assert pamir_fp_topo < pamir_fp_attn, f"TopoRadar FP ({pamir_fp_topo}) not lower than Attention U-Net FP ({pamir_fp_attn})"
     pamir_fa_rate = op_res["regions"]["Pamir_HighMountain"]["models"]["TopoRadar-Net"]["false_alarm_rate_ha_per_km2"]
-    assert pamir_fa_rate == 0.47, f"Pamir TopoRadar FA rate {pamir_fa_rate} != 0.47"
+    assert pamir_fa_rate == 0.48, f"Pamir TopoRadar FA rate {pamir_fa_rate} != 0.48"
+    assert op_res["regions"]["Tromso_Arctic"]["valid_pixels"] == 2311510
+    assert op_res["regions"]["Pamir_HighMountain"]["valid_pixels"] == 3503382
 
     # Verify the explicitly exploratory, non-stakeholder operational proxy.
     corridor = load_operational_corridor_validation()

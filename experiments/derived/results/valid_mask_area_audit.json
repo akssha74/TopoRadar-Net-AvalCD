@@ -1,0 +1,53 @@
+{
+  "authority": "dataset.load_event valid_mask from finite pre/post VH/VV, LIA, slope, and aspect rasters",
+  "regions": {
+    "Tromso_Arctic": {
+      "event": "Tromso_20241220",
+      "shape": [
+        1691,
+        1454
+      ],
+      "full_grid_pixels": 2458714,
+      "valid_pixels": 2311510,
+      "invalid_pixels": 147204,
+      "valid_fraction": 0.9401296775468801,
+      "nominal_pixel_area_m2": 100.0,
+      "nominal_valid_area_km2": 231.151,
+      "affine_pixel_area_m2": 85.14777217556896,
+      "affine_valid_area_km2": 196.81992686154942,
+      "crs": "EPSG:32633",
+      "transform": [
+        9.2275550486339,
+        0.0,
+        659419.9305624603,
+        0.0,
+        -9.2275550486339,
+        7719485.092358002
+      ]
+    },
+    "Pamir_HighMountain": {
+      "event": "Pish_20230221",
+      "shape": [
+        1894,
+        1896
+      ],
+      "full_grid_pixels": 3591024,
+      "valid_pixels": 3503382,
+      "invalid_pixels": 87642,
+      "valid_fraction": 0.9755941480758692,
+      "nominal_pixel_area_m2": 100.0,
+      "nominal_valid_area_km2": 350.3382,
+      "affine_pixel_area_m2": 76.33622248584726,
+      "affine_valid_area_km2": 267.43494780491255,
+      "crs": "EPSG:32642",
+      "transform": [
+        8.737060288555142,
+        0.0,
+        711732.2009129361,
+        0.0,
+        -8.737060288555142,
+        4150823.986118566
+      ]
+    }
+  }
+}
