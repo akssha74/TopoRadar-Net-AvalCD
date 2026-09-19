@@ -59,6 +59,32 @@ def read_raster(path: Path) -> tuple[np.ndarray, dict]:
             arr[arr == meta["nodata"]] = np.nan
         return arr, meta
 
+LOOK_ANGLE_RAD = math.radians(78.0)
+COS_LOOK = math.cos(LOOK_ANGLE_RAD)
+SIN_LOOK = math.sin(LOOK_ANGLE_RAD)
+
+def test_directional_augmentation_consistency() -> bool:
+    """Verify trigonometric consistency of aspect reflection transformations on sentinel angles."""
+    # Test at alpha = 30 degrees
+    alpha_rad = math.radians(30.0)
+    sin_a = math.sin(alpha_rad)
+    cos_a = math.cos(alpha_rad)
+    
+    # Horizontal flip: alpha -> -alpha, sin -> -sin, cos -> cos
+    sin_h = -sin_a
+    cos_h = cos_a
+    align_h_calc = cos_h * COS_LOOK + sin_h * SIN_LOOK
+    align_h_true = math.cos(-alpha_rad - LOOK_ANGLE_RAD)
+    assert abs(align_h_calc - align_h_true) < 1e-6, f"H-flip align error: {align_h_calc} vs {align_h_true}"
+    
+    # Vertical flip: alpha -> 180 - alpha, sin -> sin, cos -> -cos
+    sin_v = sin_a
+    cos_v = -cos_a
+    align_v_calc = cos_v * COS_LOOK + sin_v * SIN_LOOK
+    align_v_true = math.cos((math.pi - alpha_rad) - LOOK_ANGLE_RAD)
+    assert abs(align_v_calc - align_v_true) < 1e-6, f"V-flip align error: {align_v_calc} vs {align_v_true}"
+    return True
+
 def load_event(event_name: str, root_dir: Path = RAW_DATA_DIR) -> EventData:
     p = root_dir / event_name
     pre_vh, meta = read_raster(p / f"{event_name}_preVH.tif")
@@ -223,16 +249,18 @@ class AvalPatchDataset(torch.utils.data.Dataset):
                 diff = TF.hflip(diff)
                 topo = TF.hflip(topo)
                 mask = TF.hflip(mask)
-                # Aspect sin component flips on horizontal flip
+                # Aspect sin component flips on horizontal flip, update look-alignment channel
                 topo[2, :, :] = -topo[2, :, :]
+                topo[5, :, :] = topo[3, :, :] * COS_LOOK + topo[2, :, :] * SIN_LOOK
             if torch.rand(1).item() > 0.5:
                 pre = TF.vflip(pre)
                 post = TF.vflip(post)
                 diff = TF.vflip(diff)
                 topo = TF.vflip(topo)
                 mask = TF.vflip(mask)
-                # Aspect cos component flips on vertical flip
+                # Aspect cos component flips on vertical flip, update look-alignment channel
                 topo[3, :, :] = -topo[3, :, :]
+                topo[5, :, :] = topo[3, :, :] * COS_LOOK + topo[2, :, :] * SIN_LOOK
             k = torch.randint(0, 4, (1,)).item()
             if k > 0:
                 pre = torch.rot90(pre, k, [1, 2])
