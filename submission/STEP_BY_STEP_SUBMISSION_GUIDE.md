@@ -86,7 +86,7 @@ Enter the 5 independent domain experts from the cover letter:
 * **Funding Statement:** Select "No external funding received for this research".
 * **Data Availability:** Check "Data available in public repository" and provide:
   ```text
-  The AvalCD benchmark dataset is publicly available on Zenodo (DOI: 10.5281/zenodo.15863589). All code, publication-bound checkpoints, and the formatted anonymous Word manuscript are available under versioned post-freeze Release v1.0.13 (https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.13).
+  The AvalCD benchmark dataset is publicly available on Zenodo (DOI: 10.5281/zenodo.15863589). All code, publication-bound checkpoints, and the formatted anonymous Word manuscript are available under versioned post-freeze Release v1.0.14 (https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.14).
   ```
 
 #### Step 8: PDF Review & Submit

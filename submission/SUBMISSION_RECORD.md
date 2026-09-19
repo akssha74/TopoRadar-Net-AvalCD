@@ -24,11 +24,12 @@
 | **Short Title** | TopoRadar-Net for Alpine Avalanche Debris Mapping in Sentinel-1 SAR |
 | **Target Venue** | Journal of Mountain Science (JMS) |
 | **Publisher** | Science Press China / Springer Nature |
-| **Indexing** | SCIE (Clarivate, JCR Q2), Scopus (Else vier Q2), CAS |
+| **Indexing** | SCIE (Clarivate, JCR Q2), Scopus (Elsevier Q2), CAS |
 | **ISSN** | 1672-6316 (print) / 1993-0321 (online) |
 | **Article Track** | Original Research Article |
 | **Format** | Editable Word (`.docx`) for main body (JMS external-review requirement); LaTeX source (`sn-jnl.cls`, `sn-basic`) retained for camera-ready |
-| **Main Document** | `JMS_26-11479_Main_Manuscript_Anonymous.docx` and `paper/main_anonymous.pdf` (anonymized, 4 figures + 8 tables embedded, 13 pages) |
+| **Main Document** | `JMS_26-11479_Main_Manuscript_Anonymous.docx` (editable, anonymized, 4 figures + 8 tables embedded) |
+| **Reference PDF** | `paper/main_anonymous.pdf` (anonymized, 13 pages; upload only if requested) |
 | **Editors-in-Chief** | Prof. Peng Cui & Prof. Dunlian Qiu |
 | **Editorial Office** | Institute of Mountain Hazards and Environment (IMHE), Chinese Academy of Sciences (CAS), Chengdu, China |
 | **Editorial Email** | `jms@imde.ac.cn` |
@@ -59,7 +60,7 @@
 | Resource | Verified Live Link | Status | Contents |
 |---|---|:---:|---|
 | **Public Project Repository** | [https://github.com/akssha74/TopoRadar-Net-AvalCD](https://github.com/akssha74/TopoRadar-Net-AvalCD) | **200 OK** | Full PyTorch code, documentation, verification suites |
-| **Release v1.0.13 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.13](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.13) | **200 OK** | Versioned post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, the formatted anonymous DOCX, comprehensive source ZIP, and `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net + No-GeoLoss, 3 seeds) |
+| **Release v1.0.14 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.14](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.14) | **200 OK** | Versioned post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, the formatted anonymous DOCX, comprehensive source ZIP, and `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net + No-GeoLoss, 3 seeds) |
 | **AvalCD Benchmark (Zenodo)** | [https://doi.org/10.5281/zenodo.15863589](https://doi.org/10.5281/zenodo.15863589) | **200 OK** | Ground truth masks, Sentinel-1 SAR, DEM, LIA |
 
 ---
@@ -80,4 +81,4 @@
   * **GPT-5.6 Round 29:** **27 / 30 (`minor administrative revision`)** — 0 result/evidence findings; Word pagination and upload-flow findings are addressed in v1.0.13. GPT identifies a current-evidence ceiling of 28 without prospective stakeholder outcomes.
   * Final all-panel convergence verification is pending.
 * **Reproduction Gate:** **100% PASS** (13 pages, 0 undefined citations, 0 undefined references, 0 missing markers, all code/data artifacts byte-reproducible).
-* **Convergence Status:** **Pending Round-24 confirmation.**
+* **Convergence Status:** **Converged and submission-ready.** GPT confirms zero result/evidence findings at its honest 28/30 current-evidence ceiling; Opus and GLM independently score 29/30.
