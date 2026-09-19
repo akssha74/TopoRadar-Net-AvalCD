@@ -121,12 +121,12 @@ draw_box(0.55, 5.75, 2.05, 0.8, "Pre-event SAR", "sar", subtext="VV, VH")
 draw_box(0.55, 4.45, 2.05, 0.8, "Post-event SAR", "sar", subtext="VV, VH")
 draw_box(
     0.55,
-    1.50,
+    1.30,
     2.05,
-    1.70,
+    2.00,
     "Radar–\ntopographic\ntensor",
     "topo",
-    subtext="LIA · slope · aspect\nDEM · alignment",
+    subtext="LIA · slope\naspect · DEM\nlook alignment",
 )
 
 # Stage 2 — encoders.
@@ -137,7 +137,7 @@ draw_box(
     1.45,
     "Shared SAR\nencoder",
     "sar",
-    subtext="shared weights\nmultiscale features",
+    subtext="shared weights\nmultiscale maps",
 )
 draw_box(
     3.45,

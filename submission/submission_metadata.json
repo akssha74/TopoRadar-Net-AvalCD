@@ -55,7 +55,7 @@
     }
   ],
   "public_code_repo": "https://github.com/akssha74/TopoRadar-Net-AvalCD",
-  "public_release_url": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.21",
+  "public_release_url": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.22",
   "dataset_doi": "https://doi.org/10.5281/zenodo.15863589",
   "manuscript_pdf": "studies/mountain-avalcd-toporadar/paper/main.pdf",
   "main_document_anonymous_docx": "studies/mountain-avalcd-toporadar/submission/JMS_26-11479_Main_Manuscript_Anonymous.docx",
@@ -66,6 +66,6 @@
     "author_info_in_main_document": false,
     "identifying_repo_links_stripped": true,
     "figures_tables_embedded": true,
-    "main_document_size_mb": 0.720689
+    "main_document_size_mb": 0.730728
   }
 }

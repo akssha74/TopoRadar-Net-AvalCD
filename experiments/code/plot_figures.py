@@ -110,16 +110,16 @@ def plot_ablation_contributions():
 
     bars = ax.barh(y, f1_scores, color=colors, edgecolor=EDGE, lw=0.7, height=0.55)
     ax.set_yticks(y)
-    ax.set_yticklabels(components, fontsize=14, weight="medium")
-    ax.set_xlabel("Pixel F1-Score on Scandinavian Arctic Test Scene (%)", fontsize=14)
-    ax.tick_params(axis="x", labelsize=14)
+    ax.set_yticklabels(components, fontsize=14.5, weight="medium")
+    ax.set_xlabel("Pixel F1-Score on Scandinavian Arctic Test Scene (%)", fontsize=14.5)
+    ax.tick_params(axis="x", labelsize=14.5)
     ax.set_xlim(70, 80)
     ax.grid(axis="x", color=GRID, linestyle="--", linewidth=0.7, alpha=0.8)
 
     for i, (b, d) in enumerate(zip(bars, drops)):
         val = b.get_width()
         text = f"{val:.2f}% (Baseline)" if d == 0.0 else f"{val:.2f}% ({d:+.2f}%)"
-        ax.text(val + 0.15, b.get_y() + b.get_height()/2, text, va="center", fontsize=14, weight="semibold", color="#384655")
+        ax.text(val + 0.15, b.get_y() + b.get_height()/2, text, va="center", fontsize=14.5, weight="semibold", color="#384655")
 
 
     plt.tight_layout()
