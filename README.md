@@ -147,7 +147,7 @@ python reviews/harness.py
 ```
 
 ### 3. Pretrained Model Checkpoints
-Download the nine publication-bound model weights (`publication_checkpoints_3seeds.tar.gz`: TopoRadar-Net, Attention U-Net, and No-GeoLoss for seeds 42, 123, and 456) from [Release v1.0.11](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.11):
+Download the nine publication-bound model weights (`publication_checkpoints_3seeds.tar.gz`: TopoRadar-Net, Attention U-Net, and No-GeoLoss for seeds 42, 123, and 456) from [Release v1.0.12](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.12):
 ```bash
 # Extract into experiments/derived/checkpoints/
 mkdir -p experiments/derived/checkpoints
