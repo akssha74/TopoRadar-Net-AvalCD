@@ -74,29 +74,33 @@ def draw_box(x, y, width, height, text, key, fontsize=9, subtext=""):
     )
     ax.add_patch(box)
     if subtext:
-        ax.text(
+        main_label = ax.text(
             x + width / 2,
             y + height * 0.67,
             text,
             ha="center",
             va="center",
+            multialignment="center",
             weight="semibold",
             fontsize=fontsize,
             color=text_color,
             linespacing=1.0,
             zorder=4,
         )
-        ax.text(
+        main_label.set_clip_path(box)
+        sub_label = ax.text(
             x + width / 2,
             y + height * 0.23,
             subtext,
             ha="center",
             va="center",
+            multialignment="center",
             fontsize=fontsize - 0.4,
             color="#5F6D7A",
             linespacing=1.0,
             zorder=4,
         )
+        sub_label.set_clip_path(box)
     else:
         ax.text(
             x + width / 2,
@@ -116,10 +120,10 @@ draw_box(0.55, 5.75, 2.05, 0.8, "Pre-event SAR", "sar", subtext="VV, VH")
 draw_box(0.55, 4.45, 2.05, 0.8, "Post-event SAR", "sar", subtext="VV, VH")
 draw_box(
     0.55,
-    1.75,
+    1.50,
     2.05,
-    1.35,
-    "Radar–topographic\ntensor",
+    1.70,
+    "Radar–\ntopographic\ntensor",
     "topo",
     subtext="LIA · slope · aspect\nDEM · alignment",
 )
@@ -152,7 +156,7 @@ draw_box(
     1.10,
     "Difference\nfusion",
     "fusion",
-    subtext="pre · post · difference",
+    subtext="pre · post · ΔSAR",
 )
 draw_box(
     6.45,
