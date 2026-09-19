@@ -37,17 +37,17 @@ Evaluated across 3 independent training seeds under strict zero-shot regional do
 | SiamUNet-diff | 1.54M | $72.64 \pm 0.39\%$ | $37.11 \pm 2.44\%$ | $54.87 \pm 1.03\%$ |
 | SiamUNet-conc | 1.54M | $78.92 \pm 1.07\%$ | $47.34 \pm 0.70\%$ | $63.13 \pm 0.79\%$ |
 | ResU-Net Baseline | 3.26M | $76.60 \pm 1.30\%$ | $49.25 \pm 3.39\%$ | $62.92 \pm 1.42\%$ |
-| Swin-UNet (AvalCD Benchmark) | 2.29M | $78.09 \pm 0.99\%$ | $48.73 \pm 2.74\%$ | $63.41 \pm 1.03\%$ |
+| Attention U-Net | 2.29M | $78.09 \pm 0.99\%$ | $48.73 \pm 2.74\%$ | $63.41 \pm 1.03\%$ |
 | **TopoRadar-Net (Ours, Seed 42)** | **3.46M** | **79.35%** | **51.23%** | **65.29%** |
 | **TopoRadar-Net (Ours, 3-Seed Mean)** | **3.46M** | $\mathbf{77.40 \pm 1.86\%}$ | $\mathbf{50.18 \pm 4.40\%}$ | $\mathbf{63.79 \pm 1.88\%}$ |
 
 ### 2. Paired Statistical Significance Testing (Table 3)
 - **Part A (Tromsø Single-Scene Spatial Block Bootstrap, Seed 42, $n=143$ blocks):**
-  - vs. Swin-UNet: $+2.30\%$ (95% CI: $[+0.27\%, +4.41\%]$, $p = 0.030$)
+  - vs. Attention U-Net: $+2.30\%$ (95% CI: $[+0.27\%, +4.41\%]$, $p = 0.030$)
   - vs. ResU-Net: $+4.35\%$ (95% CI: $[+1.33\%, +7.38\%]$, $p = 0.010$)
   - vs. SiamUNet-diff: $+6.39\%$ (95% CI: $[+2.59\%, +10.59\%]$, $p < 0.001$)
 - **Part B (Multi-Region Spatial Cluster Bootstrap, 339 Blocks across Tromsø + Pamir, Seed 42, Micro-F1):**
-  - vs. Swin-UNet: $+3.27\%$ (95% CI: $[+1.12\%, +5.37\%]$, $p = 0.010$)
+  - vs. Attention U-Net: $+3.27\%$ (95% CI: $[+1.12\%, +5.37\%]$, $p = 0.010$)
   - vs. ResU-Net: $+4.30\%$ (95% CI: $[+1.54\%, +6.97\%]$, $p = 0.002$)
   - vs. SiamUNet-conc: $+2.47\%$ (95% CI: $[+0.41\%, +4.60\%]$, $p = 0.026$)
   - vs. SiamUNet-diff: $+12.77\%$ (95% CI: $[+9.18\%, +16.61\%]$, $p < 0.001$)
@@ -55,7 +55,7 @@ Evaluated across 3 independent training seeds under strict zero-shot regional do
   - vs. SiamUNet-diff: $+8.92\%$ (95% CI: $[+3.25\%, +14.59\%]$, $t(2) = 6.77, p = 0.021$)
   - vs. ResU-Net: $+0.86\%$ ($p = 0.459$)
   - vs. SiamUNet-conc: $+0.65\%$ ($p = 0.651$)
-  - vs. Swin-UNet: $+0.38\%$ ($p = 0.869$, with Swin leading on Seed 123: $64.78\%$ vs $61.14\%$), honestly confirming cross-system performance parity with competitive vision transformers.
+  - vs. Attention U-Net: $+0.38\%$ ($p = 0.869$, with Attention U-Net leading on Seed 123: $64.78\%$ vs $61.14\%$), honestly confirming cross-system performance parity with competitive attention-augmented baselines.
 
 ### 3. Instance-Level Hazard Completeness across EAWS Destructive Scales (Table 4)
 - **Class D4 (Very Large, $>10,000\text{ m}^3$):** $\mathbf{95.8\%}$ completeness ($100\%$ detection in 2 of 3 seeds; tying ResU-Net at $95.8\%$).
@@ -152,7 +152,7 @@ tar -xzvf toporadar_checkpoints_3seeds.tar.gz -C experiments/derived/checkpoints
 3. Execute end-to-end training and evaluation:
 ```bash
 # Train and evaluate TopoRadar-Net and baselines across 3 seeds
-python experiments/code/train_eval.py --epochs 25
+python experiments/code/train_eval.py --epochs 6
 
 # Evaluate genuine 339-block spatial cluster bootstrap and topographic stratification
 python experiments/code/evaluate_above_parity_evidence.py
