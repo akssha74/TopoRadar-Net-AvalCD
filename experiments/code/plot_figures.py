@@ -14,7 +14,7 @@ plt.rcParams["axes.linewidth"] = 1.0
 
 def plot_performance_barchart():
     """Figure: Comparative Cross-System Performance Bar Chart."""
-    models = ["SiamUNet-diff", "SiamUNet-conc", "ResU-Net", "Swin-UNet (AvalCD)", "TopoRadar-Net (Ours)"]
+    models = ["SiamUNet-diff", "SiamUNet-conc", "ResU-Net", "Attention U-Net", "TopoRadar-Net (Ours)"]
     tromso_f1 = [72.64, 78.92, 76.60, 78.09, 77.40]
     tromso_err = [0.39, 1.07, 1.30, 0.99, 1.86]
     
@@ -65,7 +65,7 @@ def plot_instance_eaws_hitrate():
     fig, ax = plt.subplots(figsize=(11, 5), dpi=300)
     ax.bar(x - 2.0*width, siam_diff, width, label="SiamUNet-diff", color="#a0aec0", edgecolor="black", lw=0.8)
     ax.bar(x - 1.0*width, resunet, width, label="ResU-Net", color="#4299e1", edgecolor="black", lw=0.8)
-    ax.bar(x, swin, width, label="Swin-UNet (AvalCD)", color="#ed8936", edgecolor="black", lw=0.8)
+    ax.bar(x, swin, width, label="Attention U-Net", color="#ed8936", edgecolor="black", lw=0.8)
     ax.bar(x + 1.0*width, siam_conc, width, label="SiamUNet-conc", color="#9f7aea", edgecolor="black", lw=0.8)
     ax.bar(x + 2.0*width, toporadar, width, label="TopoRadar-Net (Ours)", color="#48bb78", edgecolor="#22543d", lw=1.5)
 
