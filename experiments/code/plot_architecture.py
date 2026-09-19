@@ -55,9 +55,9 @@ def stage_panel(x, width, title):
 
 
 stage_panel(0.25, 2.65, "1  Inputs")
-stage_panel(3.15, 2.75, "2  Multi-scale\nencoders")
-stage_panel(6.15, 5.05, "3  Radar–topographic\nconditioning")
-stage_panel(11.45, 3.25, "4  Decoder\nand outputs")
+stage_panel(3.15, 2.75, "2  Encoders")
+stage_panel(6.15, 5.05, "3  Conditioning")
+stage_panel(11.45, 3.25, "4  Outputs")
 
 
 def draw_box(x, y, width, height, text, key, fontsize=9, subtext=""):
@@ -66,7 +66,7 @@ def draw_box(x, y, width, height, text, key, fontsize=9, subtext=""):
         (x, y),
         width,
         height,
-        boxstyle="round,pad=0.06",
+        boxstyle="round,pad=0.08",
         fc=fill,
         ec=edge,
         lw=1.0,
@@ -76,23 +76,25 @@ def draw_box(x, y, width, height, text, key, fontsize=9, subtext=""):
     if subtext:
         ax.text(
             x + width / 2,
-            y + height * 0.63,
+            y + height * 0.67,
             text,
             ha="center",
             va="center",
             weight="semibold",
             fontsize=fontsize,
             color=text_color,
+            linespacing=1.0,
             zorder=4,
         )
         ax.text(
             x + width / 2,
-            y + height * 0.27,
+            y + height * 0.23,
             subtext,
             ha="center",
             va="center",
             fontsize=fontsize - 0.4,
             color="#5F6D7A",
+            linespacing=1.0,
             zorder=4,
         )
     else:
@@ -125,18 +127,18 @@ draw_box(
 # Stage 2 — encoders.
 draw_box(
     3.45,
-    5.05,
+    4.95,
     2.15,
-    1.55,
+    1.45,
     "Shared SAR\nencoder",
     "sar",
     subtext="shared weights\nmultiscale features",
 )
 draw_box(
     3.45,
-    1.85,
+    1.75,
     2.15,
-    1.15,
+    1.25,
     "Topographic\npyramid",
     "topo",
     subtext="conv + pooling",
@@ -145,36 +147,36 @@ draw_box(
 # Stage 3 — conditioning.
 draw_box(
     6.45,
-    5.25,
+    5.10,
     2.05,
-    0.95,
+    1.10,
     "Difference\nfusion",
     "fusion",
     subtext="pre · post · difference",
 )
 draw_box(
     6.45,
-    3.65,
+    3.50,
     2.05,
-    0.95,
+    1.10,
     "Pooled topo\nK / V",
     "topo",
     subtext="8×8 context",
 )
 draw_box(
     6.45,
-    1.85,
+    1.80,
     2.05,
-    0.95,
+    1.10,
     "Spatial topo\ngate",
     "gate",
     subtext="pixel gate",
 )
 draw_box(
     9.15,
-    4.55,
+    4.45,
     1.8,
-    1.15,
+    1.25,
     "RTCAB",
     "attention",
     subtext="SAR queries\nterrain K / V",
@@ -183,34 +185,34 @@ draw_box(
 # Stage 4 — decoder and outputs.
 draw_box(
     11.80,
-    4.55,
+    4.40,
     2.55,
-    1.0,
+    1.20,
     "Progressive\ndecoder",
     "decoder",
     subtext="upsampling + skips",
 )
 draw_box(
     11.80,
-    2.95,
+    2.85,
     2.55,
-    1.05,
+    1.15,
     "Avalanche\nprobability map",
     "output",
     subtext="full-scene output",
 )
 draw_box(
     11.80,
-    1.20,
+    1.10,
     2.55,
-    1.15,
+    1.20,
     "Geo-Loss\n(training only)",
     "loss",
     subtext="heuristic slope prior\n<5° or >65°",
 )
 
 
-def arrow(start, end, dashed=False):
+def arrow(start, end, dashed=False, shrink_a=2, shrink_b=2):
     color = TRAINING_ARROW_COLOR if dashed else ARROW_COLOR
     ax.annotate(
         "",
@@ -222,8 +224,8 @@ def arrow(start, end, dashed=False):
             lw=1.15,
             mutation_scale=9,
             linestyle="--" if dashed else "-",
-            shrinkA=2,
-            shrinkB=2,
+            shrinkA=shrink_a,
+            shrinkB=shrink_b,
         ),
         zorder=2,
     )
@@ -239,28 +241,30 @@ def routed_arrow(points, dashed=False):
         lw=1.15,
         linestyle="--" if dashed else "-",
         solid_capstyle="round",
-        zorder=1,
+        solid_joinstyle="round",
+        dash_joinstyle="round",
+        zorder=2,
     )
-    arrow(points[-2], points[-1], dashed=dashed)
+    arrow(points[-2], points[-1], dashed=dashed, shrink_a=0)
 
 
 # Straight inference paths; no connector crosses a block.
 arrow((2.60, 6.15), (3.45, 6.15))
-routed_arrow([(2.60, 4.85), (3.15, 4.85), (3.15, 5.35), (3.45, 5.35)])
-arrow((5.60, 5.82), (6.45, 5.82))
+routed_arrow([(2.60, 4.85), (3.15, 4.85), (3.15, 5.25), (3.45, 5.25)])
+arrow((5.60, 5.65), (6.45, 5.65))
 arrow((2.60, 2.42), (3.45, 2.42))
-routed_arrow([(5.60, 2.42), (5.95, 2.42), (5.95, 4.12), (6.45, 4.12)])
-routed_arrow([(5.60, 2.42), (6.05, 2.42), (6.05, 2.32), (6.45, 2.32)])
-routed_arrow([(8.50, 5.72), (8.82, 5.72), (8.82, 5.18), (9.15, 5.18)])
-routed_arrow([(8.50, 4.12), (8.92, 4.12), (8.92, 4.88), (9.15, 4.88)])
-routed_arrow([(10.95, 5.12), (11.35, 5.12), (11.35, 5.05), (11.80, 5.05)])
+routed_arrow([(5.60, 2.42), (5.95, 2.42), (5.95, 4.05), (6.45, 4.05)])
+routed_arrow([(5.60, 2.42), (6.05, 2.42), (6.05, 2.35), (6.45, 2.35)])
+routed_arrow([(8.50, 5.65), (8.82, 5.65), (8.82, 5.25), (9.15, 5.25)])
+routed_arrow([(8.50, 4.05), (8.92, 4.05), (8.92, 4.85), (9.15, 4.85)])
+arrow((10.95, 5.08), (11.80, 5.08))
 routed_arrow(
-    [(8.50, 2.32), (11.32, 2.32), (11.32, 4.75), (11.80, 4.75)]
+    [(8.50, 2.35), (11.32, 2.35), (11.32, 4.70), (11.80, 4.70)]
 )
-arrow((13.08, 4.55), (13.08, 4.00))
+arrow((13.08, 4.40), (13.08, 4.00))
 
 # Training-only loss path is dashed and visually separate.
-arrow((13.08, 2.95), (13.08, 2.35), dashed=True)
+arrow((13.08, 2.85), (13.08, 2.30), dashed=True)
 
 ax.text(
     10.0,
