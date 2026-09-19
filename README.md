@@ -140,7 +140,7 @@ python reviews/harness.py
 ```
 
 ### 3. Pretrained Model Checkpoints
-Download the 3-seed trained model weights (`toporadar_checkpoints_3seeds.tar.gz`, 37 MB) from [Release v1.0.3](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.3):
+Download the 3-seed trained model weights (`toporadar_checkpoints_3seeds.tar.gz`, 37 MB) from [Release v1.0.4](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.4):
 ```bash
 # Extract into experiments/derived/checkpoints/
 mkdir -p experiments/derived/checkpoints
