@@ -18,7 +18,7 @@ Automated mapping of snow avalanche debris in steep alpine terrain using spacebo
 
 ### Key Innovations of TopoRadar-Net
 - **Physical & Geometric Formulation (Proposition 2):** We characterize the limitations of shift-invariant 2D linear convolutions across mountain facets under non-stationary radiometric terrain projection. The continuous 4D aspect-look coordinates $\mathcal{M} = [\sin \alpha, \cos \alpha, \cos \psi, \theta_{\text{align}}]^T$ avoid circular branch cuts and provide terrain context for cross-attention.
-- **Multi-Scale Radar-Topographic Cross-Attention Block (RTCAB):** Full-resolution SAR change features serve as Queries ($\mathbf{Q}$) to interrogate adaptively-pooled regional topographic keys ($\mathbf{K}$) and values ($\mathbf{V}$), dynamically suppressing foreslope clutter while amplifying backslope debris contrast.
+- **Multi-Scale Radar-Topographic Cross-Attention Block (RTCAB):** Full-resolution SAR change features serve as Queries ($\mathbf{Q}$) to interrogate adaptively-pooled regional topographic keys ($\mathbf{K}$) and values ($\mathbf{V}$), conditioning SAR representations on terrain context. Reported ablations establish component sensitivity, not an isolated causal gating mechanism.
 - **Geomorphically Bounded Loss (Geo-Loss):** Regularizes network training by penalizing non-zero probability mass in physically impossible terrain ($<5^\circ$ valley floors and $>65^\circ$ sheer cliffs).
 - **Lightweight Model-Forward Inference:** Only **3.46M parameters** (3,455,729 parameters), achieving full-scene sliding-window model inference in **$1.80 \pm 0.02\text{ s}$** ($668.5\text{ patches/s}$) on Apple Silicon MPS hardware.
 - **Operational Decision-Support Triage Framework:** Accompanies an explicitly unvalidated 3-tier conceptual framework with a **$30.0\%$ ($72.88\text{ ha}$ nominal-grid equivalent, $55.63\text{ ha}$ affine physical difference) false-alarm difference** in continental high-relief terrain.
@@ -107,7 +107,7 @@ TopoRadar-Net-AvalCD/
 │   ├── main.tex                        # Springer Nature template root
 │   ├── main_anonymous.tex              # Anonymized double-blind manuscript root
 │   ├── main.pdf                        # Compiled publication manuscript (13 pages, two-column sn-jnl layout)
-│   ├── references.bib                  # 100% Crossref-verified bibliography (22 DOIs)
+│   ├── references.bib                  # DOI-registry-audited bibliography
 │   ├── sn-jnl.cls                      # Official Springer Nature class
 │   ├── sn-basic.bst                    # Springer Nature reference style
 │   ├── figures/                        # High-resolution publication figures
@@ -140,11 +140,11 @@ python reviews/harness.py
 ```
 
 ### 3. Pretrained Model Checkpoints
-Download the 3-seed trained model weights (`toporadar_checkpoints_3seeds.tar.gz`, 37 MB) from [Release v1.0.4](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.4):
+Download the six publication-bound model weights (`publication_checkpoints_3seeds.tar.gz`: TopoRadar-Net and Attention U-Net for seeds 42, 123, and 456) from [Release v1.0.5](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.5):
 ```bash
 # Extract into experiments/derived/checkpoints/
 mkdir -p experiments/derived/checkpoints
-tar -xzvf toporadar_checkpoints_3seeds.tar.gz -C experiments/derived/checkpoints/
+tar -xzvf publication_checkpoints_3seeds.tar.gz -C experiments/derived/checkpoints/
 ```
 
 ### 4. Running Experiments from Raw AvalCD Data

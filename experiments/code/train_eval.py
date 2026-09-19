@@ -137,7 +137,7 @@ def compute_pixel_metrics(probs: np.ndarray, gt: np.ndarray, valid_mask: np.ndar
     tp = float((pred & target).sum())
     fp = float((pred & ~target).sum())
     fn = float((~pred & target).sum())
-    tn = float((~pred & ~target).sum())
+    tn = float((~pred & ~target & valid_mask).sum())
 
     prec = tp / (tp + fp) if (tp + fp) > 0 else 0.0
     rec = tp / (tp + fn) if (tp + fn) > 0 else 0.0

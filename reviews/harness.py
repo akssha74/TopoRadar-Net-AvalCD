@@ -82,6 +82,16 @@ def verify_all_bounds():
 
     # Verify topographic stratification
     topo_strat = load_topographic_stratification()
+    for region in topo_strat.values():
+        for family in ("aspect_alignment", "slope_zones"):
+            for row in region[family].values():
+                for model_key in ("toporadar", "swin_unet"):
+                    metrics = row[model_key]
+                    total = metrics["tp"] + metrics["fp"] + metrics["fn"] + metrics["tn"]
+                    assert total == row["total_pixels"], (
+                        f"Single-seed confusion total does not close for {family}: "
+                        f"{total} != {row['total_pixels']}"
+                    )
     delta_tromso_backslope = topo_strat["Tromso_Arctic"]["aspect_alignment"]["Backslopes (Facing Away, align < -0.3)"]["delta_f1"]
     assert delta_tromso_backslope > 0.05, f"Tromso backslope delta {delta_tromso_backslope:.4f} <= 0.05"
     delta_pamir_backslope = topo_strat["Pamir_HighMountain"]["aspect_alignment"]["Backslopes (Facing Away, align < -0.3)"]["delta_f1"]
@@ -92,12 +102,38 @@ def verify_all_bounds():
     backslope = "Backslopes (Facing Away, align < -0.3)"
     tromso_multi = multi["regions"]["Tromso_Arctic"]["aspect_alignment"][backslope]
     pamir_multi = multi["regions"]["Pamir_HighMountain"]["aspect_alignment"][backslope]
+    for region_name, seeds in multi["per_seed"].items():
+        for seed, families in seeds.items():
+            for family in ("aspect_alignment", "slope_zones"):
+                for stratum, row in families[family].items():
+                    for model_key in ("toporadar", "attention_unet"):
+                        metrics = row[model_key]
+                        total = metrics["tp"] + metrics["fp"] + metrics["fn"] + metrics["tn"]
+                        assert total == row["total_pixels"], (
+                            f"Multi-seed confusion total does not close for "
+                            f"{region_name}/{seed}/{family}/{stratum}: "
+                            f"{total} != {row['total_pixels']}"
+                        )
     assert np.isclose(tromso_multi["delta_f1"]["mean"], -0.0034226984431335503)
     assert np.isclose(tromso_multi["delta_f1"]["std_population"], 0.0628276475245984)
     assert np.isclose(pamir_multi["delta_f1"]["mean"], 0.011952338891495514)
     assert np.isclose(pamir_multi["delta_f1"]["std_population"], 0.07734477727516495)
     assert tromso_multi["positive_delta_seeds"] == 2
     assert pamir_multi["positive_delta_seeds"] == 2
+    seed_bootstrap = multi["spatial_cluster_bootstrap_multiseed"]
+    pooled_values = [
+        seed_bootstrap["per_seed"][str(seed)]["Pooled_339_Blocks"]["mean_gain"]
+        for seed in (42, 123, 456)
+    ]
+    assert np.allclose(
+        pooled_values,
+        [0.03257931626134104, -0.0299165106400238, 0.04160908768972134],
+    )
+    assert np.isclose(
+        seed_bootstrap["pooled_gain_across_seeds"]["mean"],
+        np.mean(pooled_values),
+    )
+    assert seed_bootstrap["positive_mean_gain_seeds"] == 2
 
     # Verify Nuuk validation
     nuuk_res = load_nuuk_validation()

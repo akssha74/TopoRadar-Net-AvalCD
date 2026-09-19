@@ -108,9 +108,15 @@ def main():
     for reg in ["Tromso_Arctic", "Pamir_HighMountain"]:
         print(f"  [{reg}] Aspect Alignment Stratification:")
         for s_name, data in topo_strat[reg]["aspect_alignment"].items():
+            for model_key in ("toporadar", "swin_unet"):
+                metrics = data[model_key]
+                assert metrics["tp"] + metrics["fp"] + metrics["fn"] + metrics["tn"] == data["total_pixels"]
             print(f"    {s_name:40s} | TopoRadar F1: {data['toporadar']['f1']*100:.2f}% | AttnUNet F1: {data['swin_unet']['f1']*100:.2f}% | Delta: {data['delta_f1']*100:+.2f}%")
         print(f"  [{reg}] Slope Zone Stratification:")
         for s_name, data in topo_strat[reg]["slope_zones"].items():
+            for model_key in ("toporadar", "swin_unet"):
+                metrics = data[model_key]
+                assert metrics["tp"] + metrics["fp"] + metrics["fn"] + metrics["tn"] == data["total_pixels"]
             print(f"    {s_name:40s} | TopoRadar F1: {data['toporadar']['f1']*100:.2f}% | AttnUNet F1: {data['swin_unet']['f1']*100:.2f}% | Delta: {data['delta_f1']*100:+.2f}%")
 
     print("\n--- 5b. Verifying Multi-Seed Topographic-Stratum Stability ---")
@@ -128,11 +134,31 @@ def main():
                 assert abs(mean - stored["delta_f1"]["mean"]) < 1e-12
                 assert abs(std - stored["delta_f1"]["std_population"]) < 1e-12
                 assert stored["positive_delta_seeds"] == sum(v > 0 for v in per_seed)
+                for seed in [42, 123, 456]:
+                    row = topo_strat_multiseed["per_seed"][reg][str(seed)][family][stratum]
+                    for model_key in ("toporadar", "attention_unet"):
+                        metrics = row[model_key]
+                        assert metrics["tp"] + metrics["fp"] + metrics["fn"] + metrics["tn"] == row["total_pixels"]
                 print(
                     f"    {family}/{stratum}: "
                     f"Delta={mean*100:+.2f} +- {std*100:.2f} pp; "
                     f"positive={stored['positive_delta_seeds']}/3"
                 )
+    spatial_seed = topo_strat_multiseed["spatial_cluster_bootstrap_multiseed"]
+    print("  Pooled 339-block bootstrap repeated by training seed:")
+    for seed in [42, 123, 456]:
+        row = spatial_seed["per_seed"][str(seed)]["Pooled_339_Blocks"]
+        print(
+            f"    Seed {seed}: Delta={row['mean_gain']*100:+.2f} pp "
+            f"(95% CI [{row['ci_95'][0]*100:+.2f}, {row['ci_95'][1]*100:+.2f}], "
+            f"p={row['p_value']:.3f})"
+        )
+    across = spatial_seed["pooled_gain_across_seeds"]
+    print(
+        f"    Across-seed descriptive mean={across['mean']*100:+.2f} "
+        f"+- {across['std_population']*100:.2f} pp; "
+        f"positive seeds={spatial_seed['positive_mean_gain_seeds']}/3"
+    )
 
     # 6. Verify Table 7: Nuuk Validation Cohort
     print("\n--- 6. Verifying Table 7: Nuuk Polar Maritime Validation Cohort ---")

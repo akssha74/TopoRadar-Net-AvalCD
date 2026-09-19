@@ -113,7 +113,7 @@ def plot_ablation_contributions():
         text = f"{val:.2f}% (Baseline)" if d == 0.0 else f"{val:.2f}% ({d:+.2f}%)"
         ax.text(val + 0.15, b.get_y() + b.get_height()/2, text, va="center", fontsize=9.5, weight="bold")
 
-    ax.set_title("Systematic Ablation: Isolating Physical & Architectural Mechanisms", fontsize=11, weight="bold", pad=10)
+    ax.set_title("Systematic Ablation: Component Sensitivity", fontsize=11, weight="bold", pad=10)
 
     plt.tight_layout()
     fig.savefig(FIGS_DIR / "fig_ablation_breakdown.pdf", bbox_inches="tight")
