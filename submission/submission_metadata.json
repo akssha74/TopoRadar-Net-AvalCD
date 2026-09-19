@@ -6,7 +6,9 @@
   "issn": "1672-6316",
   "article_type": "Original Research Article",
   "submission_portal": "https://mc03.manuscriptcentral.com/jmsjournal",
-  "submission_status": "ready-to-submit",
+  "manuscript_id": "26-11479",
+  "submission_status": "resubmission-in-progress",
+  "editorial_office_note": "Unsubmitted 06-Sep-2026: main body must be editable WORD, double-blind (no author/institution info); cover letter must state novelty, COI, and reviewer exclusions; all author info entered in online system.",
   "authors": [
     {
       "name": "Akshay Sharma",
@@ -40,12 +42,6 @@
       "expertise": "Sentinel-1 SAR change detection for snow avalanches, Arctic cryospheric hazards"
     },
     {
-      "name": "Dr. Yves Bühler",
-      "institution": "WSL Institute for Snow and Avalanche Research SLF, Davos, Switzerland",
-      "email": "buehler@slf.ch",
-      "expertise": "Automated regional avalanche mapping, alpine optical and radar remote sensing"
-    },
-    {
       "name": "Dr. Achille Gatti",
       "institution": "Department of Electronics, Information and Bioengineering, Politecnico di Milano, Milan, Italy",
       "email": "achille.gatti@polimi.it",
@@ -56,17 +52,20 @@
       "institution": "Institute of Environmental Engineering, ETH Zurich, Switzerland",
       "email": "leinss@ifu.baug.ethz.ch",
       "expertise": "Microwave radar backscatter characteristics of snow avalanches, SAR polarimetry"
-    },
-    {
-      "name": "Dr. Elisabeth D. Hafner",
-      "institution": "Avalanche Warning and Remote Sensing, WSL Institute for Snow and Avalanche Research SLF, Davos, Switzerland",
-      "email": "elisabeth.hafner@slf.ch",
-      "expertise": "Large-scale satellite avalanche mapping, EAWS size classification inventories"
     }
   ],
   "public_code_repo": "https://github.com/akssha74/TopoRadar-Net-AvalCD",
-  "public_release_url": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.0",
+  "public_release_url": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.6",
   "dataset_doi": "https://doi.org/10.5281/zenodo.15863589",
   "manuscript_pdf": "studies/mountain-avalcd-toporadar/paper/main.pdf",
-  "cover_letter_pdf": "studies/mountain-avalcd-toporadar/submission/cover_letter.pdf"
+  "main_document_anonymous_docx": "studies/mountain-avalcd-toporadar/submission/JMS_26-11479_Main_Manuscript_Anonymous.docx",
+  "main_document_anonymous_pdf": "studies/mountain-avalcd-toporadar/paper/main_anonymous.pdf",
+  "cover_letter_pdf": "studies/mountain-avalcd-toporadar/submission/cover_letter.pdf",
+  "blinding": {
+    "double_blind": true,
+    "author_info_in_main_document": false,
+    "identifying_repo_links_stripped": true,
+    "figures_tables_embedded": true,
+    "main_document_size_mb": 0.86
+  }
 }
