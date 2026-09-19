@@ -19,7 +19,7 @@ Automated mapping of snow avalanche debris in steep alpine terrain using spacebo
 ### Key Innovations of TopoRadar-Net
 - **Physical & Geometric Formulation (Proposition 2):** We characterize the limitations of shift-invariant 2D linear convolutions across mountain facets under non-stationary radiometric terrain projection. The continuous 4D aspect-look coordinates $\mathcal{M} = [\sin \alpha, \cos \alpha, \cos \psi, \theta_{\text{align}}]^T$ avoid circular branch cuts and provide terrain context for cross-attention.
 - **Multi-Scale Radar-Topographic Cross-Attention Block (RTCAB):** Full-resolution SAR change features serve as Queries ($\mathbf{Q}$) to interrogate adaptively-pooled regional topographic keys ($\mathbf{K}$) and values ($\mathbf{V}$), conditioning SAR representations on terrain context. Reported ablations establish component sensitivity, not an isolated causal gating mechanism.
-- **Geomorphically Bounded Loss (Geo-Loss):** Regularizes network training by penalizing non-zero probability mass in physically impossible terrain ($<5^\circ$ valley floors and $>65^\circ$ sheer cliffs).
+- **Heuristic Geomorphic Slope Prior (Geo-Loss):** Penalizes predictions below $5^\circ$ and above $65^\circ$. A construct audit shows that the mask overlaps genuine positives and reduces penalized-subgroup recall, so it is reported as a precision–recall heuristic rather than a physical-validity constraint.
 - **Lightweight Model-Forward Inference:** Only **3.46M parameters** (3,455,729 parameters), achieving full-scene sliding-window model inference in **$1.80 \pm 0.02\text{ s}$** ($668.5\text{ patches/s}$) on Apple Silicon MPS hardware.
 - **Operational Decision-Support Triage Framework:** Accompanies an explicitly unvalidated 3-tier conceptual framework with a **$30.0\%$ ($72.88\text{ ha}$ nominal-grid equivalent, $55.63\text{ ha}$ affine physical difference) false-alarm difference** in continental high-relief terrain.
 
@@ -70,6 +70,7 @@ Evaluated across 3 independent training seeds under strict zero-shot regional do
 ### 5. Operational Decision-Support Triage Framework (Table 8)
 - **Pamir Mountains ($359.10\text{ km}^2$ valid mask):** TopoRadar-Net records a **$30.0\%$ ($72.88\text{ ha}$ nominal-grid equivalent, $55.63\text{ ha}$ affine physical difference) lower false-alarm footprint** ($169.89\text{ ha}$, $0.47\text{ ha/km}^2$) than Attention U-Net ($242.77\text{ ha}$, $0.68\text{ ha/km}^2$).
 - **Tromsø ($245.87\text{ km}^2$ valid mask):** Detects $270.09\text{ ha}$ of true avalanche debris ($95.8\%$ Class D4 events) at $0.36\text{ ha/km}^2$ false-alarm density ($87.82\text{ ha}$), reflecting an operational trade-off prioritizing catastrophic event completeness over coastal fringe clutter.
+- **Calibrated corridor proxy:** Validation-only calibration yields $83.0\%$ precision and $62.5\%$ recall for Pamir road-corridor alerts, but all seeds miss the single Tromsø corridor avalanche. This is a retrospective proxy, not stakeholder or dispatch validation.
 
 ---
 
@@ -87,6 +88,9 @@ TopoRadar-Net-AvalCD/
 │   │   ├── train_eval.py               # Complete training, validation, & zero-shot evaluation pipeline
 │   │   ├── evaluate_above_parity_evidence.py # 339-block spatial cluster bootstrap & stratification
 │   │   ├── evaluate_multiseed_stratification.py # 3-seed stability of terrain strata
+│   │   ├── evaluate_geoloss_construct.py # Positive-label conflict and subgroup audit
+│   │   ├── evaluate_operational_corridors.py # Calibrated component/corridor proxy
+│   │   ├── acquire_osm_corridors.py       # Frozen public OSM road snapshot
 │   │   ├── evaluate_nuuk_validation.py # Polar maritime validation cohort analysis
 │   │   ├── profile_operational_triage.py # Operational triage matrix & physical clutter profiling
 │   │   ├── profile_inference.py        # Latency, parameter count, and throughput profiling
@@ -100,6 +104,9 @@ TopoRadar-Net-AvalCD/
 │           ├── spatial_multiregion_cluster_bootstrap.json # 339-block spatial cluster bootstrap
 │           ├── topographic_geometry_stratification.json   # Aspect & slope stratification
 │           ├── topographic_geometry_stratification_multiseed.json # 3-seed stability
+│           ├── geoloss_construct_audit.json       # Slope-prior construct audit
+│           ├── operational_corridor_validation.json # Deterministic corridor metrics
+│           ├── operational_corridor_runtime.json # Environment-dependent runtime profile
 │           ├── nuuk_validation_results.json          # Greenland validation results
 │           ├── operational_triage_footprint.json     # Quantitative false-alarm footprints
 │           └── inference_profile.json                # Runtime and memory profiling
@@ -140,7 +147,7 @@ python reviews/harness.py
 ```
 
 ### 3. Pretrained Model Checkpoints
-Download the six publication-bound model weights (`publication_checkpoints_3seeds.tar.gz`: TopoRadar-Net and Attention U-Net for seeds 42, 123, and 456) from [Release v1.0.8](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.8):
+Download the nine publication-bound model weights (`publication_checkpoints_3seeds.tar.gz`: TopoRadar-Net, Attention U-Net, and No-GeoLoss for seeds 42, 123, and 456) from [Release v1.0.9](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.9):
 ```bash
 # Extract into experiments/derived/checkpoints/
 mkdir -p experiments/derived/checkpoints
@@ -161,6 +168,8 @@ python experiments/code/train_eval.py --epochs 6
 # Evaluate genuine 339-block spatial cluster bootstrap and topographic stratification
 python experiments/code/evaluate_above_parity_evidence.py
 python experiments/code/evaluate_multiseed_stratification.py
+python experiments/code/evaluate_geoloss_construct.py
+python experiments/code/evaluate_operational_corridors.py
 
 # Evaluate polar maritime validation cohort (Nuuk, Greenland)
 python experiments/code/evaluate_nuuk_validation.py

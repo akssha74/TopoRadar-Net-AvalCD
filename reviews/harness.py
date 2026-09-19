@@ -63,6 +63,27 @@ def load_operational_triage() -> dict:
     with open(op_path) as f:
         return json.load(f)
 
+def load_operational_corridor_validation() -> dict:
+    path = RESULTS_DIR / "operational_corridor_validation.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Missing operational corridor summary: {path}")
+    with open(path) as f:
+        return json.load(f)
+
+def load_operational_corridor_runtime() -> dict:
+    path = RESULTS_DIR / "operational_corridor_runtime.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Missing operational corridor runtime: {path}")
+    with open(path) as f:
+        return json.load(f)
+
+def load_geoloss_construct_audit() -> dict:
+    path = RESULTS_DIR / "geoloss_construct_audit.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Missing Geo-Loss construct audit: {path}")
+    with open(path) as f:
+        return json.load(f)
+
 def verify_all_bounds():
     """Verify all stated macro-bounds and statistical bounds hold."""
     summary = load_summary()
@@ -149,7 +170,36 @@ def verify_all_bounds():
     pamir_fa_rate = op_res["regions"]["Pamir_HighMountain"]["models"]["TopoRadar-Net"]["false_alarm_rate_ha_per_km2"]
     assert pamir_fa_rate == 0.47, f"Pamir TopoRadar FA rate {pamir_fa_rate} != 0.47"
 
-    print("Harness check PASS: Primary summaries, 339-block bootstrap, exploratory Seed-42 and confirmatory multi-seed stratification, Nuuk validation, and operational triage verified.")
+    # Verify the explicitly exploratory, non-stakeholder operational proxy.
+    corridor = load_operational_corridor_validation()
+    assert corridor["protocol"]["status"] == "post-hoc exploratory operational proxy"
+    topo_pamir = corridor["aggregate"]["TopoRadar-Net"]["Pamir_HighMountain"]
+    topo_tromso = corridor["aggregate"]["TopoRadar-Net"]["Tromso_Arctic"]
+    assert topo_pamir["corridor_gt_components"] == 8
+    assert np.isclose(topo_pamir["corridor_alert_precision"]["mean"], 0.8301587301587302)
+    assert np.isclose(topo_pamir["corridor_gt_recall"]["mean"], 0.625)
+    assert topo_tromso["corridor_gt_components"] == 1
+    assert np.isclose(topo_tromso["corridor_gt_recall"]["mean"], 0.0)
+    assert topo_pamir["calibrated_brier"]["mean"] < topo_pamir["raw_brier"]["mean"]
+    runtime = load_operational_corridor_runtime()
+    for region in ("Tromso_Arctic", "Pamir_HighMountain"):
+        assert all(
+            0.0 < value < 5.0
+            for value in runtime["aggregate"]["TopoRadar-Net"][region][
+                "cached_end_to_end_seconds"
+            ]["values"]
+        )
+
+    # Verify the positive-label conflict that limits the slope-prior construct.
+    geo = load_geoloss_construct_audit()
+    assert geo["positive_label_conflict"]["train"]["penalized_positive_pixels"] == 19663
+    assert geo["positive_label_conflict"]["heldout_test"]["penalized_positive_pixels"] == 492
+    full = geo["summary"]["Full TopoRadar-Net"]
+    no_geo = geo["summary"]["No-GeoLoss"]
+    for region in ("Tromso_Arctic", "Pamir_HighMountain"):
+        assert full[region]["positive_recall"]["mean"] < no_geo[region]["positive_recall"]["mean"]
+
+    print("Harness check PASS: Primary summaries, seed-repeated bootstrap/strata, Nuuk validation, physical-unit triage, calibrated corridor proxy, and Geo-Loss construct audit verified.")
 
 if __name__ == "__main__":
     print("Testing reviewer harness...")

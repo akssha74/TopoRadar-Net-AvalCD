@@ -1,0 +1,256 @@
+{
+  "device": "mps",
+  "scope": "cached OSM snapshot; raster load + corridor rasterization + full-scene inference + component post-processing",
+  "n_seeds": 3,
+  "per_seed": {
+    "42": {
+      "TopoRadar-Net": {
+        "Tromso_Arctic": {
+          "scene_data_load_seconds": 0.145311958000093,
+          "road_rasterization_seconds": 0.013537000002543209,
+          "scene_inference_plus_postprocess_seconds": 2.115467958999943,
+          "cached_end_to_end_seconds": 2.2743169170025794
+        },
+        "Pamir_HighMountain": {
+          "scene_data_load_seconds": 0.19642862499676994,
+          "road_rasterization_seconds": 0.020396249998157145,
+          "scene_inference_plus_postprocess_seconds": 2.8878067920013564,
+          "cached_end_to_end_seconds": 3.1046316669962835
+        }
+      },
+      "Attention U-Net": {
+        "Tromso_Arctic": {
+          "scene_data_load_seconds": 0.145311958000093,
+          "road_rasterization_seconds": 0.013537000002543209,
+          "scene_inference_plus_postprocess_seconds": 1.3910274160007248,
+          "cached_end_to_end_seconds": 1.549876374003361
+        },
+        "Pamir_HighMountain": {
+          "scene_data_load_seconds": 0.19642862499676994,
+          "road_rasterization_seconds": 0.020396249998157145,
+          "scene_inference_plus_postprocess_seconds": 1.973785374997533,
+          "cached_end_to_end_seconds": 2.19061024999246
+        }
+      }
+    },
+    "123": {
+      "TopoRadar-Net": {
+        "Tromso_Arctic": {
+          "scene_data_load_seconds": 0.145311958000093,
+          "road_rasterization_seconds": 0.013537000002543209,
+          "scene_inference_plus_postprocess_seconds": 0.9665419170014502,
+          "cached_end_to_end_seconds": 1.1253908750040864
+        },
+        "Pamir_HighMountain": {
+          "scene_data_load_seconds": 0.19642862499676994,
+          "road_rasterization_seconds": 0.020396249998157145,
+          "scene_inference_plus_postprocess_seconds": 1.4081374589986808,
+          "cached_end_to_end_seconds": 1.624962333993608
+        }
+      },
+      "Attention U-Net": {
+        "Tromso_Arctic": {
+          "scene_data_load_seconds": 0.145311958000093,
+          "road_rasterization_seconds": 0.013537000002543209,
+          "scene_inference_plus_postprocess_seconds": 0.6230599170012283,
+          "cached_end_to_end_seconds": 0.7819088750038645
+        },
+        "Pamir_HighMountain": {
+          "scene_data_load_seconds": 0.19642862499676994,
+          "road_rasterization_seconds": 0.020396249998157145,
+          "scene_inference_plus_postprocess_seconds": 0.9275157500014757,
+          "cached_end_to_end_seconds": 1.1443406249964028
+        }
+      }
+    },
+    "456": {
+      "TopoRadar-Net": {
+        "Tromso_Arctic": {
+          "scene_data_load_seconds": 0.145311958000093,
+          "road_rasterization_seconds": 0.013537000002543209,
+          "scene_inference_plus_postprocess_seconds": 0.9807821249996778,
+          "cached_end_to_end_seconds": 1.139631083002314
+        },
+        "Pamir_HighMountain": {
+          "scene_data_load_seconds": 0.19642862499676994,
+          "road_rasterization_seconds": 0.020396249998157145,
+          "scene_inference_plus_postprocess_seconds": 1.438072832999751,
+          "cached_end_to_end_seconds": 1.654897707994678
+        }
+      },
+      "Attention U-Net": {
+        "Tromso_Arctic": {
+          "scene_data_load_seconds": 0.145311958000093,
+          "road_rasterization_seconds": 0.013537000002543209,
+          "scene_inference_plus_postprocess_seconds": 0.6311735829985992,
+          "cached_end_to_end_seconds": 0.7900225410012354
+        },
+        "Pamir_HighMountain": {
+          "scene_data_load_seconds": 0.19642862499676994,
+          "road_rasterization_seconds": 0.020396249998157145,
+          "scene_inference_plus_postprocess_seconds": 0.939919792002911,
+          "cached_end_to_end_seconds": 1.156744666997838
+        }
+      }
+    }
+  },
+  "aggregate": {
+    "TopoRadar-Net": {
+      "Tromso_Arctic": {
+        "scene_data_load_seconds": {
+          "mean": 0.145311958000093,
+          "std_population": 0.0,
+          "values": [
+            0.145311958000093,
+            0.145311958000093,
+            0.145311958000093
+          ]
+        },
+        "road_rasterization_seconds": {
+          "mean": 0.013537000002543209,
+          "std_population": 0.0,
+          "values": [
+            0.013537000002543209,
+            0.013537000002543209,
+            0.013537000002543209
+          ]
+        },
+        "scene_inference_plus_postprocess_seconds": {
+          "mean": 1.3542640003336903,
+          "std_population": 0.5382838754770194,
+          "values": [
+            2.115467958999943,
+            0.9665419170014502,
+            0.9807821249996778
+          ]
+        },
+        "cached_end_to_end_seconds": {
+          "mean": 1.5131129583363265,
+          "std_population": 0.5382838754770194,
+          "values": [
+            2.2743169170025794,
+            1.1253908750040864,
+            1.139631083002314
+          ]
+        }
+      },
+      "Pamir_HighMountain": {
+        "scene_data_load_seconds": {
+          "mean": 0.19642862499676994,
+          "std_population": 0.0,
+          "values": [
+            0.19642862499676994,
+            0.19642862499676994,
+            0.19642862499676994
+          ]
+        },
+        "road_rasterization_seconds": {
+          "mean": 0.020396249998157145,
+          "std_population": 0.0,
+          "values": [
+            0.020396249998157145,
+            0.020396249998157145,
+            0.020396249998157145
+          ]
+        },
+        "scene_inference_plus_postprocess_seconds": {
+          "mean": 1.9113390279999294,
+          "std_population": 0.6905751237215764,
+          "values": [
+            2.8878067920013564,
+            1.4081374589986808,
+            1.438072832999751
+          ]
+        },
+        "cached_end_to_end_seconds": {
+          "mean": 2.1281639029948565,
+          "std_population": 0.6905751237215764,
+          "values": [
+            3.1046316669962835,
+            1.624962333993608,
+            1.654897707994678
+          ]
+        }
+      }
+    },
+    "Attention U-Net": {
+      "Tromso_Arctic": {
+        "scene_data_load_seconds": {
+          "mean": 0.145311958000093,
+          "std_population": 0.0,
+          "values": [
+            0.145311958000093,
+            0.145311958000093,
+            0.145311958000093
+          ]
+        },
+        "road_rasterization_seconds": {
+          "mean": 0.013537000002543209,
+          "std_population": 0.0,
+          "values": [
+            0.013537000002543209,
+            0.013537000002543209,
+            0.013537000002543209
+          ]
+        },
+        "scene_inference_plus_postprocess_seconds": {
+          "mean": 0.8817536386668507,
+          "std_population": 0.36012617520707324,
+          "values": [
+            1.3910274160007248,
+            0.6230599170012283,
+            0.6311735829985992
+          ]
+        },
+        "cached_end_to_end_seconds": {
+          "mean": 1.040602596669487,
+          "std_population": 0.36012617520707324,
+          "values": [
+            1.549876374003361,
+            0.7819088750038645,
+            0.7900225410012354
+          ]
+        }
+      },
+      "Pamir_HighMountain": {
+        "scene_data_load_seconds": {
+          "mean": 0.19642862499676994,
+          "std_population": 0.0,
+          "values": [
+            0.19642862499676994,
+            0.19642862499676994,
+            0.19642862499676994
+          ]
+        },
+        "road_rasterization_seconds": {
+          "mean": 0.020396249998157145,
+          "std_population": 0.0,
+          "values": [
+            0.020396249998157145,
+            0.020396249998157145,
+            0.020396249998157145
+          ]
+        },
+        "scene_inference_plus_postprocess_seconds": {
+          "mean": 1.2804069723339733,
+          "std_population": 0.490318720850493,
+          "values": [
+            1.973785374997533,
+            0.9275157500014757,
+            0.939919792002911
+          ]
+        },
+        "cached_end_to_end_seconds": {
+          "mean": 1.4972318473289004,
+          "std_population": 0.490318720850493,
+          "values": [
+            2.19061024999246,
+            1.1443406249964028,
+            1.156744666997838
+          ]
+        }
+      }
+    }
+  },
+  "reproducibility_note": "wall-clock values are environment-dependent and are verified by bounds, not byte identity"
+}

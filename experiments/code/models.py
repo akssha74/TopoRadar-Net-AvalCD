@@ -437,9 +437,9 @@ class CombinedGeoLoss(nn.Module):
         geo_penalty = torch.tensor(0.0, device=logits.device)
         if topo is not None and self.geo_weight > 0.0:
             slope_deg = topo[:, 1:2, :, :] * 60.0
-            inadmissible = (slope_deg < 5.0) | (slope_deg > 65.0)
-            if inadmissible.any():
-                geo_penalty = (probs * inadmissible.float()).sum() / (inadmissible.float().sum() + 1e-6)
+            slope_prior_mask = (slope_deg < 5.0) | (slope_deg > 65.0)
+            if slope_prior_mask.any():
+                geo_penalty = (probs * slope_prior_mask.float()).sum() / (slope_prior_mask.float().sum() + 1e-6)
 
         total_loss = bce + self.dice_weight * dice + self.geo_weight * geo_penalty
 

@@ -1,0 +1,644 @@
+{
+  "protocol": {
+    "status": "post-hoc exploratory operational proxy",
+    "calibration_fit": "Platt logistic calibration on connected components from two development-visible validation scenes",
+    "component_min_pixels": 10,
+    "component_truth_overlap": 0.3,
+    "alert_probability_selection": "validation component-F2 grid, 0.05 to 0.95 in 0.05 steps",
+    "road_buffer_metres": 30.0,
+    "road_source": "experiments/external/osm_major_roads_20260919.json",
+    "road_snapshot_sha256": "82ee3b232d220525939555581acfdf97820a92bee250c6834b7cc7e1ee215ead",
+    "road_snapshot_content_hash": "cec5121fea61634af208b2e74e71b2c1ac4c0153d9ea2b22d1d130facef4ce7b",
+    "checkpoint_sha256": {
+      "Swin-UNet_seed123.pth": "90ae17d5af362e6161615def68f54b03de4a56398495e0f552d36fa278805a2d",
+      "Swin-UNet_seed42.pth": "9f06e8af281c5dc05452662b03de0fc0b7b2b66b4613239a605b11035eb9899a",
+      "Swin-UNet_seed456.pth": "b0573f43af3b1c842c0a16e87094a16057e21a118266af96260f30566ee4b211",
+      "TopoRadar-Net_seed123.pth": "10f174f79a6cbfed184abdd95090d82b88e7ff2ee7a1256bd2bb1122e3f7f85a",
+      "TopoRadar-Net_seed42.pth": "e4399a6297aed204d20deb9a1252a03d4c87f3930f6b8a8ae8dd03e7c42c0a21",
+      "TopoRadar-Net_seed456.pth": "340c7626cf0a72be45210852631c4455befdf3f130bce1edfc5e949868ead8d7"
+    },
+    "limitations": [
+      "No stakeholder or dispatch outcome was measured.",
+      "Road proximity is a retrospective proxy, not operational benefit.",
+      "The held-out scenes were previously used for the primary paper evaluation; this extension is exploratory."
+    ]
+  },
+  "per_seed": {
+    "42": {
+      "TopoRadar-Net": {
+        "checkpoint": "TopoRadar-Net_seed42.pth",
+        "threshold": 0.79,
+        "platt": {
+          "coefficient": 2.338362130064525,
+          "intercept": -6.854505462756979,
+          "validation_true_components": 127,
+          "validation_false_components": 357,
+          "validation_selected_alert_probability": 0.2,
+          "validation_component_f2": 0.6790123456790124
+        },
+        "regions": {
+          "Tromso_Arctic": {
+            "component_count": 143,
+            "true_component_count": 88,
+            "raw_brier": 0.31141078516477466,
+            "calibrated_brier": 0.20071670812018014,
+            "raw_ece_10bin": 0.31079720617174267,
+            "calibrated_ece_10bin": 0.1902353806495606,
+            "road_way_count": 65,
+            "road_length_km": 56.00728912937656,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 4,
+            "corridor_true_alerts": 0,
+            "corridor_false_alerts": 4,
+            "corridor_alert_precision": 0.0,
+            "corridor_gt_components": 1,
+            "corridor_gt_detected": 0,
+            "corridor_gt_recall": 0.0
+          },
+          "Pamir_HighMountain": {
+            "component_count": 322,
+            "true_component_count": 102,
+            "raw_brier": 0.5389266727417124,
+            "calibrated_brier": 0.18213763656323154,
+            "raw_ece_10bin": 0.5805066048358538,
+            "calibrated_ece_10bin": 0.11373855882382194,
+            "road_way_count": 31,
+            "road_length_km": 86.88197558926723,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 6,
+            "corridor_true_alerts": 5,
+            "corridor_false_alerts": 1,
+            "corridor_alert_precision": 0.8333333333333334,
+            "corridor_gt_components": 8,
+            "corridor_gt_detected": 5,
+            "corridor_gt_recall": 0.625
+          }
+        }
+      },
+      "Attention U-Net": {
+        "checkpoint": "Swin-UNet_seed42.pth",
+        "threshold": 0.8,
+        "platt": {
+          "coefficient": 3.305183713628027,
+          "intercept": -8.86800517470983,
+          "validation_true_components": 136,
+          "validation_false_components": 382,
+          "validation_selected_alert_probability": 0.25,
+          "validation_component_f2": 0.7251381215469613
+        },
+        "regions": {
+          "Tromso_Arctic": {
+            "component_count": 136,
+            "true_component_count": 91,
+            "raw_brier": 0.2741883429824637,
+            "calibrated_brier": 0.19129144245069435,
+            "raw_ece_10bin": 0.26259356605656015,
+            "calibrated_ece_10bin": 0.1419509748603395,
+            "road_way_count": 65,
+            "road_length_km": 56.00728912937656,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 6,
+            "corridor_true_alerts": 0,
+            "corridor_false_alerts": 6,
+            "corridor_alert_precision": 0.0,
+            "corridor_gt_components": 1,
+            "corridor_gt_detected": 0,
+            "corridor_gt_recall": 0.0
+          },
+          "Pamir_HighMountain": {
+            "component_count": 401,
+            "true_component_count": 107,
+            "raw_brier": 0.5812069799247265,
+            "calibrated_brier": 0.13215484422609328,
+            "raw_ece_10bin": 0.6325338711762369,
+            "calibrated_ece_10bin": 0.039850268457600486,
+            "road_way_count": 31,
+            "road_length_km": 86.88197558926723,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 7,
+            "corridor_true_alerts": 5,
+            "corridor_false_alerts": 2,
+            "corridor_alert_precision": 0.7142857142857143,
+            "corridor_gt_components": 8,
+            "corridor_gt_detected": 5,
+            "corridor_gt_recall": 0.625
+          }
+        }
+      }
+    },
+    "123": {
+      "TopoRadar-Net": {
+        "checkpoint": "TopoRadar-Net_seed123.pth",
+        "threshold": 0.7100000000000001,
+        "platt": {
+          "coefficient": 2.327616961970675,
+          "intercept": -5.70348967027826,
+          "validation_true_components": 133,
+          "validation_false_components": 379,
+          "validation_selected_alert_probability": 0.25,
+          "validation_component_f2": 0.6898907103825137
+        },
+        "regions": {
+          "Tromso_Arctic": {
+            "component_count": 149,
+            "true_component_count": 88,
+            "raw_brier": 0.3000971616054383,
+            "calibrated_brier": 0.20850524664017323,
+            "raw_ece_10bin": 0.2948211551512648,
+            "calibrated_ece_10bin": 0.18527657906902367,
+            "road_way_count": 65,
+            "road_length_km": 56.00728912937656,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 4,
+            "corridor_true_alerts": 0,
+            "corridor_false_alerts": 4,
+            "corridor_alert_precision": 0.0,
+            "corridor_gt_components": 1,
+            "corridor_gt_detected": 0,
+            "corridor_gt_recall": 0.0
+          },
+          "Pamir_HighMountain": {
+            "component_count": 385,
+            "true_component_count": 106,
+            "raw_brier": 0.5027873132818111,
+            "calibrated_brier": 0.17566492437758963,
+            "raw_ece_10bin": 0.5649408298653441,
+            "calibrated_ece_10bin": 0.08415371261435203,
+            "road_way_count": 31,
+            "road_length_km": 86.88197558926723,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 5,
+            "corridor_true_alerts": 4,
+            "corridor_false_alerts": 1,
+            "corridor_alert_precision": 0.8,
+            "corridor_gt_components": 8,
+            "corridor_gt_detected": 4,
+            "corridor_gt_recall": 0.5
+          }
+        }
+      },
+      "Attention U-Net": {
+        "checkpoint": "Swin-UNet_seed123.pth",
+        "threshold": 0.8,
+        "platt": {
+          "coefficient": 3.813407258873016,
+          "intercept": -10.88719329749041,
+          "validation_true_components": 131,
+          "validation_false_components": 516,
+          "validation_selected_alert_probability": 0.2,
+          "validation_component_f2": 0.7113259668508287
+        },
+        "regions": {
+          "Tromso_Arctic": {
+            "component_count": 145,
+            "true_component_count": 90,
+            "raw_brier": 0.315331956880628,
+            "calibrated_brier": 0.2020336106900965,
+            "raw_ece_10bin": 0.312208681270994,
+            "calibrated_ece_10bin": 0.15935678904972522,
+            "road_way_count": 65,
+            "road_length_km": 56.00728912937656,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 5,
+            "corridor_true_alerts": 0,
+            "corridor_false_alerts": 5,
+            "corridor_alert_precision": 0.0,
+            "corridor_gt_components": 1,
+            "corridor_gt_detected": 0,
+            "corridor_gt_recall": 0.0
+          },
+          "Pamir_HighMountain": {
+            "component_count": 383,
+            "true_component_count": 101,
+            "raw_brier": 0.5933205209935283,
+            "calibrated_brier": 0.1262740812781681,
+            "raw_ece_10bin": 0.6424541249287656,
+            "calibrated_ece_10bin": 0.056246581134552956,
+            "road_way_count": 31,
+            "road_length_km": 86.88197558926723,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 7,
+            "corridor_true_alerts": 6,
+            "corridor_false_alerts": 1,
+            "corridor_alert_precision": 0.8571428571428571,
+            "corridor_gt_components": 8,
+            "corridor_gt_detected": 6,
+            "corridor_gt_recall": 0.75
+          }
+        }
+      }
+    },
+    "456": {
+      "TopoRadar-Net": {
+        "checkpoint": "TopoRadar-Net_seed456.pth",
+        "threshold": 0.7000000000000001,
+        "platt": {
+          "coefficient": 3.9589326190570113,
+          "intercept": -6.56976971339026,
+          "validation_true_components": 128,
+          "validation_false_components": 246,
+          "validation_selected_alert_probability": 0.15,
+          "validation_component_f2": 0.7453825857519789
+        },
+        "regions": {
+          "Tromso_Arctic": {
+            "component_count": 137,
+            "true_component_count": 90,
+            "raw_brier": 0.2350919277516568,
+            "calibrated_brier": 0.2133839620257556,
+            "raw_ece_10bin": 0.18854287419005905,
+            "calibrated_ece_10bin": 0.15797377445217586,
+            "road_way_count": 65,
+            "road_length_km": 56.00728912937656,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 6,
+            "corridor_true_alerts": 0,
+            "corridor_false_alerts": 6,
+            "corridor_alert_precision": 0.0,
+            "corridor_gt_components": 1,
+            "corridor_gt_detected": 0,
+            "corridor_gt_recall": 0.0
+          },
+          "Pamir_HighMountain": {
+            "component_count": 245,
+            "true_component_count": 108,
+            "raw_brier": 0.3449333663849607,
+            "calibrated_brier": 0.23473309203591602,
+            "raw_ece_10bin": 0.342192301458242,
+            "calibrated_ece_10bin": 0.202198474997159,
+            "road_way_count": 31,
+            "road_length_km": 86.88197558926723,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 7,
+            "corridor_true_alerts": 6,
+            "corridor_false_alerts": 1,
+            "corridor_alert_precision": 0.8571428571428571,
+            "corridor_gt_components": 8,
+            "corridor_gt_detected": 6,
+            "corridor_gt_recall": 0.75
+          }
+        }
+      },
+      "Attention U-Net": {
+        "checkpoint": "Swin-UNet_seed456.pth",
+        "threshold": 0.8,
+        "platt": {
+          "coefficient": 3.1067521755116787,
+          "intercept": -9.398737748869266,
+          "validation_true_components": 146,
+          "validation_false_components": 561,
+          "validation_selected_alert_probability": 0.2,
+          "validation_component_f2": 0.6618531889290012
+        },
+        "regions": {
+          "Tromso_Arctic": {
+            "component_count": 156,
+            "true_component_count": 93,
+            "raw_brier": 0.3426278811294985,
+            "calibrated_brier": 0.18510797394604303,
+            "raw_ece_10bin": 0.34502373482936455,
+            "calibrated_ece_10bin": 0.1533629741458752,
+            "road_way_count": 65,
+            "road_length_km": 56.00728912937656,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 4,
+            "corridor_true_alerts": 0,
+            "corridor_false_alerts": 4,
+            "corridor_alert_precision": 0.0,
+            "corridor_gt_components": 1,
+            "corridor_gt_detected": 0,
+            "corridor_gt_recall": 0.0
+          },
+          "Pamir_HighMountain": {
+            "component_count": 509,
+            "true_component_count": 104,
+            "raw_brier": 0.6601796670376663,
+            "calibrated_brier": 0.11233499405967358,
+            "raw_ece_10bin": 0.7127399891907668,
+            "calibrated_ece_10bin": 0.04669812770948157,
+            "road_way_count": 31,
+            "road_length_km": 86.88197558926723,
+            "road_buffer_m": 30.0,
+            "corridor_alert_count": 8,
+            "corridor_true_alerts": 6,
+            "corridor_false_alerts": 2,
+            "corridor_alert_precision": 0.75,
+            "corridor_gt_components": 8,
+            "corridor_gt_detected": 6,
+            "corridor_gt_recall": 0.75
+          }
+        }
+      }
+    }
+  },
+  "aggregate": {
+    "TopoRadar-Net": {
+      "Tromso_Arctic": {
+        "raw_brier": {
+          "mean": 0.28219995817395654,
+          "std_population": 0.0336290986816659,
+          "values": [
+            0.31141078516477466,
+            0.3000971616054383,
+            0.2350919277516568
+          ]
+        },
+        "calibrated_brier": {
+          "mean": 0.20753530559536967,
+          "std_population": 0.005216666854092129,
+          "values": [
+            0.20071670812018014,
+            0.20850524664017323,
+            0.2133839620257556
+          ]
+        },
+        "raw_ece_10bin": {
+          "mean": 0.26472041183768885,
+          "std_population": 0.05425907901352711,
+          "values": [
+            0.31079720617174267,
+            0.2948211551512648,
+            0.18854287419005905
+          ]
+        },
+        "calibrated_ece_10bin": {
+          "mean": 0.17782857805692007,
+          "std_population": 0.014184671254938217,
+          "values": [
+            0.1902353806495606,
+            0.18527657906902367,
+            0.15797377445217586
+          ]
+        },
+        "corridor_alert_count": {
+          "mean": 4.666666666666667,
+          "std_population": 0.9428090415820634,
+          "values": [
+            4.0,
+            4.0,
+            6.0
+          ]
+        },
+        "corridor_false_alerts": {
+          "mean": 4.666666666666667,
+          "std_population": 0.9428090415820634,
+          "values": [
+            4.0,
+            4.0,
+            6.0
+          ]
+        },
+        "corridor_alert_precision": {
+          "mean": 0.0,
+          "std_population": 0.0,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "corridor_gt_recall": {
+          "mean": 0.0,
+          "std_population": 0.0,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "road_length_km": 56.00728912937656,
+        "corridor_gt_components": 1
+      },
+      "Pamir_HighMountain": {
+        "raw_brier": {
+          "mean": 0.4622157841361614,
+          "std_population": 0.08423335626190832,
+          "values": [
+            0.5389266727417124,
+            0.5027873132818111,
+            0.3449333663849607
+          ]
+        },
+        "calibrated_brier": {
+          "mean": 0.19751188432557906,
+          "std_population": 0.02645168839376893,
+          "values": [
+            0.18213763656323154,
+            0.17566492437758963,
+            0.23473309203591602
+          ]
+        },
+        "raw_ece_10bin": {
+          "mean": 0.4958799120531467,
+          "std_population": 0.10885918909424971,
+          "values": [
+            0.5805066048358538,
+            0.5649408298653441,
+            0.342192301458242
+          ]
+        },
+        "calibrated_ece_10bin": {
+          "mean": 0.133363582145111,
+          "std_population": 0.05014975996469106,
+          "values": [
+            0.11373855882382194,
+            0.08415371261435203,
+            0.202198474997159
+          ]
+        },
+        "corridor_alert_count": {
+          "mean": 6.0,
+          "std_population": 0.816496580927726,
+          "values": [
+            6.0,
+            5.0,
+            7.0
+          ]
+        },
+        "corridor_false_alerts": {
+          "mean": 1.0,
+          "std_population": 0.0,
+          "values": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "corridor_alert_precision": {
+          "mean": 0.8301587301587302,
+          "std_population": 0.02343622707973552,
+          "values": [
+            0.8333333333333334,
+            0.8,
+            0.8571428571428571
+          ]
+        },
+        "corridor_gt_recall": {
+          "mean": 0.625,
+          "std_population": 0.10206207261596575,
+          "values": [
+            0.625,
+            0.5,
+            0.75
+          ]
+        },
+        "road_length_km": 86.88197558926723,
+        "corridor_gt_components": 8
+      }
+    },
+    "Attention U-Net": {
+      "Tromso_Arctic": {
+        "raw_brier": {
+          "mean": 0.3107160603308634,
+          "std_population": 0.028130321377041467,
+          "values": [
+            0.2741883429824637,
+            0.315331956880628,
+            0.3426278811294985
+          ]
+        },
+        "calibrated_brier": {
+          "mean": 0.19281100902894463,
+          "std_population": 0.00699290625025174,
+          "values": [
+            0.19129144245069435,
+            0.2020336106900965,
+            0.18510797394604303
+          ]
+        },
+        "raw_ece_10bin": {
+          "mean": 0.3066086607189729,
+          "std_population": 0.03388414923053303,
+          "values": [
+            0.26259356605656015,
+            0.312208681270994,
+            0.34502373482936455
+          ]
+        },
+        "calibrated_ece_10bin": {
+          "mean": 0.15155691268531332,
+          "std_population": 0.007219740780127338,
+          "values": [
+            0.1419509748603395,
+            0.15935678904972522,
+            0.1533629741458752
+          ]
+        },
+        "corridor_alert_count": {
+          "mean": 5.0,
+          "std_population": 0.816496580927726,
+          "values": [
+            6.0,
+            5.0,
+            4.0
+          ]
+        },
+        "corridor_false_alerts": {
+          "mean": 5.0,
+          "std_population": 0.816496580927726,
+          "values": [
+            6.0,
+            5.0,
+            4.0
+          ]
+        },
+        "corridor_alert_precision": {
+          "mean": 0.0,
+          "std_population": 0.0,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "corridor_gt_recall": {
+          "mean": 0.0,
+          "std_population": 0.0,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "road_length_km": 56.00728912937656,
+        "corridor_gt_components": 1
+      },
+      "Pamir_HighMountain": {
+        "raw_brier": {
+          "mean": 0.611569055985307,
+          "std_population": 0.034726820561531424,
+          "values": [
+            0.5812069799247265,
+            0.5933205209935283,
+            0.6601796670376663
+          ]
+        },
+        "calibrated_brier": {
+          "mean": 0.12358797318797832,
+          "std_population": 0.008311357597046307,
+          "values": [
+            0.13215484422609328,
+            0.1262740812781681,
+            0.11233499405967358
+          ]
+        },
+        "raw_ece_10bin": {
+          "mean": 0.6625759950985898,
+          "std_population": 0.03570175146113157,
+          "values": [
+            0.6325338711762369,
+            0.6424541249287656,
+            0.7127399891907668
+          ]
+        },
+        "calibrated_ece_10bin": {
+          "mean": 0.04759832576721167,
+          "std_population": 0.00672396384867606,
+          "values": [
+            0.039850268457600486,
+            0.056246581134552956,
+            0.04669812770948157
+          ]
+        },
+        "corridor_alert_count": {
+          "mean": 7.333333333333333,
+          "std_population": 0.4714045207910317,
+          "values": [
+            7.0,
+            7.0,
+            8.0
+          ]
+        },
+        "corridor_false_alerts": {
+          "mean": 1.6666666666666667,
+          "std_population": 0.4714045207910317,
+          "values": [
+            2.0,
+            1.0,
+            2.0
+          ]
+        },
+        "corridor_alert_precision": {
+          "mean": 0.7738095238095237,
+          "std_population": 0.06070261325705694,
+          "values": [
+            0.7142857142857143,
+            0.8571428571428571,
+            0.75
+          ]
+        },
+        "corridor_gt_recall": {
+          "mean": 0.7083333333333334,
+          "std_population": 0.05892556509887896,
+          "values": [
+            0.625,
+            0.75,
+            0.75
+          ]
+        },
+        "road_length_km": 86.88197558926723,
+        "corridor_gt_components": 8
+      }
+    }
+  }
+}

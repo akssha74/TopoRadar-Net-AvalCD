@@ -1,0 +1,481 @@
+{
+  "protocol": {
+    "scope": "construct audit of the executed heuristic slope prior",
+    "penalty_mask": "slope < 5 degrees or slope > 65 degrees",
+    "interpretation": "descriptive label conflict and subgroup performance; no causal mechanism claim",
+    "checkpoint_sha256": {
+      "Ablation-NoGeoLoss_seed123.pth": "86c28e80c402954727fd056b4a18d07c0e71145b2585bc6074dd8e7282aa3f62",
+      "Ablation-NoGeoLoss_seed42.pth": "09a3afde62eef4ad86ef3c5ef0149597992a769d24b7e198237929d4ebc116fa",
+      "Ablation-NoGeoLoss_seed456.pth": "a47c800504efaf040bb79a57434527e220cd0cf65a55bfd3976ceab6b652f3cf",
+      "TopoRadar-Net_seed123.pth": "10f174f79a6cbfed184abdd95090d82b88e7ff2ee7a1256bd2bb1122e3f7f85a",
+      "TopoRadar-Net_seed42.pth": "e4399a6297aed204d20deb9a1252a03d4c87f3930f6b8a8ae8dd03e7c42c0a21",
+      "TopoRadar-Net_seed456.pth": "340c7626cf0a72be45210852631c4455befdf3f130bce1edfc5e949868ead8d7"
+    }
+  },
+  "positive_label_conflict": {
+    "train": {
+      "valid_positive_pixels": 106442,
+      "penalized_positive_pixels": 19663,
+      "fraction": 0.18472971195580692,
+      "events": {
+        "Livigno_20240403": {
+          "valid_positive_pixels": 31612,
+          "penalized_positive_pixels": 1148,
+          "fraction": 0.03631532329495128
+        },
+        "Livigno_20250129": {
+          "valid_positive_pixels": 11256,
+          "penalized_positive_pixels": 213,
+          "fraction": 0.018923240938166313
+        },
+        "Nuuk_20160413": {
+          "valid_positive_pixels": 63574,
+          "penalized_positive_pixels": 18302,
+          "fraction": 0.2878849844275962
+        }
+      }
+    },
+    "validation": {
+      "valid_positive_pixels": 86802,
+      "penalized_positive_pixels": 824,
+      "fraction": 0.00949286882790719,
+      "events": {
+        "Livigno_20250318": {
+          "valid_positive_pixels": 7360,
+          "penalized_positive_pixels": 32,
+          "fraction": 0.004347826086956522
+        },
+        "Nuuk_20210411": {
+          "valid_positive_pixels": 79442,
+          "penalized_positive_pixels": 792,
+          "fraction": 0.009969537524231515
+        }
+      }
+    },
+    "heldout_test": {
+      "valid_positive_pixels": 56548,
+      "penalized_positive_pixels": 492,
+      "fraction": 0.00870057296456108,
+      "events": {
+        "Tromso_20241220": {
+          "valid_positive_pixels": 33969,
+          "penalized_positive_pixels": 461,
+          "fraction": 0.013571197268097383
+        },
+        "Pish_20230221": {
+          "valid_positive_pixels": 22579,
+          "penalized_positive_pixels": 31,
+          "fraction": 0.0013729571725940033
+        }
+      }
+    },
+    "all": {
+      "valid_positive_pixels": 249792,
+      "penalized_positive_pixels": 20979,
+      "fraction": 0.0839858762490392,
+      "events": {
+        "Livigno_20240403": {
+          "valid_positive_pixels": 31612,
+          "penalized_positive_pixels": 1148,
+          "fraction": 0.03631532329495128
+        },
+        "Livigno_20250129": {
+          "valid_positive_pixels": 11256,
+          "penalized_positive_pixels": 213,
+          "fraction": 0.018923240938166313
+        },
+        "Nuuk_20160413": {
+          "valid_positive_pixels": 63574,
+          "penalized_positive_pixels": 18302,
+          "fraction": 0.2878849844275962
+        },
+        "Livigno_20250318": {
+          "valid_positive_pixels": 7360,
+          "penalized_positive_pixels": 32,
+          "fraction": 0.004347826086956522
+        },
+        "Nuuk_20210411": {
+          "valid_positive_pixels": 79442,
+          "penalized_positive_pixels": 792,
+          "fraction": 0.009969537524231515
+        },
+        "Tromso_20241220": {
+          "valid_positive_pixels": 33969,
+          "penalized_positive_pixels": 461,
+          "fraction": 0.013571197268097383
+        },
+        "Pish_20230221": {
+          "valid_positive_pixels": 22579,
+          "penalized_positive_pixels": 31,
+          "fraction": 0.0013729571725940033
+        }
+      }
+    }
+  },
+  "per_seed": {
+    "42": {
+      "Full TopoRadar-Net": {
+        "checkpoint": "TopoRadar-Net_seed42.pth",
+        "threshold": 0.79,
+        "regions": {
+          "Tromso_Arctic": {
+            "penalty_pixels": 140784,
+            "positive_pixels": 461,
+            "positive_recall": 0.49023861171366595,
+            "metrics": {
+              "precision": 0.6627565982404692,
+              "recall": 0.49023861171366595,
+              "f1": 0.5635910224438903,
+              "f2": 0.5171624713958809,
+              "iou": 0.3923611111111111,
+              "tp": 226.0,
+              "fp": 115.0,
+              "fn": 235.0,
+              "tn": 140208.0
+            }
+          },
+          "Pamir_HighMountain": {
+            "penalty_pixels": 50370,
+            "positive_pixels": 31,
+            "positive_recall": 0.03225806451612903,
+            "metrics": {
+              "precision": 0.02,
+              "recall": 0.03225806451612903,
+              "f1": 0.024691358024691357,
+              "f2": 0.028735632183908046,
+              "iou": 0.0125,
+              "tp": 1.0,
+              "fp": 49.0,
+              "fn": 30.0,
+              "tn": 50290.0
+            }
+          }
+        }
+      },
+      "No-GeoLoss": {
+        "checkpoint": "Ablation-NoGeoLoss_seed42.pth",
+        "threshold": 0.7400000000000001,
+        "regions": {
+          "Tromso_Arctic": {
+            "penalty_pixels": 140784,
+            "positive_pixels": 461,
+            "positive_recall": 0.7939262472885033,
+            "metrics": {
+              "precision": 0.3556851311953353,
+              "recall": 0.7939262472885033,
+              "f1": 0.4912751677852349,
+              "f2": 0.6369648451096415,
+              "iou": 0.32562277580071175,
+              "tp": 366.0,
+              "fp": 663.0,
+              "fn": 95.0,
+              "tn": 139660.0
+            }
+          },
+          "Pamir_HighMountain": {
+            "penalty_pixels": 50370,
+            "positive_pixels": 31,
+            "positive_recall": 0.03225806451612903,
+            "metrics": {
+              "precision": 0.010526315789473684,
+              "recall": 0.03225806451612903,
+              "f1": 0.015873015873015872,
+              "f2": 0.0228310502283105,
+              "iou": 0.008,
+              "tp": 1.0,
+              "fp": 94.0,
+              "fn": 30.0,
+              "tn": 50245.0
+            }
+          }
+        }
+      }
+    },
+    "123": {
+      "Full TopoRadar-Net": {
+        "checkpoint": "TopoRadar-Net_seed123.pth",
+        "threshold": 0.7100000000000001,
+        "regions": {
+          "Tromso_Arctic": {
+            "penalty_pixels": 140784,
+            "positive_pixels": 461,
+            "positive_recall": 0.5488069414316703,
+            "metrics": {
+              "precision": 0.5394456289978679,
+              "recall": 0.5488069414316703,
+              "f1": 0.5440860215053764,
+              "f2": 0.546908776480761,
+              "iou": 0.37370753323485967,
+              "tp": 253.0,
+              "fp": 216.0,
+              "fn": 208.0,
+              "tn": 140107.0
+            }
+          },
+          "Pamir_HighMountain": {
+            "penalty_pixels": 50370,
+            "positive_pixels": 31,
+            "positive_recall": 0.0,
+            "metrics": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "f2": 0.0,
+              "iou": 0.0,
+              "tp": 0.0,
+              "fp": 142.0,
+              "fn": 31.0,
+              "tn": 50197.0
+            }
+          }
+        }
+      },
+      "No-GeoLoss": {
+        "checkpoint": "Ablation-NoGeoLoss_seed123.pth",
+        "threshold": 0.7300000000000001,
+        "regions": {
+          "Tromso_Arctic": {
+            "penalty_pixels": 140784,
+            "positive_pixels": 461,
+            "positive_recall": 0.7071583514099783,
+            "metrics": {
+              "precision": 0.35243243243243244,
+              "recall": 0.7071583514099783,
+              "f1": 0.4704184704184704,
+              "f2": 0.5886601661249548,
+              "iou": 0.30754716981132074,
+              "tp": 326.0,
+              "fp": 599.0,
+              "fn": 135.0,
+              "tn": 139724.0
+            }
+          },
+          "Pamir_HighMountain": {
+            "penalty_pixels": 50370,
+            "positive_pixels": 31,
+            "positive_recall": 0.0,
+            "metrics": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "f2": 0.0,
+              "iou": 0.0,
+              "tp": 0.0,
+              "fp": 70.0,
+              "fn": 31.0,
+              "tn": 50269.0
+            }
+          }
+        }
+      }
+    },
+    "456": {
+      "Full TopoRadar-Net": {
+        "checkpoint": "TopoRadar-Net_seed456.pth",
+        "threshold": 0.7000000000000001,
+        "regions": {
+          "Tromso_Arctic": {
+            "penalty_pixels": 140784,
+            "positive_pixels": 461,
+            "positive_recall": 0.4750542299349241,
+            "metrics": {
+              "precision": 0.6403508771929824,
+              "recall": 0.4750542299349241,
+              "f1": 0.5454545454545454,
+              "f2": 0.5009149130832571,
+              "iou": 0.375,
+              "tp": 219.0,
+              "fp": 123.0,
+              "fn": 242.0,
+              "tn": 140200.0
+            }
+          },
+          "Pamir_HighMountain": {
+            "penalty_pixels": 50370,
+            "positive_pixels": 31,
+            "positive_recall": 0.0,
+            "metrics": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "f2": 0.0,
+              "iou": 0.0,
+              "tp": 0.0,
+              "fp": 36.0,
+              "fn": 31.0,
+              "tn": 50303.0
+            }
+          }
+        }
+      },
+      "No-GeoLoss": {
+        "checkpoint": "Ablation-NoGeoLoss_seed456.pth",
+        "threshold": 0.7500000000000001,
+        "regions": {
+          "Tromso_Arctic": {
+            "penalty_pixels": 140784,
+            "positive_pixels": 461,
+            "positive_recall": 0.6377440347071583,
+            "metrics": {
+              "precision": 0.48117839607201307,
+              "recall": 0.6377440347071583,
+              "f1": 0.5485074626865671,
+              "f2": 0.5987780040733198,
+              "iou": 0.37789203084832906,
+              "tp": 294.0,
+              "fp": 317.0,
+              "fn": 167.0,
+              "tn": 140006.0
+            }
+          },
+          "Pamir_HighMountain": {
+            "penalty_pixels": 50370,
+            "positive_pixels": 31,
+            "positive_recall": 0.16129032258064516,
+            "metrics": {
+              "precision": 0.0423728813559322,
+              "recall": 0.16129032258064516,
+              "f1": 0.06711409395973154,
+              "f2": 0.10330578512396693,
+              "iou": 0.034722222222222224,
+              "tp": 5.0,
+              "fp": 113.0,
+              "fn": 26.0,
+              "tn": 50226.0
+            }
+          }
+        }
+      }
+    }
+  },
+  "summary": {
+    "Full TopoRadar-Net": {
+      "Tromso_Arctic": {
+        "penalty_pixels": 140784,
+        "positive_pixels": 461,
+        "positive_recall": {
+          "mean": 0.5046999276934201,
+          "std_population": 0.031798457595511254,
+          "values": [
+            0.49023861171366595,
+            0.5488069414316703,
+            0.4750542299349241
+          ]
+        },
+        "f1": {
+          "mean": 0.5510438631346041,
+          "std_population": 0.008889755133460018,
+          "values": [
+            0.5635910224438903,
+            0.5440860215053764,
+            0.5454545454545454
+          ]
+        },
+        "precision": {
+          "mean": 0.6141843681437732,
+          "std_population": 0.053634027947154383,
+          "values": [
+            0.6627565982404692,
+            0.5394456289978679,
+            0.6403508771929824
+          ]
+        }
+      },
+      "Pamir_HighMountain": {
+        "penalty_pixels": 50370,
+        "positive_pixels": 31,
+        "positive_recall": {
+          "mean": 0.01075268817204301,
+          "std_population": 0.015206597444871989,
+          "values": [
+            0.03225806451612903,
+            0.0,
+            0.0
+          ]
+        },
+        "f1": {
+          "mean": 0.008230452674897118,
+          "std_population": 0.011639617797309425,
+          "values": [
+            0.024691358024691357,
+            0.0,
+            0.0
+          ]
+        },
+        "precision": {
+          "mean": 0.006666666666666667,
+          "std_population": 0.009428090415820633,
+          "values": [
+            0.02,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    "No-GeoLoss": {
+      "Tromso_Arctic": {
+        "penalty_pixels": 140784,
+        "positive_pixels": 461,
+        "positive_recall": {
+          "mean": 0.71294287780188,
+          "std_population": 0.06389218231200151,
+          "values": [
+            0.7939262472885033,
+            0.7071583514099783,
+            0.6377440347071583
+          ]
+        },
+        "f1": {
+          "mean": 0.5034003669634242,
+          "std_population": 0.033012502880926685,
+          "values": [
+            0.4912751677852349,
+            0.4704184704184704,
+            0.5485074626865671
+          ]
+        },
+        "precision": {
+          "mean": 0.39643198656659356,
+          "std_population": 0.05993947199943032,
+          "values": [
+            0.3556851311953353,
+            0.35243243243243244,
+            0.48117839607201307
+          ]
+        }
+      },
+      "Pamir_HighMountain": {
+        "penalty_pixels": 50370,
+        "positive_pixels": 31,
+        "positive_recall": {
+          "mean": 0.06451612903225806,
+          "std_population": 0.06968538385384795,
+          "values": [
+            0.03225806451612903,
+            0.0,
+            0.16129032258064516
+          ]
+        },
+        "f1": {
+          "mean": 0.02766236994424914,
+          "std_population": 0.028639332558232995,
+          "values": [
+            0.015873015873015872,
+            0.0,
+            0.06711409395973154
+          ]
+        },
+        "precision": {
+          "mean": 0.017633065715135295,
+          "std_population": 0.018013785267222342,
+          "values": [
+            0.010526315789473684,
+            0.0,
+            0.0423728813559322
+          ]
+        }
+      }
+    }
+  }
+}

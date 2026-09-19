@@ -37,6 +37,12 @@ def main():
         nuuk_res = json.load(f)
     with open(RESULTS_DIR / "operational_triage_footprint.json") as f:
         op_res = json.load(f)
+    with open(RESULTS_DIR / "operational_corridor_validation.json") as f:
+        corridor_res = json.load(f)
+    with open(RESULTS_DIR / "operational_corridor_runtime.json") as f:
+        corridor_runtime = json.load(f)
+    with open(RESULTS_DIR / "geoloss_construct_audit.json") as f:
+        geoloss_audit = json.load(f)
 
     # 1. Verify Table 2: Cross-System Zero-Shot Evaluation
     print("--- 1. Verifying Table 2: Cross-System Zero-Shot Performance ---")
@@ -212,6 +218,61 @@ def main():
     assert param_counts["SiamUNet-diff"] == 2014209, f"SiamUNet-diff param count mismatch: {param_counts['SiamUNet-diff']}"
     print(f"  Parameter source: {parameter_check}")
     print(f"  Parameter counts checked: TopoRadar={param_counts['TopoRadar-Net']:,} (3.46M), Attention U-Net={param_counts['Attention U-Net']:,} (2.29M), ResU-Net={param_counts['ResU-Net']:,} (2.01M), SiamConc={param_counts['SiamUNet-conc']:,} (2.36M), SiamDiff={param_counts['SiamUNet-diff']:,} (2.01M)")
+
+    # 9. Verify exploratory calibrated component/corridor proxy.
+    print("\n--- 9. Verifying Exploratory Calibrated Corridor Proxy ---")
+    topo_pamir = corridor_res["aggregate"]["TopoRadar-Net"]["Pamir_HighMountain"]
+    topo_tromso = corridor_res["aggregate"]["TopoRadar-Net"]["Tromso_Arctic"]
+    assert topo_pamir["corridor_gt_components"] == 8
+    assert topo_tromso["corridor_gt_components"] == 1
+    assert np.isclose(topo_pamir["corridor_alert_precision"]["mean"], 0.8301587301587302)
+    assert np.isclose(topo_pamir["corridor_gt_recall"]["mean"], 0.625)
+    assert np.isclose(topo_tromso["corridor_gt_recall"]["mean"], 0.0)
+    assert topo_pamir["calibrated_brier"]["mean"] < topo_pamir["raw_brier"]["mean"]
+    assert topo_tromso["calibrated_brier"]["mean"] < topo_tromso["raw_brier"]["mean"]
+    for region in ("Tromso_Arctic", "Pamir_HighMountain"):
+        runtimes = corridor_runtime["aggregate"]["TopoRadar-Net"][region][
+            "cached_end_to_end_seconds"
+        ]["values"]
+        assert all(0.0 < runtime < 5.0 for runtime in runtimes)
+    print(
+        "  TopoRadar Pamir corridor alerts: "
+        f"precision={topo_pamir['corridor_alert_precision']['mean']*100:.1f}%, "
+        f"recall={topo_pamir['corridor_gt_recall']['mean']*100:.1f}%; "
+        "Tromso corridor recall=0.0% (1 ground-truth component)."
+    )
+    print(
+        "  Calibration Brier: "
+        f"Tromso {topo_tromso['raw_brier']['mean']:.3f}->"
+        f"{topo_tromso['calibrated_brier']['mean']:.3f}; "
+        f"Pamir {topo_pamir['raw_brier']['mean']:.3f}->"
+        f"{topo_pamir['calibrated_brier']['mean']:.3f}."
+    )
+
+    # 10. Verify the Geo-Loss construct audit and positive-label conflict.
+    print("\n--- 10. Verifying Geo-Loss Construct Audit ---")
+    conflict = geoloss_audit["positive_label_conflict"]
+    assert conflict["train"]["penalized_positive_pixels"] == 19663
+    assert conflict["train"]["valid_positive_pixels"] == 106442
+    assert np.isclose(conflict["train"]["fraction"], 0.18472971195580692)
+    assert conflict["heldout_test"]["penalized_positive_pixels"] == 492
+    full = geoloss_audit["summary"]["Full TopoRadar-Net"]
+    no_geo = geoloss_audit["summary"]["No-GeoLoss"]
+    assert full["Tromso_Arctic"]["positive_recall"]["mean"] < no_geo["Tromso_Arctic"]["positive_recall"]["mean"]
+    assert full["Pamir_HighMountain"]["positive_recall"]["mean"] < no_geo["Pamir_HighMountain"]["positive_recall"]["mean"]
+    print(
+        "  Penalty-mask positive overlap: "
+        f"train={conflict['train']['fraction']*100:.2f}%, "
+        f"validation={conflict['validation']['fraction']*100:.2f}%, "
+        f"held-out={conflict['heldout_test']['fraction']*100:.2f}%."
+    )
+    print(
+        "  Penalized-positive recall, full vs No-GeoLoss: "
+        f"Tromso {full['Tromso_Arctic']['positive_recall']['mean']*100:.2f}% vs "
+        f"{no_geo['Tromso_Arctic']['positive_recall']['mean']*100:.2f}%; "
+        f"Pamir {full['Pamir_HighMountain']['positive_recall']['mean']*100:.2f}% vs "
+        f"{no_geo['Pamir_HighMountain']['positive_recall']['mean']*100:.2f}%."
+    )
 
     print("\n================================================================================")
     print(" STORED-SUMMARY ARITHMETIC VERIFIED; PARAMETER-CHECK SOURCE REPORTED ABOVE")
