@@ -29,6 +29,8 @@ def main():
         boot_multi = json.load(f)
     with open(RESULTS_DIR / "topographic_geometry_stratification.json") as f:
         topo_strat = json.load(f)
+    with open(RESULTS_DIR / "topographic_geometry_stratification_multiseed.json") as f:
+        topo_strat_multiseed = json.load(f)
     with open(RESULTS_DIR / "inference_profile.json") as f:
         inf_prof = json.load(f)
     with open(RESULTS_DIR / "nuuk_validation_results.json") as f:
@@ -110,6 +112,27 @@ def main():
         print(f"  [{reg}] Slope Zone Stratification:")
         for s_name, data in topo_strat[reg]["slope_zones"].items():
             print(f"    {s_name:40s} | TopoRadar F1: {data['toporadar']['f1']*100:.2f}% | AttnUNet F1: {data['swin_unet']['f1']*100:.2f}% | Delta: {data['delta_f1']*100:+.2f}%")
+
+    print("\n--- 5b. Verifying Multi-Seed Topographic-Stratum Stability ---")
+    for reg in ["Tromso_Arctic", "Pamir_HighMountain"]:
+        print(f"  [{reg}]")
+        for family in ["aspect_alignment", "slope_zones"]:
+            for stratum, stored in topo_strat_multiseed["regions"][reg][family].items():
+                per_seed = [
+                    topo_strat_multiseed["per_seed"][reg][str(seed)][family][stratum]
+                    ["delta_f1"]
+                    for seed in [42, 123, 456]
+                ]
+                mean = float(np.mean(per_seed))
+                std = float(np.std(per_seed, ddof=0))
+                assert abs(mean - stored["delta_f1"]["mean"]) < 1e-12
+                assert abs(std - stored["delta_f1"]["std_population"]) < 1e-12
+                assert stored["positive_delta_seeds"] == sum(v > 0 for v in per_seed)
+                print(
+                    f"    {family}/{stratum}: "
+                    f"Delta={mean*100:+.2f} +- {std*100:.2f} pp; "
+                    f"positive={stored['positive_delta_seeds']}/3"
+                )
 
     # 6. Verify Table 7: Nuuk Validation Cohort
     print("\n--- 6. Verifying Table 7: Nuuk Polar Maritime Validation Cohort ---")

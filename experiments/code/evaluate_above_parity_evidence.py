@@ -13,7 +13,7 @@ import torch
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from dataset import load_event, EVENTS_TEST_TROMSO, EVENTS_TEST_PAMIR
-from models import TopoRadarNet, SwinUNetAval, ResUNet, SiamUNetConc, SiamUNetDiff
+from models import TopoRadarNet, AttentionUNetAval, ResUNet, SiamUNetConc, SiamUNetDiff
 from train_eval import evaluate_full_scene, compute_pixel_metrics
 
 EXP_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +30,7 @@ def main():
 
     model_constructors = {
         "TopoRadar-Net": lambda: TopoRadarNet().to(device),
-        "Swin-UNet": lambda: SwinUNetAval().to(device),
+        "Swin-UNet": lambda: AttentionUNetAval().to(device),
         "ResU-Net": lambda: ResUNet().to(device),
         "SiamUNet-conc": lambda: SiamUNetConc().to(device),
         "SiamUNet-diff": lambda: SiamUNetDiff().to(device),

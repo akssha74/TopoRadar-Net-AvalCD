@@ -32,9 +32,9 @@ def main():
             }
         },
         "triage_matrix": [
-            {"tier": "Alert Level 1 (Routine Monitoring)", "prob_range": "p < 0.40", "area_ha": "< 0.1 ha", "action": "Background logging; zero mobilization; noise suppressed."},
-            {"tier": "Alert Level 2 (Priority Reconnaissance)", "prob_range": "0.40 <= p < 0.70", "area_ha": "0.1 - 1.0 ha", "action": "Automated drone/UAV tasking or high-resolution optical satellite cueing."},
-            {"tier": "Alert Level 3 (Emergency Infrastructure Alert)", "prob_range": "p >= 0.70", "area_ha": ">= 1.0 ha (or Class D3/D4)", "action": "Immediate dispatch to highway authorities (e.g. E8/M41) for protective transport corridor closure."}
+            {"tier": "Tier 1 (Low Confidence)", "prob_range": "p < 0.40", "area_ha": "< 0.1 ha", "interpretation": "Routine background monitoring."},
+            {"tier": "Tier 2 (Moderate Confidence)", "prob_range": "0.40 <= p < 0.70", "area_ha": "0.1 - 1.0 ha", "interpretation": "Recommended expert review or optical cross-examination."},
+            {"tier": "Tier 3 (High Confidence)", "prob_range": "p >= 0.70", "area_ha": ">= 1.0 ha", "interpretation": "Prioritized expert inspection along transport corridors."}
         ]
     }
 

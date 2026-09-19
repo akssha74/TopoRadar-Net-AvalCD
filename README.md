@@ -21,7 +21,7 @@ Automated mapping of snow avalanche debris in steep alpine terrain using spacebo
 - **Multi-Scale Radar-Topographic Cross-Attention Block (RTCAB):** Full-resolution SAR change features serve as Queries ($\mathbf{Q}$) to interrogate adaptively-pooled regional topographic keys ($\mathbf{K}$) and values ($\mathbf{V}$), dynamically suppressing foreslope clutter while amplifying backslope debris contrast.
 - **Geomorphically Bounded Loss (Geo-Loss):** Regularizes network training by penalizing non-zero probability mass in physically impossible terrain ($<5^\circ$ valley floors and $>65^\circ$ sheer cliffs).
 - **Lightweight Model-Forward Inference:** Only **3.46M parameters** (3,455,729 parameters), achieving full-scene sliding-window model inference in **$1.80 \pm 0.02\text{ s}$** ($668.5\text{ patches/s}$) on Apple Silicon MPS hardware.
-- **Operational Decision-Support Triage Framework:** Translates model predictions into a 3-tier conceptual triage framework, demonstrating a **$30.0\%$ ($72.88\text{ ha}$ nominal grid, $55.63\text{ ha}$ affine physical reduction) clutter reduction** in continental high-relief terrain.
+- **Operational Decision-Support Triage Framework:** Accompanies an explicitly unvalidated 3-tier conceptual framework with a **$30.0\%$ ($72.88\text{ ha}$ nominal-grid equivalent, $55.63\text{ ha}$ affine physical difference) false-alarm difference** in continental high-relief terrain.
 
 ---
 
@@ -63,14 +63,12 @@ Evaluated across 3 independent training seeds under strict zero-shot regional do
 - **Overall Hit Rate (HR@0.3, $n=117$ polygons):** $\mathbf{75.50\% \pm 1.61\%}$ ($88.3 / 117$ mean detected polygons).
 
 ### 4. Topographic Radar Geometry Stratification (Table 6)
-- **Backslopes ($\theta_{\text{align}} < -0.3$):** Consistent $>+5\%$ F1 gain across both mountain systems:
-  - *Tromsø (Coastal Fjord):* $+5.85\%$ F1 ($81.08\%$ vs $75.23\%$), driven by a **$+12.28\%$ recall surge** ($65.20\% \to 77.48\%$).
-  - *Pamir (Continental Relief):* $+5.09\%$ F1 ($53.42\%$ vs $48.33\%$), driven by a **$+13.95\%$ precision surge** ($38.41\% \to 52.36\%$).
-- **Active Avalanche Chutes ($25^\circ\text{--}45^\circ$ slope):** $+4.34\%$ F1 in Tromsø ($81.34\%$ vs $77.00\%$).
-- **Extreme Steep Shadow Boundary ($>45^\circ$ in Pamir):** Both networks drop precipitously ($8.85\%$ vs $16.65\%$, $\Delta = -7.80\%$), honestly identifying the geomorphic boundary condition where radar shadow signal voids prevent reliable SAR mapping.
+- **Exploratory Seed-42 backslope differences:** $+5.85\%$ F1 in Tromsø and $+5.09\%$ in Pamir.
+- **Three-seed stability check:** those differences are not stable across training seeds; mean backslope differences versus Attention U-Net are $-0.34\% \pm 6.28\%$ in Tromsø and $+1.20\% \pm 7.73\%$ in Pamir (positive in two of three seeds per system).
+- **Extreme-steep strata:** highly seed-variable, delimiting directional-conditioning claims rather than establishing a causal mechanism.
 
 ### 5. Operational Decision-Support Triage Framework (Table 8)
-- **Pamir Mountains ($359.10\text{ km}^2$ valid mask):** TopoRadar-Net achieves a **$30.0\%$ ($72.88\text{ ha}$ nominal grid, $55.63\text{ ha}$ affine physical reduction) false-alarm clutter reduction** ($169.89\text{ ha}$, $0.47\text{ ha/km}^2$) compared to Attention U-Net ($242.77\text{ ha}$, $0.68\text{ ha/km}^2$) and a $43.9\%$ reduction compared to SiamUNet-conc ($302.63\text{ ha}$, $0.84\text{ ha/km}^2$).
+- **Pamir Mountains ($359.10\text{ km}^2$ valid mask):** TopoRadar-Net records a **$30.0\%$ ($72.88\text{ ha}$ nominal-grid equivalent, $55.63\text{ ha}$ affine physical difference) lower false-alarm footprint** ($169.89\text{ ha}$, $0.47\text{ ha/km}^2$) than Attention U-Net ($242.77\text{ ha}$, $0.68\text{ ha/km}^2$).
 - **Tromsø ($245.87\text{ km}^2$ valid mask):** Detects $270.09\text{ ha}$ of true avalanche debris ($95.8\%$ Class D4 events) at $0.36\text{ ha/km}^2$ false-alarm density ($87.82\text{ ha}$), reflecting an operational trade-off prioritizing catastrophic event completeness over coastal fringe clutter.
 
 ---
@@ -88,6 +86,7 @@ TopoRadar-Net-AvalCD/
 │   │   ├── models.py                   # TopoRadar-Net architecture, RTCAB, & CombinedGeoLoss
 │   │   ├── train_eval.py               # Complete training, validation, & zero-shot evaluation pipeline
 │   │   ├── evaluate_above_parity_evidence.py # 339-block spatial cluster bootstrap & stratification
+│   │   ├── evaluate_multiseed_stratification.py # 3-seed stability of terrain strata
 │   │   ├── evaluate_nuuk_validation.py # Polar maritime validation cohort analysis
 │   │   ├── profile_operational_triage.py # Operational triage matrix & physical clutter profiling
 │   │   ├── profile_inference.py        # Latency, parameter count, and throughput profiling
@@ -100,6 +99,7 @@ TopoRadar-Net-AvalCD/
 │           ├── bootstrap_significance.json           # Single-scene paired spatial bootstrap
 │           ├── spatial_multiregion_cluster_bootstrap.json # 339-block spatial cluster bootstrap
 │           ├── topographic_geometry_stratification.json   # Aspect & slope stratification
+│           ├── topographic_geometry_stratification_multiseed.json # 3-seed stability
 │           ├── nuuk_validation_results.json          # Greenland validation results
 │           ├── operational_triage_footprint.json     # Quantitative false-alarm footprints
 │           └── inference_profile.json                # Runtime and memory profiling
@@ -140,7 +140,7 @@ python reviews/harness.py
 ```
 
 ### 3. Pretrained Model Checkpoints
-Download the 3-seed trained model weights (`toporadar_checkpoints_3seeds.tar.gz`, 37 MB) from [Release v1.0.2](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.2):
+Download the 3-seed trained model weights (`toporadar_checkpoints_3seeds.tar.gz`, 37 MB) from [Release v1.0.3](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.3):
 ```bash
 # Extract into experiments/derived/checkpoints/
 mkdir -p experiments/derived/checkpoints
@@ -160,6 +160,7 @@ python experiments/code/train_eval.py --epochs 6
 
 # Evaluate genuine 339-block spatial cluster bootstrap and topographic stratification
 python experiments/code/evaluate_above_parity_evidence.py
+python experiments/code/evaluate_multiseed_stratification.py
 
 # Evaluate polar maritime validation cohort (Nuuk, Greenland)
 python experiments/code/evaluate_nuuk_validation.py

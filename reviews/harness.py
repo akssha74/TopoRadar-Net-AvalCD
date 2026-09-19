@@ -42,6 +42,13 @@ def load_topographic_stratification() -> dict:
     with open(strat_path) as f:
         return json.load(f)
 
+def load_multiseed_topographic_stratification() -> dict:
+    strat_path = RESULTS_DIR / "topographic_geometry_stratification_multiseed.json"
+    if not strat_path.exists():
+        raise FileNotFoundError(f"Missing multi-seed stratification summary: {strat_path}")
+    with open(strat_path) as f:
+        return json.load(f)
+
 def load_nuuk_validation() -> dict:
     nuuk_path = RESULTS_DIR / "nuuk_validation_results.json"
     if not nuuk_path.exists():
@@ -80,6 +87,18 @@ def verify_all_bounds():
     delta_pamir_backslope = topo_strat["Pamir_HighMountain"]["aspect_alignment"]["Backslopes (Facing Away, align < -0.3)"]["delta_f1"]
     assert delta_pamir_backslope > 0.05, f"Pamir backslope delta {delta_pamir_backslope:.4f} <= 0.05"
 
+    # Verify that the manuscript correctly narrows Seed-42 patterns using all seeds.
+    multi = load_multiseed_topographic_stratification()
+    backslope = "Backslopes (Facing Away, align < -0.3)"
+    tromso_multi = multi["regions"]["Tromso_Arctic"]["aspect_alignment"][backslope]
+    pamir_multi = multi["regions"]["Pamir_HighMountain"]["aspect_alignment"][backslope]
+    assert np.isclose(tromso_multi["delta_f1"]["mean"], -0.0034226984431335503)
+    assert np.isclose(tromso_multi["delta_f1"]["std_population"], 0.0628276475245984)
+    assert np.isclose(pamir_multi["delta_f1"]["mean"], 0.011952338891495514)
+    assert np.isclose(pamir_multi["delta_f1"]["std_population"], 0.07734477727516495)
+    assert tromso_multi["positive_delta_seeds"] == 2
+    assert pamir_multi["positive_delta_seeds"] == 2
+
     # Verify Nuuk validation
     nuuk_res = load_nuuk_validation()
     nuuk_models = nuuk_res["Nuuk_20210411_Validation_Cohort"]["models"]
@@ -94,7 +113,7 @@ def verify_all_bounds():
     pamir_fa_rate = op_res["regions"]["Pamir_HighMountain"]["models"]["TopoRadar-Net"]["false_alarm_rate_ha_per_km2"]
     assert pamir_fa_rate == 0.47, f"Pamir TopoRadar FA rate {pamir_fa_rate} != 0.47"
 
-    print("Harness check PASS: All primary summary bounds, 339-block spatial cluster bootstrap, topographic stratification, Nuuk validation, and operational triage verified.")
+    print("Harness check PASS: Primary summaries, 339-block bootstrap, exploratory Seed-42 and confirmatory multi-seed stratification, Nuuk validation, and operational triage verified.")
 
 if __name__ == "__main__":
     print("Testing reviewer harness...")
