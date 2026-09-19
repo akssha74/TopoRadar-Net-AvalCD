@@ -59,7 +59,7 @@
 | Resource | Verified Live Link | Status | Contents |
 |---|---|:---:|---|
 | **Public Project Repository** | [https://github.com/akssha74/TopoRadar-Net-AvalCD](https://github.com/akssha74/TopoRadar-Net-AvalCD) | **200 OK** | Full PyTorch code, documentation, verification suites |
-| **Release v1.0.6 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.6](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.6) | **200 OK** | Immutable post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, synchronized submission-support sources/PDFs, `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net, 3 seeds), `source_package.zip` |
+| **Release v1.0.7 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.7](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.7) | **200 OK** | Immutable post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, synchronized submission-support sources/PDFs, `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net, 3 seeds), `source_package.zip` |
 | **AvalCD Benchmark (Zenodo)** | [https://doi.org/10.5281/zenodo.15863589](https://doi.org/10.5281/zenodo.15863589) | **200 OK** | Ground truth masks, Sentinel-1 SAR, DEM, LIA |
 
 ---
@@ -75,8 +75,8 @@
 ## 6. Pre-Submission Quality & Review History
 
 * **Reviewer Model Parity (Latest Completed Independent State):**
-  * **GLM-5.2 Round 25:** **28 / 30** — score target achieved; its sole stale-public-support-file blocker is resolved in v1.0.6.
-  * **Claude Opus 4.8 Round 24:** **27 / 30 (`accept`)** — 0 result/evidence blockers; Round-25 verification pending.
+  * **GLM-5.2 Round 25:** **28 / 30** — score target achieved; its sole stale-public-support-file blocker is resolved in v1.0.6/v1.0.7.
+  * **Claude Opus 4.8 Round 25:** **28 / 30 (`accept`)** — 0 result/evidence blockers; its sole minor bootstrap-label note is resolved in v1.0.7.
   * **GPT-5.6 Round 24:** **26 / 30** — all seven findings are resolved in v1.0.5/v1.0.6; Round-25 verification pending.
   * Final all-panel convergence verification is pending.
 * **Reproduction Gate:** **100% PASS** (13 pages, 0 undefined citations, 0 undefined references, 0 missing markers, all code/data artifacts byte-reproducible).
