@@ -41,6 +41,7 @@ from models import (
     SiamUNetDiff,
     SiamUNetConc,
     ResUNet,
+    AttentionUNetAval,
     SwinUNetAval,
     CombinedGeoLoss,
 )
