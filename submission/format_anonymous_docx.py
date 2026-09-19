@@ -9,6 +9,7 @@ from pathlib import Path
 from docx import Document
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
 from docx.shared import Mm, Pt
+from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
 
@@ -18,6 +19,30 @@ def set_run_font(run, size=10.0, bold=None):
     run.font.size = Pt(size)
     if bold is not None:
         run.bold = bold
+
+
+def set_repeat_table_header(row):
+    tr_pr = row._tr.get_or_add_trPr()
+    header = OxmlElement("w:tblHeader")
+    header.set(qn("w:val"), "true")
+    tr_pr.append(header)
+
+
+def prevent_row_split(row):
+    tr_pr = row._tr.get_or_add_trPr()
+    cant_split = OxmlElement("w:cantSplit")
+    cant_split.set(qn("w:val"), "true")
+    tr_pr.append(cant_split)
+
+
+def set_fixed_layout(table):
+    table.autofit = False
+    table_pr = table._tbl.tblPr
+    layout = table_pr.find(qn("w:tblLayout"))
+    if layout is None:
+        layout = OxmlElement("w:tblLayout")
+        table_pr.append(layout)
+    layout.set(qn("w:type"), "fixed")
 
 
 def main():
@@ -68,8 +93,24 @@ def main():
         for run in paragraph.runs:
             set_run_font(run, 10.0)
 
-    for table in document.tables:
-        table.autofit = True
+    header_rows = (1, 2, 1, 2, 2, 2, 1, 1)
+    widths_mm = {
+        1: (32, 13, 22, 18, 18, 22, 16, 18),  # Table 2
+        4: (38, 20, 18, 18, 22, 18, 18),      # Table 5
+        5: (17, 45, 15, 16, 16, 16, 16, 14),  # Table 6
+    }
+    for table_index, table in enumerate(document.tables):
+        if table_index in widths_mm:
+            set_fixed_layout(table)
+            for row in table.rows:
+                for cell, width in zip(row.cells, widths_mm[table_index]):
+                    cell.width = Mm(width)
+        else:
+            table.autofit = True
+        for row_index, row in enumerate(table.rows):
+            prevent_row_split(row)
+            if row_index < header_rows[table_index]:
+                set_repeat_table_header(row)
         for row in table.rows:
             for cell in row.cells:
                 cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
@@ -83,7 +124,8 @@ def main():
     document.save(path)
     print(
         f"Formatted {path}: A4, 25.4 mm margins, Times New Roman 10 pt, "
-        "single-spaced, 0 pt paragraph-after (tables 8.5 pt)."
+        "single-spaced, 0 pt paragraph-after; tables 8.5 pt with repeated "
+        "headers and non-splitting rows."
     )
 
 

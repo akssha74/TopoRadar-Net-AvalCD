@@ -10,7 +10,7 @@
 |---|---|---|---|
 | 1 | Fill in all authors' info (name, affiliation, email) in online system | To be entered in ScholarOne (kept out of main doc) | See §2 below |
 | 2 | Cover letter stating novelty, conflicts of interest, reviewer exclusions; each author agrees to submission | Cover letter updated with COI statement, opposed-reviewer statement, and author-agreement statement | `cover_letter.pdf` / `.md` |
-| 3 | Upload **editable WORD** main body, **no author/institution info** (double-blind); figures/tables embedded if < 10 MB | Anonymized `.docx` generated (0.86 MB, 4 figures + 8 tables embedded, all identifying info stripped). **v2 fix (06-Sep):** cross-references resolved to real numbers (Table 1–8, Fig. 1–4, Eq. 4/5, Section n) from compiled `.aux`; all 12 float captions restored with bold "Table N."/"Fig. N." prefixes; tables switched to AutoFit-to-window at 9 pt so wide tables no longer fragment/clip in the ScholarOne proof. | `JMS_26-11479_Main_Manuscript_Anonymous.docx` |
+| 3 | Upload **editable WORD** main body, **no author/institution info** (double-blind); figures/tables embedded if < 10 MB | Anonymized `.docx` generated (0.75 MB; 4 figures and 8 tables embedded; identifying information stripped). Explicit A4, Times New Roman 10 pt, single spacing, and 0 pt paragraph-after are encoded. Tables use 8.5 pt text; rows cannot split; multi-row headers repeat across pages; Tables 2/5/6 use fixed column widths. | `JMS_26-11479_Main_Manuscript_Anonymous.docx` |
 
 **Manuscript ID:** 26-11479
 
@@ -59,7 +59,7 @@
 | Resource | Verified Live Link | Status | Contents |
 |---|---|:---:|---|
 | **Public Project Repository** | [https://github.com/akssha74/TopoRadar-Net-AvalCD](https://github.com/akssha74/TopoRadar-Net-AvalCD) | **200 OK** | Full PyTorch code, documentation, verification suites |
-| **Release v1.0.12 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.12](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.12) | **200 OK** | Versioned post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, JMS-formatted anonymous DOCX support, comprehensive source ZIP, and `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net + No-GeoLoss, 3 seeds) |
+| **Release v1.0.13 (Weights & Paper)** | [https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.13](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.13) | **200 OK** | Versioned post-freeze package: `main.pdf` (13 pages), `main_anonymous.pdf`, the formatted anonymous DOCX, comprehensive source ZIP, and `publication_checkpoints_3seeds.tar.gz` (TopoRadar-Net + Attention U-Net + No-GeoLoss, 3 seeds) |
 | **AvalCD Benchmark (Zenodo)** | [https://doi.org/10.5281/zenodo.15863589](https://doi.org/10.5281/zenodo.15863589) | **200 OK** | Ground truth masks, Sentinel-1 SAR, DEM, LIA |
 
 ---
@@ -77,7 +77,7 @@
 * **Reviewer Model Parity (Latest Completed Independent State):**
   * **GLM-5.2 Round 28:** **29 / 30 (`accept`)** — 0 findings on v1.0.10.
   * **Claude Opus 4.8 Round 29:** **29 / 30 (`accept`)** — 0 result/evidence findings; sole optional superlative wording note resolved in v1.0.12.
-  * **GPT-5.6 Round 28:** **26 / 30 (`major revision`)** — valid-mask, scope, figure, and DOCX findings are addressed in v1.0.11; re-verification pending. GPT identifies a repair-only ceiling of 28 without prospective stakeholder outcomes.
+  * **GPT-5.6 Round 29:** **27 / 30 (`minor administrative revision`)** — 0 result/evidence findings; Word pagination and upload-flow findings are addressed in v1.0.13. GPT identifies a current-evidence ceiling of 28 without prospective stakeholder outcomes.
   * Final all-panel convergence verification is pending.
 * **Reproduction Gate:** **100% PASS** (13 pages, 0 undefined citations, 0 undefined references, 0 missing markers, all code/data artifacts byte-reproducible).
 * **Convergence Status:** **Pending Round-24 confirmation.**

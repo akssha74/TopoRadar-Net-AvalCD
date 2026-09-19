@@ -21,10 +21,10 @@ All assets are located in:
 
 | Submission Asset | Path | Upload Role in ScholarOne |
 |---|---|---|
-| **Primary Manuscript PDF** | `paper/main.pdf` (13 pages) | **Main Document** |
+| **Anonymous Editable Manuscript** | `submission/JMS_26-11479_Main_Manuscript_Anonymous.docx` | **Main Document** |
 | **Cover Letter (PDF)** | `submission/cover_letter.pdf` | **Cover Letter** |
-| **Complete LaTeX Source (ZIP)**| `submission/source_package.zip` | **Supplemental / Source Files** |
-| **Individual Vector Figures** | `paper/figures/*.pdf` | **Figure / Graphic** |
+| **Anonymous Reference PDF** | `paper/main_anonymous.pdf` (13 pages) | Upload only if the portal requests a PDF companion |
+| **Complete LaTeX Source (ZIP)**| `submission/source_package.zip` | Source files, if requested |
 
 ---
 
@@ -77,16 +77,16 @@ Enter the 5 independent domain experts from the cover letter:
 5. **Dr. Elisabeth D. Hafner** (`elisabeth.hafner@slf.ch`), WSL Institute for Snow and Avalanche Research SLF, Switzerland.
 
 #### Step 6: File Uploads
-1. Upload `studies/mountain-avalcd-toporadar/paper/main.pdf` $\rightarrow$ File Designation: **"Main Document"**.
+1. Upload `studies/mountain-avalcd-toporadar/submission/JMS_26-11479_Main_Manuscript_Anonymous.docx` $\rightarrow$ File Designation: **"Main Document"**. This editable Word file is anonymous, A4, 10-point, and single-spaced.
 2. Upload `studies/mountain-avalcd-toporadar/submission/cover_letter.pdf` $\rightarrow$ File Designation: **"Cover Letter"**.
-3. Upload `studies/mountain-avalcd-toporadar/submission/source_package.zip` $\rightarrow$ File Designation: **"Supplementary File for Review"** or **"LaTeX Source Files"**.
+3. Upload `studies/mountain-avalcd-toporadar/submission/source_package.zip` only if ScholarOne requests source files. Do not designate the identified `paper/main.pdf` as the double-blind main document.
 
 #### Step 7: Declarations & Checklists
 * **Conflict of Interest:** Select "None / The authors declare no competing interests".
 * **Funding Statement:** Select "No external funding received for this research".
 * **Data Availability:** Check "Data available in public repository" and provide:
   ```text
-  The AvalCD benchmark dataset is publicly available on Zenodo (DOI: 10.5281/zenodo.15863589). All code and publication-bound TopoRadar-Net, Attention U-Net, and No-GeoLoss checkpoints (seeds 42, 123, 456) are available under versioned post-freeze Release v1.0.12 (https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.12).
+  The AvalCD benchmark dataset is publicly available on Zenodo (DOI: 10.5281/zenodo.15863589). All code, publication-bound checkpoints, and the formatted anonymous Word manuscript are available under versioned post-freeze Release v1.0.13 (https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.13).
   ```
 
 #### Step 8: PDF Review & Submit
