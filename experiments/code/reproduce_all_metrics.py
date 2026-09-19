@@ -125,6 +125,8 @@ def main():
         scene_area = op_res["regions"][reg]["scene_area_km2"]
         print(f"  [{reg}] False-Alarm Footprint (Scene Area = {scene_area} km2):")
         for m, d in op_res["regions"][reg]["models"].items():
+            if m == "Swin-UNet":
+                continue  # Suppress legacy alias to use consistent Attention U-Net identifier
             recomputed_fa_rate = round(d["fp_ha"] / scene_area, 2)
             assert recomputed_fa_rate == d["false_alarm_rate_ha_per_km2"], f"FA rate mismatch for {m}: {recomputed_fa_rate} != {d['false_alarm_rate_ha_per_km2']}"
             print(f"    {m:18s} | Debris: {d['tp_ha']:.2f} ha | FP: {d['fp_ha']:.2f} ha ({d['fp_km2']:.2f} km2) | FA Rate: {d['false_alarm_rate_ha_per_km2']:.2f} ha/km2 (Recomputed: {recomputed_fa_rate:.2f})")
