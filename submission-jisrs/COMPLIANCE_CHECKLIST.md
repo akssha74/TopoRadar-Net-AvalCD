@@ -28,11 +28,12 @@ Verified: 20 September 2026
 - [x] Anonymous supplementary PDF supplied as Online Resource 1
 - [x] Cover letter names the article type, contribution, scope fit, negative findings, originality, author approval, funding, and competing interests
 - [x] Manuscript is not under consideration elsewhere, per explicit user confirmation
+- [x] Build has no overfull, undefined-reference, missing-character, or citation warnings. Remaining `sn-jnl` underfull-vbox notices arise from double-spaced float/reference page balancing and have no visible overlap or clipping; they are accepted as cosmetic.
 
 ## Submission-system checks still requiring human confirmation
 
 - [ ] Select the standard subscription/non-open-access route and confirm that the live system shows no mandatory APC, page, or colour charge
-- [ ] Paste the current 192-word abstract into the submission metadata field
+- [ ] Paste the current 199-word abstract into the submission metadata field
 - [ ] Upload the anonymous DOCX as the main manuscript
 - [ ] Upload the identified title-page DOCX separately
 - [ ] Upload the anonymous supplementary PDF as Online Resource 1

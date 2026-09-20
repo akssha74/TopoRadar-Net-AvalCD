@@ -117,8 +117,8 @@ def draw_box(x, y, width, height, text, key, fontsize=9.2, subtext=""):
 
 
 # Stage 1 — inputs.
-draw_box(0.55, 5.75, 2.05, 0.8, "Pre-event SAR", "sar", subtext="VV, VH")
-draw_box(0.55, 4.45, 2.05, 0.8, "Post-event SAR", "sar", subtext="VV, VH")
+draw_box(0.55, 5.75, 2.05, 0.8, "Pre-event SAR", "sar", subtext="cross-pol · co-pol")
+draw_box(0.55, 4.45, 2.05, 0.8, "Post-event SAR", "sar", subtext="cross-pol · co-pol")
 draw_box(
     0.55,
     1.30,

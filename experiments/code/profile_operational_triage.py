@@ -13,10 +13,9 @@ def main():
     with open(RESULTS_DIR / "valid_mask_area_audit.json") as f:
         area_audit = json.load(f)["regions"]
 
-    # Pixel resolution on standard 10m grid: 100 m^2 = 0.01 ha = 0.0001 km^2
     operational_data = {
-        "unit_scale": "1 pixel = 100 m^2 = 0.01 ha = 0.0001 km^2 (nominal grid); affine areas scale proportionally",
-        "area_authority": "valid_mask_area_audit.json derived from raw finite-raster valid masks",
+        "unit_scale": "physical area uses each region's affine pixel determinant; nominal 10 m-grid equivalents are retained in explicitly named fields",
+        "area_authority": "valid_mask_area_audit.json derived from authoritative raster transforms and finite-raster valid masks",
         "regions": {},
         "triage_matrix": [
             {"tier": "Tier 1 (Low Confidence)", "prob_range": "p < 0.40", "area_ha": "< 0.1 ha", "interpretation": "Routine background monitoring."},
@@ -27,14 +26,19 @@ def main():
 
     for reg, reg_key in [("Tromso_Arctic", "Tromso_Arctic"), ("Pamir_HighMountain", "Pamir_HighMountain")]:
         audit = area_audit[reg]
+        affine_pixel_area_m2 = audit["affine_pixel_area_m2"]
+        affine_ha_per_pixel = affine_pixel_area_m2 / 10000.0
+        affine_km2_per_pixel = affine_pixel_area_m2 / 1000000.0
         gt_metrics = d["TopoRadar-Net"]["seeds"]["42"]["regions"][reg_key]["pixel"]
         gt_pixels = int(gt_metrics["tp"] + gt_metrics["fn"])
         operational_data["regions"][reg] = {
             "full_grid_pixels": audit["full_grid_pixels"],
             "valid_pixels": audit["valid_pixels"],
-            "scene_area_km2": round(audit["nominal_valid_area_km2"], 4),
-            "affine_valid_area_km2": round(audit["affine_valid_area_km2"], 4),
-            "debris_ground_truth_ha": round(gt_pixels * 0.01, 2),
+            "scene_area_km2": round(audit["affine_valid_area_km2"], 6),
+            "affine_pixel_area_m2": affine_pixel_area_m2,
+            "nominal_valid_area_km2": round(audit["nominal_valid_area_km2"], 4),
+            "debris_ground_truth_ha": round(gt_pixels * affine_ha_per_pixel, 2),
+            "debris_ground_truth_ha_nominal_grid_equivalent": round(gt_pixels * 0.01, 2),
             "models": {},
         }
         scene_area = operational_data["regions"][reg]["scene_area_km2"]
@@ -45,16 +49,19 @@ def main():
             mean_fp = sum(fps) / 3.0
             mean_tp = sum(tps) / 3.0
             mean_fn = sum(fns) / 3.0
-            fp_ha = mean_fp * 0.01
-            tp_ha = mean_tp * 0.01
-            fn_ha = mean_fn * 0.01
-            fp_km2 = fp_ha * 0.01
+            fp_ha = mean_fp * affine_ha_per_pixel
+            tp_ha = mean_tp * affine_ha_per_pixel
+            fn_ha = mean_fn * affine_ha_per_pixel
+            fp_km2 = mean_fp * affine_km2_per_pixel
             fa_rate = fp_ha / scene_area
             record = {
                 "tp_ha": round(tp_ha, 2),
                 "fp_ha": round(fp_ha, 2),
                 "fp_km2": round(fp_km2, 2),
                 "fn_ha": round(fn_ha, 2),
+                "tp_ha_nominal_grid_equivalent": round(mean_tp * 0.01, 2),
+                "fp_ha_nominal_grid_equivalent": round(mean_fp * 0.01, 2),
+                "fn_ha_nominal_grid_equivalent": round(mean_fn * 0.01, 2),
                 "false_alarm_rate_ha_per_km2": round(fa_rate, 2)
             }
             operational_data["regions"][reg]["models"][m] = record

@@ -42,6 +42,8 @@ The event-level binding and interpretation limits are recorded in:
 - **ResU-Net** — residual U-Net baseline
 - **Bottleneck self-attention U-Net** — internal baseline with four-head self-attention only at the deepest feature map; it is not canonical Attention U-Net or Swin-UNet
 
+For provenance continuity, this baseline's three checkpoint members retain the legacy filenames `Swin-UNet_seed{42,123,456}.pth`. The filenames are aliases only; the instantiated class is `AttentionUNetAval` and contains no shifted-window transformer blocks.
+
 ## Reproduce manuscript metrics
 
 ```bash

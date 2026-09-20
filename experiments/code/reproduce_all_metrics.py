@@ -197,6 +197,16 @@ def main():
             recomputed_fa_rate = round(d["fp_ha"] / scene_area, 2)
             assert recomputed_fa_rate == d["false_alarm_rate_ha_per_km2"], f"FA rate mismatch for {m}: {recomputed_fa_rate} != {d['false_alarm_rate_ha_per_km2']}"
             print(f"    {m:18s} | Debris: {d['tp_ha']:.2f} ha | FP: {d['fp_ha']:.2f} ha ({d['fp_km2']:.2f} km2) | FA Rate: {d['false_alarm_rate_ha_per_km2']:.2f} ha/km2 (Recomputed: {recomputed_fa_rate:.2f})")
+    assert np.isclose(op_res["regions"]["Tromso_Arctic"]["scene_area_km2"], 196.819927)
+    assert np.isclose(op_res["regions"]["Pamir_HighMountain"]["scene_area_km2"], 267.434948)
+    assert np.isclose(
+        op_res["regions"]["Tromso_Arctic"]["models"]["TopoRadar-Net"]["fp_ha"],
+        74.77,
+    )
+    assert np.isclose(
+        op_res["regions"]["Pamir_HighMountain"]["models"]["TopoRadar-Net"]["fp_ha"],
+        129.69,
+    )
 
     # 8. Verify Inference Profile & Model Parameters
     print("\n--- 8. Verifying Inference & Parameter Profile ---")

@@ -21,4 +21,6 @@ python3 ../submission-jisrs/check_compliance.py
 
 The script enforces the 4,000-word Research Article limit, 200-word abstract limit, keyword/highlight counts, highlight character limits, heading depth, and required data/declaration/AI sections.
 
-The full pre-retarget manuscript remains in `../paper/`; this directory is the separate JISRS-formatted submission variant.
+This directory is the complete JISRS-formatted manuscript source and builds independently from the public source package.
+
+The internal bottleneck self-attention baseline retains legacy checkpoint filenames beginning `Swin-UNet_` for provenance continuity; the model class and this mapping are disclosed in Online Resource 1.

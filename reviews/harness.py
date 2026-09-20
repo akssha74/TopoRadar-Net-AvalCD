@@ -194,6 +194,20 @@ def verify_all_bounds():
     assert pamir_fa_rate == 0.48, f"Pamir TopoRadar FA rate {pamir_fa_rate} != 0.48"
     assert op_res["regions"]["Tromso_Arctic"]["valid_pixels"] == 2311510
     assert op_res["regions"]["Pamir_HighMountain"]["valid_pixels"] == 3503382
+    assert np.isclose(op_res["regions"]["Tromso_Arctic"]["scene_area_km2"], 196.819927)
+    assert np.isclose(op_res["regions"]["Pamir_HighMountain"]["scene_area_km2"], 267.434948)
+    tromso_models = op_res["regions"]["Tromso_Arctic"]["models"]
+    pamir_models = op_res["regions"]["Pamir_HighMountain"]["models"]
+    assert np.isclose(tromso_models["TopoRadar-Net"]["fp_ha"], 74.77)
+    assert np.isclose(tromso_models["Attention U-Net"]["fp_ha"], 58.19)
+    assert np.isclose(pamir_models["TopoRadar-Net"]["fp_ha"], 129.69)
+    assert np.isclose(pamir_models["Attention U-Net"]["fp_ha"], 185.32)
+    assert np.isclose(
+        tromso_models["TopoRadar-Net"]["fp_ha_nominal_grid_equivalent"], 87.82
+    )
+    assert np.isclose(
+        pamir_models["TopoRadar-Net"]["fp_ha_nominal_grid_equivalent"], 169.89
+    )
 
     # Verify the explicitly exploratory, non-stakeholder operational proxy.
     corridor = load_operational_corridor_validation()
