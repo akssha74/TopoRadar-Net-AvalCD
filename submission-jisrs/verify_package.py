@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import zipfile
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from docx import Document
@@ -55,8 +56,9 @@ def main() -> None:
         encoding="utf-8"
     )
     with zipfile.ZipFile(SUBMISSION / "JISRS_Main_Manuscript_Anonymous.docx") as docx:
-        anonymous_text += docx.read("word/document.xml").decode("utf-8")
-        docx_document_xml = docx.read("word/document.xml").decode("utf-8")
+        document_xml_bytes = docx.read("word/document.xml")
+        anonymous_text += document_xml_bytes.decode("utf-8")
+        docx_document_xml = document_xml_bytes.decode("utf-8")
         core = docx.read("docProps/core.xml").decode("utf-8")
 
     identity_terms = (
@@ -80,6 +82,45 @@ def main() -> None:
     ):
         if required_text not in docx_document_xml:
             raise SystemExit(f"Anonymous DOCX missing required text: {required_text}")
+
+    namespaces = {
+        "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+        "m": "http://schemas.openxmlformats.org/officeDocument/2006/math",
+    }
+    root = ET.fromstring(document_xml_bytes)
+    paragraph_records: list[tuple[str, bytes]] = []
+    text_tags = {f"{{{namespaces['w']}}}t", f"{{{namespaces['m']}}}t"}
+    for paragraph in root.iter(f"{{{namespaces['w']}}}p"):
+        text = "".join(
+            node.text or "" for node in paragraph.iter() if node.tag in text_tags
+        )
+        paragraph_records.append((text, ET.tostring(paragraph)))
+
+    table2_caption = next(
+        (text for text, _ in paragraph_records if text.startswith("Table 2.")),
+        None,
+    )
+    if table2_caption is None or "±" not in table2_caption or "30%" not in table2_caption:
+        raise SystemExit("DOCX Table 2 caption lost its ± or 30% math content")
+
+    affine_record = next(
+        (
+            (text, xml)
+            for text, xml in paragraph_records
+            if text.startswith("The affine valid-mask area is")
+        ),
+        None,
+    )
+    if affine_record is None:
+        raise SystemExit("DOCX lacks the affine-area paragraph")
+    affine_text, affine_xml = affine_record
+    if "km²" not in affine_text or "km⁻²" not in affine_text:
+        raise SystemExit("DOCX affine-area paragraph lacks contiguous Unicode units")
+    affine_element = ET.fromstring(affine_xml)
+    if any(
+        node.tag == f"{{{namespaces['w']}}}i" for node in affine_element.iter()
+    ):
+        raise SystemExit("DOCX affine-area unit paragraph contains italic runs")
 
     document = Document(SUBMISSION / "JISRS_Main_Manuscript_Anonymous.docx")
     if not document.sections:
@@ -144,6 +185,45 @@ def main() -> None:
         pages_match = re.search(r"(?m)^Pages:\s+(\d+)", page_info)
         if not pages_match or int(pages_match.group(1)) not in (12, 13):
             raise SystemExit("Rendered DOCX does not satisfy the 12-13 page target")
+
+        stored_preview = SUBMISSION / "JISRS_Main_Manuscript_Anonymous.pdf"
+        stored_text = subprocess.run(
+            ["pdftotext", str(stored_preview), "-"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        if re.sub(r"\s+", " ", stored_text).strip() != re.sub(
+            r"\s+", " ", extracted
+        ).strip():
+            raise SystemExit("Stored DOCX preview text differs from a fresh render")
+
+        fresh_prefix = Path(temp) / "fresh"
+        stored_prefix = Path(temp) / "stored"
+        subprocess.run(
+            ["pdftoppm", "-png", "-r", "96", str(rendered), str(fresh_prefix)],
+            check=True,
+            capture_output=True,
+        )
+        subprocess.run(
+            [
+                "pdftoppm",
+                "-png",
+                "-r",
+                "96",
+                str(stored_preview),
+                str(stored_prefix),
+            ],
+            check=True,
+            capture_output=True,
+        )
+        fresh_pages = sorted(Path(temp).glob("fresh-*.png"))
+        stored_pages = sorted(Path(temp).glob("stored-*.png"))
+        if len(fresh_pages) != len(stored_pages) or any(
+            fresh.read_bytes() != stored.read_bytes()
+            for fresh, stored in zip(fresh_pages, stored_pages)
+        ):
+            raise SystemExit("Stored DOCX preview raster differs from a fresh render")
 
     with zipfile.ZipFile(SUBMISSION / "source_package.zip") as source:
         names = set(source.namelist())
