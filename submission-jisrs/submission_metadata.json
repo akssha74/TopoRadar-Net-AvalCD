@@ -1,0 +1,52 @@
+{
+  "target_journal": "Journal of the Indian Society of Remote Sensing",
+  "publisher": "Springer Nature / Indian Society of Remote Sensing",
+  "journal_url": "https://link.springer.com/journal/12524",
+  "guidelines_url": "https://link.springer.com/journal/12524/submission-guidelines",
+  "article_type": "Research Article",
+  "peer_review": "double-blind",
+  "title": "Terrain-Conditioned Cross-Attention for Cross-Region Avalanche Debris Mapping with Sentinel-1 SAR",
+  "running_title": "Terrain-Conditioned Avalanche Mapping",
+  "keywords": [
+    "Sentinel-1 SAR",
+    "snow avalanche mapping",
+    "semantic segmentation",
+    "radar geometry",
+    "cross-region evaluation",
+    "deep learning"
+  ],
+  "authors": [
+    {
+      "name": "Akshay Sharma",
+      "corresponding": true,
+      "email": "akssha74@gmail.com",
+      "affiliation": "Department of Computer Science and Engineering, SAGE University, Indore 452020, Madhya Pradesh, India"
+    },
+    {
+      "name": "Lalji Prasad",
+      "corresponding": false,
+      "email": "lalji.research@gmail.com",
+      "affiliation": "Department of Computer Science and Engineering, SAGE University, Indore 452020, Madhya Pradesh, India"
+    }
+  ],
+  "main_document": "submission-jisrs/JISRS_Main_Manuscript_Anonymous.docx",
+  "main_document_pdf_preview": "submission-jisrs/JISRS_Main_Manuscript_Anonymous.pdf",
+  "title_page": "submission-jisrs/JISRS_Title_Page.docx",
+  "supplementary_information": "submission-jisrs/JISRS_Supplementary_Information.pdf",
+  "cover_letter": "submission-jisrs/cover_letter.pdf",
+  "highlights": "submission-jisrs/highlights.txt",
+  "source_package": "submission-jisrs/source_package.zip",
+  "word_limits": {
+    "main_text_actual": 2038,
+    "abstract_actual": 199,
+    "main_text_max": 4000,
+    "abstract_max": 200
+  },
+  "publication_model": "hybrid",
+  "planned_route": "standard subscription / non-open-access",
+  "submission_status": "prepared-not-submitted",
+  "prior_submission_confirmation": "User confirmed on 20 September 2026 that this manuscript was never submitted to JMS or SPIE and is not under consideration elsewhere.",
+  "data_url": "https://doi.org/10.5281/zenodo.15863589",
+  "code_release": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.23",
+  "verified_on": "2026-09-20"
+}

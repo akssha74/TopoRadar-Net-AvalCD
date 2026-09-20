@@ -9,7 +9,7 @@ import torch
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from dataset import load_event
-from models import TopoRadarNet, SwinUNetAval, ResUNet, SiamUNetConc, SiamUNetDiff
+from models import TopoRadarNet, AttentionUNetAval, ResUNet, SiamUNetConc, SiamUNetDiff
 from train_eval import evaluate_full_scene, compute_pixel_metrics
 
 EXP_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +23,7 @@ def main():
     models = ["TopoRadar-Net", "Swin-UNet", "ResU-Net", "SiamUNet-conc", "SiamUNet-diff"]
     model_classes = {
         "TopoRadar-Net": TopoRadarNet,
-        "Swin-UNet": SwinUNetAval,
+        "Swin-UNet": AttentionUNetAval,
         "ResU-Net": ResUNet,
         "SiamUNet-conc": SiamUNetConc,
         "SiamUNet-diff": SiamUNetDiff

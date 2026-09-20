@@ -28,10 +28,10 @@ EVENTS_TEST_PAMIR = ["Pish_20230221"]
 @dataclass
 class EventData:
     event: str
-    pre_sar: np.ndarray      # (2, H, W) [VH, VV] dB
-    post_sar: np.ndarray     # (2, H, W) [VH, VV] dB
-    diff_sar: np.ndarray     # (3, H, W) [diff_VH, diff_VV, diff_ratio]
-    topo_geom: np.ndarray    # (6, H, W) [cos(LIA), slope_norm, sin(asp), cos(asp), dem_norm, align_look]
+    pre_sar: np.ndarray      # (2, H, W) [cross-pol, co-pol] dB; Nuuk=HV/HH, others=VH/VV
+    post_sar: np.ndarray     # (2, H, W) [cross-pol, co-pol] dB; Nuuk=HV/HH, others=VH/VV
+    diff_sar: np.ndarray     # (3, H, W) [diff_cross, diff_co, diff_cross-minus-co]
+    topo_geom: np.ndarray    # (6, H, W) [cos(LIA), slope_norm, sin(asp), cos(asp), dem_norm, fixed_aspect_ref]
     valid_mask: np.ndarray   # (H, W) bool
     gt_mask: np.ndarray      # (H, W) uint8
     polygons_gdf: Optional[gpd.GeoDataFrame] = None
@@ -61,6 +61,8 @@ def read_raster(path: Path) -> tuple[np.ndarray, dict]:
 
 def load_event(event_name: str, root_dir: Path = RAW_DATA_DIR) -> EventData:
     p = root_dir / event_name
+    # Distributed AvalCD filenames use VH/VV tokens for every event. Per the
+    # dataset documentation, the Nuuk files semantically contain HV/HH.
     pre_vh, meta = read_raster(p / f"{event_name}_preVH.tif")
     pre_vv, _ = read_raster(p / f"{event_name}_preVV.tif")
     post_vh, _ = read_raster(p / f"{event_name}_postVH.tif")
@@ -101,8 +103,9 @@ def load_event(event_name: str, root_dir: Path = RAW_DATA_DIR) -> EventData:
 
     dem_norm = (np.nan_to_num(dem, nan=2000.0) - 2000.0) / 1000.0
 
-    # Sentinel-1 nominal look vectors (ascending look ~78 deg, descending look ~282 deg)
-    # Alignment with ascending look direction:
+    # Fixed nominal ascending-reference coordinate used by the released checkpoints.
+    # This is not bound to authoritative per-event orbit headings; see
+    # event_sensor_manifest.json for the interpretation boundary.
     align_look = np.cos(asp_rad - math.radians(78.0))
 
     # Clean NaNs in features with sentinel values

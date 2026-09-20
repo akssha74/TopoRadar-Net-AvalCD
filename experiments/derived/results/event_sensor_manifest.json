@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "purpose": "Bind each AvalCD event to the executed two-channel polarization semantics and disclose the fixed-reference aspect feature used by released checkpoints.",
+  "dataset_authority": {
+    "name": "AvalCD",
+    "doi": "https://doi.org/10.5281/zenodo.15863589",
+    "note": "AvalCD documentation identifies Nuuk as HH/HV and the remaining scenes as VV/VH. Distributed filenames retain VH/VV tokens for every scene, so semantic roles are recorded here explicitly."
+  },
+  "executed_channel_positions": {
+    "position_0": "cross-polarized backscatter: VH for Livigno/Tromso/Pish; HV for Nuuk",
+    "position_1": "co-polarized backscatter: VV for Livigno/Tromso/Pish; HH for Nuuk"
+  },
+  "events": [
+    {
+      "event": "Livigno_20240403",
+      "role": "train",
+      "polarization_pair": "VV/VH",
+      "position_0": "VH",
+      "position_1": "VV"
+    },
+    {
+      "event": "Livigno_20250129",
+      "role": "train",
+      "polarization_pair": "VV/VH",
+      "position_0": "VH",
+      "position_1": "VV"
+    },
+    {
+      "event": "Nuuk_20160413",
+      "role": "train",
+      "polarization_pair": "HH/HV",
+      "position_0": "HV",
+      "position_1": "HH"
+    },
+    {
+      "event": "Livigno_20250318",
+      "role": "validation",
+      "polarization_pair": "VV/VH",
+      "position_0": "VH",
+      "position_1": "VV"
+    },
+    {
+      "event": "Nuuk_20210411",
+      "role": "validation",
+      "polarization_pair": "HH/HV",
+      "position_0": "HV",
+      "position_1": "HH"
+    },
+    {
+      "event": "Tromso_20241220",
+      "role": "test",
+      "polarization_pair": "VV/VH",
+      "position_0": "VH",
+      "position_1": "VV"
+    },
+    {
+      "event": "Pish_20230221",
+      "role": "test",
+      "polarization_pair": "VV/VH",
+      "position_0": "VH",
+      "position_1": "VV"
+    }
+  ],
+  "fixed_reference_aspect_feature": {
+    "executed_definition": "cos(aspect - 78 degrees)",
+    "reference_azimuth_degrees": 78.0,
+    "interpretation": "fixed nominal ascending-reference aspect coordinate",
+    "not_claimed": [
+      "authoritative per-event radar heading",
+      "verified ascending/descending orbit-pass alignment",
+      "physical invariance"
+    ]
+  }
+}

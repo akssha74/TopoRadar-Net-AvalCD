@@ -1,0 +1,68 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=18mm]{geometry}
+\usepackage{times}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\titleformat{\section}{\large\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{0.7em}{0.25em}
+
+\begin{document}
+\sloppy
+\pagestyle{empty}
+
+\begin{center}
+{\Large\bfseries Terrain-Conditioned Cross-Attention for Cross-Region Avalanche Debris Mapping with Sentinel-1 SAR\par}
+\vspace{0.7em}
+{\large\textbf{Akshay Sharma}\textsuperscript{1,*}, \textbf{Lalji Prasad}\textsuperscript{1}\par}
+\vspace{0.8em}
+{\small\textsuperscript{1}Department of Computer Science and Engineering, SAGE University, Indore 452020, Madhya Pradesh, India\par}
+\vspace{0.6em}
+{\small\textsuperscript{*}Corresponding author: Akshay Sharma, \href{mailto:akssha74@gmail.com}{akssha74@gmail.com}\par}
+\end{center}
+
+\vspace{1.2em}
+\noindent\textbf{Article type:} Research Article\\
+\textbf{Target journal:} Journal of the Indian Society of Remote Sensing\\
+\textbf{Running title:} Terrain-Conditioned Avalanche Mapping\\
+\textbf{Main-text word count:} 2,038 words\\
+\textit{Excludes abstract, tables, figure legends, and references}\\
+\textbf{Figures:} 2 \qquad \textbf{Tables:} 3 \qquad \textbf{Online resources:} 1
+
+\section*{Highlights}
+\begin{itemize}[leftmargin=1.5em,itemsep=0.1em,topsep=0.2em]
+\item The model is tested across four mountain systems and seven avalanche events.
+\item Three training runs show parity with strong alternatives and a gain only over simple differencing.
+\item Terrain inputs help in some regions but do not improve accuracy uniformly.
+\item The slope prior penalizes some pixels that contain genuine avalanche debris.
+\item The road-corridor test succeeds in the Pamirs but misses the only corridor avalanche in northern Norway.
+\end{itemize}
+
+\section*{Author Contributions}
+\noindent\textbf{Akshay Sharma:} Conceptualization, Methodology, Software, Validation, Formal Analysis, Investigation, Data Curation, Visualization, Writing---Original Draft.\\
+\textbf{Lalji Prasad:} Supervision, Methodology, Resources, Validation, Writing---Review and Editing.
+
+\section*{Acknowledgements}
+The authors have no acknowledgements to declare.
+
+\section*{Funding}
+No external grant funding was received for this study.
+
+\section*{Competing Interests}
+The authors declare no competing financial or non-financial interests.
+
+\section*{Ethics Approval and Consent}
+Not applicable; this study uses public remote-sensing data and involves no human participants or animals.
+
+\section*{Consent for Publication}
+Not applicable.
+
+\section*{Data and Code Availability}
+The AvalCD benchmark is available at \url{https://doi.org/10.5281/zenodo.15863589}. Code, checkpoints, the JISRS manuscript source, and verification artifacts are archived at \url{https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.23}.
+
+\section*{Author Agreement}
+Both authors approved the manuscript and agree to its submission. The manuscript has not been published and is not under consideration elsewhere.
+
+\end{document}

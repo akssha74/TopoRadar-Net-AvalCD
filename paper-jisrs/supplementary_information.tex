@@ -1,0 +1,153 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=22mm]{geometry}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{longtable}
+\usepackage{setspace}
+\onehalfspacing
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Supplementary Information\par}
+\vspace{0.5em}
+{\large Terrain-Conditioned Cross-Attention for Cross-Region Avalanche Debris Mapping with Sentinel-1 SAR\par}
+\vspace{0.5em}
+{\small Journal of the Indian Society of Remote Sensing\par}
+\vspace{0.3em}
+{\small Author information withheld for double-blind peer review\par}
+\end{center}
+
+\section*{S1. Radar-topographic formulation}
+
+For terrain slope $\theta$, aspect $\alpha$, and local incidence angle, the terrain tensor contains $\cos(\mathrm{LIA})$, scaled slope, $\sin\alpha$, $\cos\alpha$, scaled elevation, and the fixed-reference coordinate $\theta_{78}=\cos(\alpha-78^\circ)$. The final channel is an aspect coordinate relative to a fixed nominal ascending reference, not an authoritative per-event radar heading, and it does not make SAR responses physically invariant. AvalCD supplies cross/co channel roles as VH/VV for Livigno, Troms{\o}, and Pish and HV/HH for Nuuk. The loader uses supplied decibel rasters without percentile scaling: values outside $[-45,15]$ dB are marked invalid, then missing cross/co values are replaced by $-20/-12$ dB after valid-mask construction. A shared encoder forms multiscale representations, and each Radar-Topographic Cross-Attention Block uses dense SAR-change queries and an $8\times8$ pooled terrain context.
+
+The attended context $O_l$ and spatial terrain gate are
+\begin{align}
+O_l &= \operatorname{softmax}\left(Q_lK_l^\top/\sqrt{d}\right)V_l,\\
+W_l &= \sigma\{\operatorname{Conv}_{1\times1}[\operatorname{GELU}(\operatorname{Conv}_{3\times3}(T_l))]\},\\
+\widetilde{F}_l &= \operatorname{BatchNorm}(F_l^\Delta+O_l)\odot(1+W_l).
+\end{align}
+The loss is positive-weighted binary cross-entropy plus Dice loss and a slope-prior term weighted by 0.5. The slope prior acts below $5^\circ$ and above $65^\circ$. It is not a validity mask because genuine labels occupy those strata.
+
+\section*{S2. Training, inference, and statistical protocol}
+
+Training uses $128\times128$ patches with 64-pixel stride and a 1:1 positive/negative patch ratio, yielding 2,054 patches per epoch. All methods use AdamW, initial learning rate $2\times10^{-4}$, cosine decay, six epochs, batch size 16, weight decay $10^{-4}$, and gradient clipping at 5. Checkpoints maximize balanced validation-patch F1 at threshold 0.5. A full-scene threshold is then selected only on the two validation rasters over 0.20--0.80 in 0.02 increments. Frozen thresholds are applied to Troms{\o} and Pish.
+
+Checkpoint-era augmentation reflects aspect sine under horizontal flips and aspect cosine under vertical flips. Spatial arrays are rotated orthogonally, but the precomputed fixed-reference aspect channel is not directionally recomputed. The released training path is therefore not fully equivariant; directional analyses are descriptive.
+
+Full-scene inference uses Hanning blending. Pixel metrics use valid-mask pixels only. Instance hit rate requires overlap of at least 30\% or 50\% of the reference polygon. Statistical inference includes 1,000-draw paired spatial-block bootstraps and paired $t$-tests over three training seeds. Spatial blocks quantify map-sampling variability conditional on a checkpoint; they do not replace training-seed uncertainty.
+
+\section*{S3. Complete spatial and seed-level comparisons}
+
+All reported three-seed mean$\pm$SD entries use descriptive population standard deviation ($\mathrm{ddof}=0$) over the fixed seeds 42, 123, and 456. Paired $t$-test intervals separately use sample variance.
+
+\begin{table}[h]
+\caption{Paired comparisons of TopoRadar-Net with baselines. Parts A and B use Seed 42 spatial blocks; Part C uses pooled macro F1 over three training seeds}
+\centering
+\small
+\begin{tabular}{llrrr}
+\toprule
+Analysis & Comparator & $\Delta$F1 & 95\% CI & $p$ \\
+\midrule
+Troms{\o}, 143 blocks & SiamUNet-diff & $+6.39$ & $[+2.59,+10.59]$ & $<0.001$ \\
+ & ResU-Net & $+4.35$ & $[+1.33,+7.38]$ & $0.010$ \\
+ & Self-attention U-Net & $+2.30$ & $[+0.27,+4.41]$ & $0.030$ \\
+ & SiamUNet-conc & $-1.12$ & $[-2.80,+0.40]$ & $0.144$ \\
+\midrule
+Two regions, 339 blocks & SiamUNet-diff & $+12.77$ & $[+9.18,+16.61]$ & $<0.001$ \\
+ & ResU-Net & $+4.30$ & $[+1.54,+6.97]$ & $0.002$ \\
+ & Self-attention U-Net & $+3.27$ & $[+1.12,+5.37]$ & $0.010$ \\
+ & SiamUNet-conc & $+2.47$ & $[+0.41,+4.60]$ & $0.026$ \\
+\midrule
+Three seeds, macro F1 & SiamUNet-diff & $+8.92$ & $[+3.25,+14.59]$ & $0.021$ \\
+ & ResU-Net & $+0.86$ & $[-3.23,+4.96]$ & $0.459$ \\
+ & Self-attention U-Net & $+0.38$ & $[-8.28,+9.04]$ & $0.869$ \\
+ & SiamUNet-conc & $+0.65$ & $[-4.69,+5.99]$ & $0.651$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Repeating the pooled 339-block bootstrap separately for seeds 42, 123, and 456 yields $+3.26$ percentage points (95\% CI $+1.32$ to $+5.33$, $p=0.002$), $-2.99$ ($-6.67$ to $+0.08$, $p=0.060$), and $+4.16$ ($+1.00$ to $+7.27$, $p=0.016$) relative to the self-attention U-Net. The descriptive mean is $+1.48\pm3.18$ percentage points and is positive in two of three seeds.
+
+\section*{S4. Instance completeness}
+
+\begin{table}[h]
+\caption{Troms{\o} polygon hit rates across three seeds. D1--D4 are European Avalanche Warning Services size classes}
+\centering
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Method & HR@0.3 & HR@0.5 & D1 & D2 & D3 & D4 \\
+\midrule
+SiamUNet-diff & $63.25\pm2.52$ & $54.42\pm2.80$ & 6.7 & 33.3 & 71.8 & 89.6 \\
+SiamUNet-conc & $82.62\pm1.07$ & $74.07\pm1.40$ & 13.3 & 61.3 & 91.1 & 100.0 \\
+ResU-Net & $76.92\pm4.83$ & $68.09\pm4.20$ & 6.7 & 53.3 & 85.9 & 95.8 \\
+Self-attention U-Net & $79.20\pm2.45$ & $69.52\pm2.10$ & 6.7 & 58.7 & 86.9 & 100.0 \\
+TopoRadar-Net & $75.50\pm1.61$ & $68.09\pm1.95$ & 20.0 & 49.3 & 84.0 & 95.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{S5. Terrain-stratum sensitivity}
+
+\begin{table}[h]
+\caption{Seed-42 F1 by terrain stratum. The final column is TopoRadar-Net minus the self-attention U-Net}
+\centering
+\small
+\begin{tabular}{llrrr}
+\toprule
+Region & Stratum & TopoRadar & Self-attention U-Net & $\Delta$F1 \\
+\midrule
+Troms{\o} & Foreslope & 79.94 & 80.01 & $-0.07$ \\
+ & Cross-slope & 68.93 & 69.43 & $-0.50$ \\
+ & Backslope & 81.08 & 75.23 & $+5.85$ \\
+ & Runout/valley & 76.76 & 77.91 & $-1.15$ \\
+ & Avalanche chute & 81.34 & 77.00 & $+4.34$ \\
+ & Extreme steep & 63.37 & 54.23 & $+9.14$ \\
+\midrule
+Pish & Foreslope & 51.27 & 50.13 & $+1.14$ \\
+ & Cross-slope & 46.96 & 46.92 & $+0.03$ \\
+ & Backslope & 53.42 & 48.33 & $+5.09$ \\
+ & Runout/valley & 45.97 & 38.22 & $+7.75$ \\
+ & Avalanche chute & 55.82 & 56.25 & $-0.44$ \\
+ & Extreme steep & 8.85 & 16.65 & $-7.80$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Across three seeds, backslope differences average $-0.34\pm6.28$ points in Troms{\o} and $+1.20\pm7.73$ in Pish. Troms{\o} foreslopes average $-1.21\pm0.86$; Pish runout/valley terrain averages $+5.32\pm7.76$. Extreme-steep strata are highly seed-variable. These data do not support a stable component-isolated directional mechanism.
+
+\section*{S6. Validation-scene comparison}
+
+\begin{table}[h]
+\caption{Performance on the Nuuk 11 April 2021 validation scene across three seeds}
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Method & F1 & IoU & Precision & Recall \\
+\midrule
+SiamUNet-diff & $59.35\pm1.58$ & $42.22\pm1.45$ & $58.10\pm0.58$ & $60.79\pm3.70$ \\
+SiamUNet-conc & $66.53\pm0.97$ & $49.85\pm1.09$ & $57.72\pm2.15$ & $78.66\pm1.74$ \\
+ResU-Net & $67.16\pm1.62$ & $50.57\pm1.81$ & $60.10\pm4.51$ & $76.69\pm3.48$ \\
+Self-attention U-Net & $67.01\pm1.98$ & $50.43\pm2.22$ & $57.06\pm2.94$ & $81.31\pm0.51$ \\
+TopoRadar-Net & $66.75\pm1.96$ & $50.13\pm2.22$ & $56.63\pm3.31$ & $81.50\pm1.10$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{S7. Construct and operational audits}
+
+The slope-prior mask overlaps 19,663 of 106,442 training positives (18.47\%), 824 of 86,802 validation positives (0.95\%), and 492 of 56,548 held-out positives (0.87\%). Three-seed recall inside the held-out penalty stratum is $50.47\pm3.18\%$ for the full model versus $71.29\pm6.39\%$ for No-GeoLoss in Troms{\o}, and $1.08\pm1.52\%$ versus $6.45\pm6.97\%$ in Pish.
+
+For the corridor proxy, Platt scaling improves Brier score from 0.282 to 0.208 in Troms{\o} and from 0.462 to 0.198 in Pish. TopoRadar-Net Pish alerts have $83.0\pm2.3\%$ precision and $62.5\pm10.2\%$ recall; the self-attention U-Net has $77.4\pm6.1\%$ and $70.8\pm5.9\%$. Both miss the only Troms{\o} road-intersecting reference component. Cached full-scene processing is below 5 s per scene on Apple MPS, excluding acquisition and human review.
+
+\section*{S8. Reproducibility identifiers}
+
+The publication archive contains three seeds for TopoRadar-Net, the bottleneck self-attention U-Net (stored under the historical artifact key ``Attention U-Net''), and No-GeoLoss (nine checkpoints). The verification suite checks stored-summary arithmetic, parameter counts, valid-mask confusion closure, physical-area denominators, calibration bounds, and construct-audit values; raw-raster retraining is outside the package gate. Persistent identifying repository links are withheld in this review copy to preserve double blindness and are provided to the editorial office.
+
+\end{document}

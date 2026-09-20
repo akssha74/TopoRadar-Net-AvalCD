@@ -42,7 +42,6 @@ from models import (
     SiamUNetConc,
     ResUNet,
     AttentionUNetAval,
-    SwinUNetAval,
     CombinedGeoLoss,
 )
 
@@ -324,7 +323,7 @@ def train_one_model(
                 v_topo = v_batch["topo"].to(device)
                 v_mask = v_batch["mask"].to(device)
 
-                if isinstance(model, (SiamUNetDiff, SiamUNetConc, ResUNet, SwinUNetAval)):
+                if isinstance(model, (SiamUNetDiff, SiamUNetConc, ResUNet, AttentionUNetAval)):
                     v_logits = model(v_pre, v_post)
                 else:
                     v_logits = model(v_pre, v_post, v_topo)

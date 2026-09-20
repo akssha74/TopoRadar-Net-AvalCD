@@ -351,7 +351,7 @@ class ResUNet(nn.Module):
         return self.head(d1)
 
 # -----------------------------------------------------------------------------
-# Baseline 4: Attention U-Net / Swin-UNet (Bottleneck Attention Architecture)
+# Baseline 4: Internal bottleneck self-attention U-Net
 # -----------------------------------------------------------------------------
 
 class AttentionUNetAval(nn.Module):
@@ -402,9 +402,6 @@ class AttentionUNetAval(nn.Module):
         d1 = self.dec1(torch.cat([self.up1(d2), e1], dim=1))
 
         return self.head(d1)
-
-# Backward-compatibility alias
-SwinUNetAval = AttentionUNetAval
 
 # -----------------------------------------------------------------------------
 # Loss Formulation: BCE + Dice + Geomorphically Bounded Loss

@@ -126,7 +126,7 @@ draw_box(
     2.00,
     "Radar–\ntopographic\ntensor",
     "topo",
-    subtext="LIA · slope\naspect · DEM\nlook alignment",
+    subtext="LIA · slope\naspect · DEM\n78° reference",
 )
 
 # Stage 2 — encoders.

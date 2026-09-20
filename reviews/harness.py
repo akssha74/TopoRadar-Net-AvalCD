@@ -70,6 +70,13 @@ def load_operational_corridor_validation() -> dict:
     with open(path) as f:
         return json.load(f)
 
+def load_event_sensor_manifest() -> dict:
+    path = RESULTS_DIR / "event_sensor_manifest.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Missing event sensor manifest: {path}")
+    with open(path) as f:
+        return json.load(f)
+
 def load_operational_corridor_runtime() -> dict:
     path = RESULTS_DIR / "operational_corridor_runtime.json"
     if not path.exists():
@@ -217,7 +224,18 @@ def verify_all_bounds():
     for region in ("Tromso_Arctic", "Pamir_HighMountain"):
         assert full[region]["positive_recall"]["mean"] < no_geo[region]["positive_recall"]["mean"]
 
-    print("Harness check PASS: Primary summaries, seed-repeated bootstrap/strata, Nuuk validation, physical-unit triage, calibrated corridor proxy, and Geo-Loss construct audit verified.")
+    sensor = load_event_sensor_manifest()
+    events = {record["event"]: record for record in sensor["events"]}
+    assert events["Nuuk_20160413"]["polarization_pair"] == "HH/HV"
+    assert events["Nuuk_20210411"]["polarization_pair"] == "HH/HV"
+    assert all(
+        record["polarization_pair"] == "VV/VH"
+        for name, record in events.items()
+        if not name.startswith("Nuuk")
+    )
+    assert sensor["fixed_reference_aspect_feature"]["reference_azimuth_degrees"] == 78.0
+
+    print("Harness check PASS: Primary summaries, seed-repeated bootstrap/strata, Nuuk validation, physical-unit triage, calibrated corridor proxy, Geo-Loss construct audit, and event sensor semantics verified.")
 
 if __name__ == "__main__":
     print("Testing reviewer harness...")

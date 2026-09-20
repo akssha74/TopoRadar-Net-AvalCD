@@ -45,6 +45,8 @@ def main():
         geoloss_audit = json.load(f)
     with open(RESULTS_DIR / "valid_mask_area_audit.json") as f:
         valid_area_audit = json.load(f)
+    with open(RESULTS_DIR / "event_sensor_manifest.json") as f:
+        sensor_manifest = json.load(f)
 
     # 1. Verify Table 2: Cross-System Zero-Shot Evaluation
     print("--- 1. Verifying Table 2: Cross-System Zero-Shot Performance ---")
@@ -282,6 +284,33 @@ def main():
         f"{no_geo['Tromso_Arctic']['positive_recall']['mean']*100:.2f}%; "
         f"Pamir {full['Pamir_HighMountain']['positive_recall']['mean']*100:.2f}% vs "
         f"{no_geo['Pamir_HighMountain']['positive_recall']['mean']*100:.2f}%."
+    )
+
+    # 11. Verify event-level polarization semantics and the fixed-reference feature.
+    print("\n--- 11. Verifying Event Sensor Semantics ---")
+    events = {record["event"]: record for record in sensor_manifest["events"]}
+    assert set(events) == {
+        "Livigno_20240403",
+        "Livigno_20250129",
+        "Livigno_20250318",
+        "Nuuk_20160413",
+        "Nuuk_20210411",
+        "Tromso_20241220",
+        "Pish_20230221",
+    }
+    assert events["Nuuk_20160413"]["polarization_pair"] == "HH/HV"
+    assert events["Nuuk_20210411"]["position_0"] == "HV"
+    for event_name, record in events.items():
+        if not event_name.startswith("Nuuk"):
+            assert record["polarization_pair"] == "VV/VH"
+            assert record["position_0"] == "VH"
+            assert record["position_1"] == "VV"
+    fixed_ref = sensor_manifest["fixed_reference_aspect_feature"]
+    assert fixed_ref["reference_azimuth_degrees"] == 78.0
+    assert "authoritative per-event radar heading" in fixed_ref["not_claimed"]
+    print(
+        "  Polarization manifest: Nuuk=HH/HV; other events=VV/VH. "
+        "Aspect feature=fixed 78-degree reference (not per-event heading)."
     )
 
     print("\n================================================================================")

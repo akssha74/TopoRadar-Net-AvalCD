@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate publication-quality figures for the Journal of Mountain Science paper."""
+"""Generate publication-quality performance figures for TopoRadar-Net."""
 
 import matplotlib.pyplot as plt
 import numpy as np
