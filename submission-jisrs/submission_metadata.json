@@ -32,12 +32,12 @@
   "main_document": "submission-jisrs/JISRS_Main_Manuscript_Anonymous.docx",
   "main_document_pdf_preview": "submission-jisrs/JISRS_Main_Manuscript_Anonymous.pdf",
   "title_page": "submission-jisrs/JISRS_Title_Page.docx",
-  "supplementary_information": "submission-jisrs/JISRS_Supplementary_Information.pdf",
+  "supplementary_information": "submission-jisrs/ESM_1.pdf",
   "cover_letter": "submission-jisrs/cover_letter.pdf",
   "highlights": "submission-jisrs/highlights.txt",
   "source_package": "submission-jisrs/source_package.zip",
   "word_limits": {
-    "main_text_actual": 2053,
+    "main_text_actual": 2084,
     "abstract_actual": 199,
     "main_text_max": 4000,
     "abstract_max": 200
@@ -47,6 +47,6 @@
   "submission_status": "prepared-not-submitted",
   "prior_submission_confirmation": "User confirmed on 20 September 2026 that this manuscript was never submitted to JMS or SPIE and is not under consideration elsewhere.",
   "data_url": "https://doi.org/10.5281/zenodo.15863589",
-  "code_release": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.27",
+  "code_release": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.28",
   "verified_on": "2026-09-20"
 }

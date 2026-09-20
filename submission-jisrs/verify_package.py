@@ -60,6 +60,11 @@ def main() -> None:
         anonymous_text += document_xml_bytes.decode("utf-8")
         docx_document_xml = document_xml_bytes.decode("utf-8")
         core = docx.read("docProps/core.xml").decode("utf-8")
+        footer_xml = "\n".join(
+            docx.read(name).decode("utf-8")
+            for name in docx.namelist()
+            if name.startswith("word/footer") and name.endswith(".xml")
+        )
 
     identity_terms = (
         "Akshay",
@@ -129,14 +134,29 @@ def main() -> None:
     if round(section.page_width.mm) != 210 or round(section.page_height.mm) != 297:
         raise SystemExit("DOCX is not A4")
     line_numbers = section._sectPr.find(qn("w:lnNumType"))
-    if line_numbers is None or line_numbers.get(qn("w:restart")) != "continuous":
-        raise SystemExit("DOCX lacks continuous line numbering")
+    if line_numbers is not None:
+        raise SystemExit("DOCX contains line numbering that Editorial Manager duplicates")
+    if not re.search(r"<w:instrText[^>]*>\s*PAGE\s*</w:instrText>", footer_xml):
+        raise SystemExit("DOCX lacks an automatic PAGE field in its footer")
     if abs(document.styles["Normal"].font.size.pt - 12) > 0.01:
         raise SystemExit("DOCX Normal style is not 12 pt")
     docx_text = "\n".join(paragraph.text for paragraph in document.paragraphs)
-    for caption_prefix in ("Table 1.", "Table 2.", "Table 3.", "Fig. 1.", "Fig. 2."):
+    for caption_prefix in ("Table 1.", "Table 2.", "Table 3.", "Fig. 1 ", "Fig. 2 "):
         if caption_prefix not in docx_text:
             raise SystemExit(f"DOCX missing caption prefix: {caption_prefix}")
+    if "Fig. 1." in docx_text or "Fig. 2." in docx_text:
+        raise SystemExit("DOCX figure caption contains punctuation after its number")
+
+    title_page = Document(SUBMISSION / "JISRS_Title_Page.docx")
+    title_page_text = "\n".join(
+        paragraph.text for paragraph in title_page.paragraphs
+    )
+    if "Declarations" not in title_page_text:
+        raise SystemExit("Title page lacks a Declarations heading")
+    if "Highlights" in title_page_text:
+        raise SystemExit("Title page duplicates the separately supplied Highlights")
+    if Path(metadata["supplementary_information"]).name != "ESM_1.pdf":
+        raise SystemExit("Supplementary Information is not named ESM_1.pdf")
 
     with tempfile.TemporaryDirectory() as temp:
         result = subprocess.run(
@@ -185,6 +205,35 @@ def main() -> None:
         pages_match = re.search(r"(?m)^Pages:\s+(\d+)", page_info)
         if not pages_match or int(pages_match.group(1)) not in (12, 13):
             raise SystemExit("Rendered DOCX does not satisfy the 12-13 page target")
+
+        title_result = subprocess.run(
+            [
+                "soffice",
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                temp,
+                str(SUBMISSION / "JISRS_Title_Page.docx"),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        rendered_title = Path(temp) / "JISRS_Title_Page.pdf"
+        if not rendered_title.exists():
+            raise SystemExit(
+                f"LibreOffice did not render title page: {title_result.stdout}"
+            )
+        title_page_info = subprocess.run(
+            ["pdfinfo", str(rendered_title)],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        title_pages_match = re.search(r"(?m)^Pages:\s+(\d+)", title_page_info)
+        if not title_pages_match or int(title_pages_match.group(1)) != 1:
+            raise SystemExit("Identified title-page DOCX does not render to one page")
 
         stored_preview = SUBMISSION / "JISRS_Main_Manuscript_Anonymous.pdf"
         stored_text = subprocess.run(

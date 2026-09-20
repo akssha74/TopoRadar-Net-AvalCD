@@ -77,6 +77,9 @@ def main() -> None:
         "keywords_4_to_6": 4 <= len(keywords) <= 6,
         "highlights_3_to_5": 3 <= len(highlights) <= 5,
         "highlights_each_le_150_chars": all(len(item) <= 150 for item in highlights),
+        "highlights_without_acronyms": all(
+            re.search(r"\b[A-Z]{2,}\b", item) is None for item in highlights
+        ),
         "heading_depth_le_3": "\\paragraph{" not in source and "\\subparagraph{" not in source,
         "data_availability_present": "Data Availability/Supplementary Information" in source,
         "statements_declarations_present": "Statements and Declarations" in source,

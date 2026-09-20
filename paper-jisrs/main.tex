@@ -58,7 +58,7 @@ Scand. Arctic & 20 Dec 2024 & Test & Troms{\o} & VV/VH & 117 & 33,972 \\
 \end{tabular}
 \end{table}
 
-The executed loader uses the supplied decibel rasters without percentile scaling. Values outside $[-45,15]$ dB are marked invalid; after the valid mask is fixed, missing cross- and co-polarized values are replaced by $-20$ and $-12$ dB, respectively. The two model positions represent cross/co polarization (VH/VV or HV/HH according to scene), and difference channels retain those positions. The terrain tensor contains local incidence geometry, slope, sine/cosine aspect, elevation, and the fixed coordinate $\cos(\alpha-78^\circ)$; this last channel is a reference-axis aspect encoding, not authoritative per-event radar heading. Training uses balanced $128\times128$ patches; evaluation uses complete valid-mask rasters. Physical areas are derived from affine raster transforms rather than full rectangular extents. Figure~\ref{fig:architecture} summarizes the model; Online Resource~1 supplies equations, preprocessing details, complete tables, and additional diagnostics.
+The executed loader uses the supplied decibel rasters without percentile scaling. Values outside $[-45,15]$ dB are marked invalid; after the valid mask is fixed, missing cross- and co-polarized values are replaced by $-20$ and $-12$ dB, respectively. The two model positions represent cross/co polarization (VH/VV or HV/HH according to scene), and difference channels retain those positions. The terrain tensor contains local incidence angle (LIA), slope, sine/cosine aspect, elevation from a digital elevation model (DEM), and the fixed coordinate $\cos(\alpha-78^\circ)$; this last channel is a reference-axis aspect encoding, not authoritative per-event radar heading. Training uses balanced $128\times128$ patches; evaluation uses complete valid-mask rasters. Physical areas are derived from affine raster transforms rather than full rectangular extents. Figure~\ref{fig:architecture} summarizes the model; Online Resource~1 supplies equations, preprocessing details, complete tables, and additional diagnostics.
 
 \section{Method}
 
@@ -71,7 +71,7 @@ F_l^{\mathrm{post}}-F_l^{\mathrm{pre}},
 F_l^{\mathrm{post}},
 F_l^{\mathrm{pre}}\right].
 \end{equation}
-The terrain encoder maps the six-channel geometry tensor to $T_l$. A Radar-Topographic Cross-Attention Block forms SAR queries and pooled terrain keys and values,
+The terrain encoder maps the six-channel geometry tensor to $T_l$. A Radar-Topographic Cross-Attention Block (RTCAB) forms SAR queries and pooled terrain keys and values,
 \begin{equation}
 Q=F_l^{\Delta}W_Q,\quad K=\operatorname{Pool}(T_l)W_K,\quad
 V=\operatorname{Pool}(T_l)W_V,
@@ -87,7 +87,7 @@ and computes $A=\operatorname{softmax}(QK^\top/\sqrt{d})V$. A pixelwise gate $\s
 
 \subsection{Loss, training, and inference}
 
-The objective combines positive-weighted binary cross-entropy, Dice loss, and a soft slope prior:
+The objective combines positive-weighted binary cross-entropy (BCE), Dice loss, and a soft slope prior:
 \begin{equation}
 \mathcal{L}=\mathcal{L}_{\mathrm{BCE}}+\mathcal{L}_{\mathrm{Dice}}+0.5\,\mathcal{L}_{\mathrm{slope}}.
 \end{equation}
@@ -95,7 +95,7 @@ The prior discourages probability mass below $5^\circ$ and above $65^\circ$ but 
 
 Inference uses overlapping windows with Hanning blending. Pixel F1 and intersection-over-union are computed over valid pixels. Polygon hit rate requires at least $30\%$ overlap. A 1,000-draw paired bootstrap resamples $128\times128$ spatial blocks; paired seed-level tests use the three macro-F1 values. The latter have low power and are interpreted together with effect sizes and ordering across seeds. No test pixel or test label is used for model or threshold selection.
 
-For a post-hoc operational proxy, validation-scene component scores calibrate a one-feature logistic model and an F2-optimal alert threshold. Frozen test-scene alerts are intersected with 30-m buffers around a versioned OpenStreetMap major-road snapshot \citep{openstreetmap2026}. This retrospective proxy excludes data acquisition, human review, dispatch, and closure decisions.
+For a post-hoc operational proxy, validation-scene component scores calibrate a one-feature logistic model and an F2-optimal alert threshold. Frozen test-scene alerts are intersected with 30-m buffers around a versioned OpenStreetMap major-road snapshot \citep{openstreetmap2026}. This retrospective proxy excludes data acquisition, human review, dispatch, and closure decisions. Figures~\ref{fig:architecture} and \ref{fig:performance} were generated with Python 3.14.7 and Matplotlib 3.11.2.
 
 \subsection{AI-assisted research support}
 
@@ -105,7 +105,7 @@ Generative AI tools assisted code refactoring, manuscript language, and checklis
 
 \subsection{Cross-region performance}
 
-TopoRadar-Net records $77.40\%\pm1.86\%$ F1 in Troms{\o} and $50.18\%\pm4.40\%$ in Pish, giving $63.79\%\pm1.88\%$ pooled macro F1 (Table~\ref{tab:performance}). The bottleneck self-attention U-Net obtains $63.41\%\pm1.03\%$, SiamUNet-conc $63.13\%\pm0.79\%$, and ResU-Net $62.92\%\pm1.42\%$. Their differences from TopoRadar-Net are not significant across three seeds. SiamUNet-diff is lower at $54.87\%\pm1.03\%$; the paired difference is $+8.92$ percentage points (95\% CI $+3.25$ to $+14.59$, $p=0.021$). The bottleneck self-attention U-Net leads on seed 123, demonstrating initialization-dependent ordering. Figure~\ref{fig:performance} visualizes the region-specific ordering.
+TopoRadar-Net records $77.40\%\pm1.86\%$ F1 in Troms{\o} and $50.18\%\pm4.40\%$ in Pish, giving $63.79\%\pm1.88\%$ pooled macro F1 (Table~\ref{tab:performance}). The bottleneck self-attention U-Net obtains $63.41\%\pm1.03\%$, SiamUNet-conc $63.13\%\pm0.79\%$, and ResU-Net $62.92\%\pm1.42\%$. Their differences from TopoRadar-Net are not significant across three seeds. SiamUNet-diff is lower at $54.87\%\pm1.03\%$; the paired difference is $+8.92$ percentage points (95\% confidence interval [CI] $+3.25$ to $+14.59$, $p=0.021$). The bottleneck self-attention U-Net leads on seed 123, demonstrating initialization-dependent ordering. Figure~\ref{fig:performance} visualizes the region-specific ordering.
 
 \begin{table}[t]
 \caption{Zero-shot test performance across three fixed training seeds (mean $\pm$ descriptive population standard deviation). HR is polygon hit rate at $30\%$ overlap}
@@ -164,7 +164,7 @@ Seed-42 terrain strata initially suggest positive backslope differences, but the
 
 \subsection{Retrospective corridor proxy}
 
-The affine valid-mask area is $196.820~\mathrm{km}^{2}$ in Troms{\o} and $267.435~\mathrm{km}^{2}$ in Pish. In Troms{\o}, TopoRadar-Net produces $74.77$ ha of false positives at $0.38~\mathrm{ha\,km}^{-2}$. In Pish, it produces $129.69$ ha at $0.48~\mathrm{ha\,km}^{-2}$. Relative to the self-attention U-Net, this is a 30.0\% reduction in Pish (129.69 versus 185.32 ha) but a 28.5\% increase in Troms{\o} (74.77 versus 58.19 ha). Validation-calibrated road-corridor alerts achieve $83.0\%$ precision and $62.5\%$ recall in Pish. The single road-intersecting reference avalanche in Troms{\o} is missed by every TopoRadar-Net seed. All cached complete-scene runs are below 5 s on Apple MPS hardware, but timing excludes upstream acquisition and human review.
+The affine valid-mask area is $196.820~\mathrm{km}^{2}$ in Troms{\o} and $267.435~\mathrm{km}^{2}$ in Pish. In Troms{\o}, TopoRadar-Net produces $74.77$ ha of false positives at $0.38~\mathrm{ha\,km}^{-2}$. In Pish, it produces $129.69$ ha at $0.48~\mathrm{ha\,km}^{-2}$. Relative to the self-attention U-Net, this is a 30.0\% reduction in Pish (129.69 versus 185.32 ha) but a 28.5\% increase in Troms{\o} (74.77 versus 58.19 ha). Validation-calibrated road-corridor alerts achieve $83.0\%$ precision and $62.5\%$ recall in Pish. The single road-intersecting reference avalanche in Troms{\o} is missed by every TopoRadar-Net seed. All cached complete-scene runs are below 5 s on Apple Metal Performance Shaders (MPS) hardware, but timing excludes upstream acquisition and human review.
 
 \section{Discussion}
 
@@ -182,7 +182,7 @@ Terrain-conditioned cross-attention provides competitive Sentinel-1 avalanche-de
 
 \section*{Data Availability/Supplementary Information}
 
-The AvalCD benchmark is publicly available at \url{https://doi.org/10.5281/zenodo.15863589}. Online Resource~1 contains extended methods, complete statistical and subgroup results, and reproducibility identifiers. Code and checkpoint files are publicly archived; the identifying repository URL is withheld from the anonymous manuscript and supplied separately to the editorial office for double-blind review.
+The AvalCD benchmark is publicly available at \url{https://doi.org/10.5281/zenodo.15863589}. \textbf{Online Resource 1.} Extended methods, complete statistical and subgroup results, and reproducibility identifiers. Code and checkpoint files are publicly archived; the identifying repository URL is withheld from the anonymous manuscript and supplied separately to the editorial office for double-blind review.
 
 \section*{Statements and Declarations}
 

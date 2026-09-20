@@ -8,6 +8,7 @@ import subprocess
 from pathlib import Path
 
 from docx import Document
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -88,8 +89,9 @@ def replace_interoperability_sensitive_paragraphs(document: Document) -> None:
             "58.19 ha). Validation-calibrated road-corridor alerts achieve 83.0% "
             "precision and 62.5% recall in Pish. The single road-intersecting "
             "reference avalanche in Tromsø is missed by every TopoRadar-Net seed. "
-            "All cached complete-scene runs are below 5 s on Apple MPS hardware, "
-            "but timing excludes upstream acquisition and human review."
+            "All cached complete-scene runs are below 5 s on Apple Metal "
+            "Performance Shaders (MPS) hardware, but timing excludes upstream "
+            "acquisition and human review."
         ),
     }
     for paragraph in document.paragraphs:
@@ -120,16 +122,33 @@ def prevent_split(row) -> None:
     tr_pr.append(OxmlElement("w:cantSplit"))
 
 
-def add_continuous_line_numbers(section) -> None:
+def remove_line_numbers(section) -> None:
     sect_pr = section._sectPr
     existing = sect_pr.find(qn("w:lnNumType"))
     if existing is not None:
         sect_pr.remove(existing)
-    line_numbers = OxmlElement("w:lnNumType")
-    line_numbers.set(qn("w:countBy"), "1")
-    line_numbers.set(qn("w:start"), "1")
-    line_numbers.set(qn("w:restart"), "continuous")
-    sect_pr.append(line_numbers)
+
+
+def add_page_number(section) -> None:
+    paragraph = section.footer.paragraphs[0]
+    paragraph.clear()
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = paragraph.add_run()
+    set_run_font(run, 10)
+
+    begin = OxmlElement("w:fldChar")
+    begin.set(qn("w:fldCharType"), "begin")
+    instruction = OxmlElement("w:instrText")
+    instruction.set(qn("xml:space"), "preserve")
+    instruction.text = " PAGE "
+    separate = OxmlElement("w:fldChar")
+    separate.set(qn("w:fldCharType"), "separate")
+    placeholder = OxmlElement("w:t")
+    placeholder.text = "1"
+    end = OxmlElement("w:fldChar")
+    end.set(qn("w:fldCharType"), "end")
+    for element in (begin, instruction, separate, placeholder, end):
+        run._r.append(element)
 
 
 def main() -> None:
@@ -145,7 +164,8 @@ def main() -> None:
         section.bottom_margin = Mm(20)
         section.left_margin = Mm(20)
         section.right_margin = Mm(20)
-        add_continuous_line_numbers(section)
+        remove_line_numbers(section)
+        add_page_number(section)
 
     normal = document.styles["Normal"]
     normal.font.name = "Times New Roman"
@@ -186,9 +206,9 @@ def main() -> None:
 
     caption_prefixes = {
         "AvalCD scenes used": "Table 1. ",
-        "TopoRadar-Net schematic": "Fig. 1. ",
+        "TopoRadar-Net schematic": "Fig. 1 ",
         "Zero-shot test performance": "Table 2. ",
-        "Zero-shot pixel F1": "Fig. 2. ",
+        "Zero-shot pixel F1": "Fig. 2 ",
         "Ablation performance": "Table 3. ",
     }
     for paragraph in document.paragraphs:
@@ -196,6 +216,8 @@ def main() -> None:
         for start, prefix in caption_prefixes.items():
             if stripped.startswith(start) and not stripped.startswith(prefix):
                 prefix_caption(paragraph, prefix)
+                for run in paragraph.runs:
+                    run.font.italic = False
                 break
 
     replace_interoperability_sensitive_paragraphs(document)
@@ -233,7 +255,8 @@ def main() -> None:
 
     print(
         f"Formatted {args.path}: A4, 20-mm margins, 12-pt Times New Roman, "
-        "double-spaced, continuous line numbers, non-splitting table rows."
+        "double-spaced, automatic page numbers, no embedded line numbers, "
+        "non-splitting table rows."
     )
 
 

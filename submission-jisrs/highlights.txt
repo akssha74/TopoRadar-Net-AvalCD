@@ -1,5 +1,5 @@
-• The model is tested across four mountain systems and seven avalanche events.
-• Three training runs show parity with strong alternatives and a gain only over simple differencing.
-• Terrain inputs help in some regions but do not improve accuracy uniformly.
-• The slope prior penalizes some pixels that contain genuine avalanche debris.
-• The road-corridor test succeeds in the Pamirs but misses the only corridor avalanche in northern Norway.
+• The method maps snow-avalanche debris from satellite radar images using terrain information.
+• Tests cover seven avalanche events across four geographically distinct mountain systems.
+• The method improves on simple image differencing and matches stronger comparison methods.
+• Controlled tests show when terrain information helps and when it does not.
+• Road-corridor tests define practical limits for disaster-response use.

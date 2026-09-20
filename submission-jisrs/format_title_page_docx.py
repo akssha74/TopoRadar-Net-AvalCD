@@ -18,12 +18,13 @@ def main() -> None:
     for section in document.sections:
         section.page_width = Mm(210)
         section.page_height = Mm(297)
-        section.top_margin = Mm(25.4)
-        section.bottom_margin = Mm(25.4)
-        section.left_margin = Mm(25.4)
-        section.right_margin = Mm(25.4)
+        section.top_margin = Mm(18)
+        section.bottom_margin = Mm(18)
+        section.left_margin = Mm(20)
+        section.right_margin = Mm(20)
 
     for paragraph in document.paragraphs:
+        paragraph.paragraph_format.space_before = Pt(0)
         paragraph.paragraph_format.space_after = Pt(0)
         paragraph.paragraph_format.line_spacing = 1.0
         for run in paragraph.runs:

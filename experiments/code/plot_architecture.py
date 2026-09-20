@@ -49,7 +49,7 @@ def stage_panel(x, width, title):
         title,
         ha="center",
         va="center",
-        fontsize=9.5,
+        fontsize=10.0,
         weight="semibold",
         color="#536273",
     )
@@ -61,7 +61,7 @@ stage_panel(6.15, 5.05, "3  Conditioning")
 stage_panel(11.45, 3.25, "4  Outputs")
 
 
-def draw_box(x, y, width, height, text, key, fontsize=9.2, subtext=""):
+def draw_box(x, y, width, height, text, key, fontsize=9.8, subtext=""):
     fill, edge, text_color = PALETTE[key]
     box = patches.FancyBboxPatch(
         (x, y),
@@ -275,7 +275,7 @@ ax.text(
     10.0,
     0.75,
     "solid: inference path",
-    fontsize=9.2,
+    fontsize=9.6,
     color="#6F7D8B",
     ha="right",
 )
@@ -283,7 +283,7 @@ ax.text(
     10.15,
     0.75,
     "– –  training-only loss",
-    fontsize=9.2,
+    fontsize=9.6,
     color=TRAINING_ARROW_COLOR,
     ha="left",
 )

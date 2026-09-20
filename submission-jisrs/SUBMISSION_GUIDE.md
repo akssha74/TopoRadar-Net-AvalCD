@@ -8,7 +8,7 @@ Official instructions: https://link.springer.com/journal/12524/submission-guidel
 
 1. `JISRS_Main_Manuscript_Anonymous.docx` — designate as **Manuscript/Main Document**
 2. `JISRS_Title_Page.docx` — designate as **Title Page**
-3. `JISRS_Supplementary_Information.pdf` — designate as **Supplementary Information / Online Resource 1**
+3. `ESM_1.pdf` — designate as **Supplementary Information / Online Resource 1**
 4. `cover_letter.pdf` — designate as **Cover Letter**
 5. `highlights.txt` — paste or upload when the system requests Highlights
 6. `source_package.zip` — upload only when editable LaTeX source is requested
@@ -36,9 +36,11 @@ Before approving the generated proof:
 
 - Search the main manuscript and supplementary file for both author names, university, e-mail addresses, and the GitHub username.
 - Confirm that the title page is present as a separate identified file.
+- Confirm that `ESM_1.pdf` is listed as Online Resource 1.
 - Confirm that references cite prior work in the third person.
 - Confirm figures, tables, equations, and references render without missing markers.
-- Confirm the Word manuscript remains A4, double-spaced, and continuously line-numbered.
+- Confirm the Word manuscript remains A4 and double-spaced, contains automatic
+  page numbers, and does not duplicate Editorial Manager's line numbering.
 
 ## Declarations
 
