@@ -55,11 +55,49 @@ def insert_before(anchor: Paragraph, text: str, style: str) -> Paragraph:
 
 
 def prefix_caption(paragraph: Paragraph, prefix: str) -> None:
-    text = paragraph.text.strip()
-    paragraph.clear()
-    label = paragraph.add_run(prefix)
-    label.bold = True
-    paragraph.add_run(text)
+    run = OxmlElement("w:r")
+    run_properties = OxmlElement("w:rPr")
+    run_properties.append(OxmlElement("w:b"))
+    run.append(run_properties)
+    text = OxmlElement("w:t")
+    text.set(qn("xml:space"), "preserve")
+    text.text = prefix
+    run.append(text)
+    insert_at = 1 if paragraph._p.pPr is not None else 0
+    paragraph._p.insert(insert_at, run)
+
+
+def replace_interoperability_sensitive_paragraphs(document: Document) -> None:
+    replacements = {
+        "The full architecture is not the best pooled configuration": (
+            "The full architecture is not the best pooled configuration (Table 3). "
+            "Removing aspect and its fixed-reference coordinate or removing "
+            "cross-attention increases pooled macro F1 to 65.35% and 65.07%, "
+            "respectively, mainly through gains in Pish. In Tromsø, seed-42 paired "
+            "block tests favour the full model over No-LIA by 2.04 percentage points "
+            "(p<0.001) and No-CrossAttn by 1.42 percentage points (p=0.010). These "
+            "comparisons establish component sensitivity, not a causal "
+            "terrain-correction mechanism."
+        ),
+        "The affine valid-mask area is": (
+            "The affine valid-mask area is 196.820 km² in Tromsø and 267.435 km² "
+            "in Pish. In Tromsø, TopoRadar-Net produces 74.77 ha of false positives "
+            "at 0.38 ha km⁻². In Pish, it produces 129.69 ha at 0.48 ha km⁻². "
+            "Relative to the self-attention U-Net, this is a 30.0% reduction in Pish "
+            "(129.69 versus 185.32 ha) but a 28.5% increase in Tromsø (74.77 versus "
+            "58.19 ha). Validation-calibrated road-corridor alerts achieve 83.0% "
+            "precision and 62.5% recall in Pish. The single road-intersecting "
+            "reference avalanche in Tromsø is missed by every TopoRadar-Net seed. "
+            "All cached complete-scene runs are below 5 s on Apple MPS hardware, "
+            "but timing excludes upstream acquisition and human review."
+        ),
+    }
+    for paragraph in document.paragraphs:
+        for start, replacement in replacements.items():
+            if paragraph.text.strip().startswith(start):
+                paragraph.clear()
+                paragraph.add_run(replacement)
+                break
 
 
 def set_run_font(run, size: float) -> None:
@@ -159,6 +197,8 @@ def main() -> None:
             if stripped.startswith(start) and not stripped.startswith(prefix):
                 prefix_caption(paragraph, prefix)
                 break
+
+    replace_interoperability_sensitive_paragraphs(document)
 
     for paragraph in document.paragraphs:
         paragraph.paragraph_format.line_spacing = 2.0

@@ -123,6 +123,18 @@ def main() -> None:
         ).stdout
         if "❑" in extracted or "□" in extracted:
             raise SystemExit("Rendered DOCX contains missing-glyph boxes")
+        normalized = re.sub(r"\s+", " ", extracted)
+        for malformed_unit in ("k m2", "k m 2", "h a k m", "ha k m"):
+            if malformed_unit in normalized:
+                raise SystemExit(
+                    f"Rendered DOCX contains separated unit letters: {malformed_unit}"
+                )
+        if not all(
+            unit in extracted for unit in ("km²", "km⁻²")
+        ):
+            raise SystemExit("Rendered DOCX lacks contiguous superscript unit text")
+        if any(line.lstrip().startswith(",") for line in extracted.splitlines()):
+            raise SystemExit("Rendered DOCX contains a line-start orphan comma")
         page_info = subprocess.run(
             ["pdfinfo", str(rendered)],
             check=True,
