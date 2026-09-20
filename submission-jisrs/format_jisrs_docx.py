@@ -90,7 +90,7 @@ def replace_interoperability_sensitive_paragraphs(document: Document) -> None:
             "precision and 62.5% recall in Pish. The single road-intersecting "
             "reference avalanche in Tromsø is missed by every TopoRadar-Net seed. "
             "All cached complete-scene runs are below 5 s on Apple Metal "
-            "Performance Shaders (MPS) hardware, but timing excludes upstream "
+            "Performance Shaders hardware, but timing excludes upstream "
             "acquisition and human review."
         ),
     }

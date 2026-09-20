@@ -117,7 +117,7 @@ evidence/claim-ledger.jsonl         claim/evidence ledger
 
 ## Submission package status
 
-The JISRS package is **prepared, not submitted**. It is double-blind, A4, 12-point Times New Roman, double-spaced, continuously line-numbered, and mechanically checked against the current JISRS Research Article limits.
+The JISRS package is **prepared, not submitted**. It is double-blind, A4, 12-point Times New Roman, double-spaced, automatically page-numbered, and mechanically checked against the current JISRS Research Article limits. Editorial Manager supplies the reviewer-facing line numbering, so the uploaded Word file intentionally does not embed a second set.
 
 ## License
 
