@@ -54,6 +54,14 @@ def insert_before(anchor: Paragraph, text: str, style: str) -> Paragraph:
     return paragraph
 
 
+def prefix_caption(paragraph: Paragraph, prefix: str) -> None:
+    text = paragraph.text.strip()
+    paragraph.clear()
+    label = paragraph.add_run(prefix)
+    label.bold = True
+    paragraph.add_run(text)
+
+
 def set_run_font(run, size: float) -> None:
     run.font.name = "Times New Roman"
     run._element.get_or_add_rPr().get_or_add_rFonts().set(
@@ -137,6 +145,20 @@ def main() -> None:
         insert_before(introduction, abstract, "Normal")
         insert_before(introduction, "Keywords", "Heading 1")
         insert_before(introduction, keywords, "Normal")
+
+    caption_prefixes = {
+        "AvalCD scenes used": "Table 1. ",
+        "TopoRadar-Net schematic": "Fig. 1. ",
+        "Zero-shot test performance": "Table 2. ",
+        "Zero-shot pixel F1": "Fig. 2. ",
+        "Ablation performance": "Table 3. ",
+    }
+    for paragraph in document.paragraphs:
+        stripped = paragraph.text.strip()
+        for start, prefix in caption_prefixes.items():
+            if stripped.startswith(start) and not stripped.startswith(prefix):
+                prefix_caption(paragraph, prefix)
+                break
 
     for paragraph in document.paragraphs:
         paragraph.paragraph_format.line_spacing = 2.0

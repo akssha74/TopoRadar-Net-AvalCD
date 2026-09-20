@@ -7,6 +7,7 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
 import zipfile
 from pathlib import Path
 
@@ -91,6 +92,46 @@ def main() -> None:
         raise SystemExit("DOCX lacks continuous line numbering")
     if abs(document.styles["Normal"].font.size.pt - 12) > 0.01:
         raise SystemExit("DOCX Normal style is not 12 pt")
+    docx_text = "\n".join(paragraph.text for paragraph in document.paragraphs)
+    for caption_prefix in ("Table 1.", "Table 2.", "Table 3.", "Fig. 1.", "Fig. 2."):
+        if caption_prefix not in docx_text:
+            raise SystemExit(f"DOCX missing caption prefix: {caption_prefix}")
+
+    with tempfile.TemporaryDirectory() as temp:
+        result = subprocess.run(
+            [
+                "soffice",
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                temp,
+                str(SUBMISSION / "JISRS_Main_Manuscript_Anonymous.docx"),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        rendered = Path(temp) / "JISRS_Main_Manuscript_Anonymous.pdf"
+        if not rendered.exists():
+            raise SystemExit(f"LibreOffice did not render DOCX: {result.stdout}")
+        extracted = subprocess.run(
+            ["pdftotext", str(rendered), "-"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        if "❑" in extracted or "□" in extracted:
+            raise SystemExit("Rendered DOCX contains missing-glyph boxes")
+        page_info = subprocess.run(
+            ["pdfinfo", str(rendered)],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        pages_match = re.search(r"(?m)^Pages:\s+(\d+)", page_info)
+        if not pages_match or int(pages_match.group(1)) not in (12, 13):
+            raise SystemExit("Rendered DOCX does not satisfy the 12-13 page target")
 
     with zipfile.ZipFile(SUBMISSION / "source_package.zip") as source:
         names = set(source.namelist())
