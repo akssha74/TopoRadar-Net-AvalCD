@@ -36,6 +36,15 @@ The journal returned the submission before peer review and requested:
 The corrected title page and blinded manuscript satisfy all five requests. No
 scientific result, method, table, figure, abstract, citation, or conclusion changed.
 
+### Corrected package
+
+- Corrected blinded DOCX SHA-256: `200809af06eb3f70396a2168f4e60859b3e75c38bbd98d353e4d7d648e6641df`
+- Corrected blinded reference PDF SHA-256: `80f809ffcad1af6e8d1483e86af277cc10195808ea22510cb96b29f9a9e79e81`
+- Corrected title-page DOCX SHA-256: `b11c8721d625928c858c01315d25435b6984c3850069a4e87e59d6258ee31792`
+- Correction release: [v1.0.30](https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.30)
+- Release commit: `fb419808ce6c2901321dd4498d52ba82dcca131b`
+- Cold-clone package verification: pass
+
 ## Submitted files
 
 | Editorial Manager item | Submitted file |
