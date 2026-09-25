@@ -37,16 +37,20 @@
   "highlights": "submission-jisrs/highlights.txt",
   "source_package": "submission-jisrs/source_package.zip",
   "word_limits": {
-    "main_text_actual": 2122,
+    "main_text_actual": 2039,
     "abstract_actual": 199,
     "main_text_max": 4000,
     "abstract_max": 200
   },
   "publication_model": "hybrid",
   "planned_route": "standard subscription / non-open-access",
-  "submission_status": "prepared-not-submitted",
+  "submission_status": "sent-back-for-author-corrections",
+  "manuscript_id": "ISRS-D-26-01429",
+  "submitted_at": "2026-09-20",
+  "editorial_return_at": "2026-09-24",
+  "editorial_return_reason": "Administrative format corrections: exact title-page declaration headings/order, author-supplied automatic continuous line numbering, and removal of Statements and Declarations from the blinded manuscript.",
   "prior_submission_confirmation": "User confirmed on 20 September 2026 that this manuscript was never submitted to JMS or SPIE and is not under consideration elsewhere.",
   "data_url": "https://doi.org/10.5281/zenodo.15863589",
-  "code_release": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.29",
-  "verified_on": "2026-09-20"
+  "code_release": "https://github.com/akssha74/TopoRadar-Net-AvalCD/releases/tag/v1.0.30",
+  "verified_on": "2026-09-25"
 }

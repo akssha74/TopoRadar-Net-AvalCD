@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MAIN = ROOT / "paper-jisrs" / "main.tex"
 HIGHLIGHTS = ROOT / "submission-jisrs" / "highlights.txt"
+TITLE_PAGE = ROOT / "submission-jisrs" / "title_page.tex"
 
 
 def extract_braced(text: str, command: str) -> str:
@@ -49,6 +50,7 @@ def count_words(text: str) -> int:
 def main() -> None:
     source = MAIN.read_text(encoding="utf-8")
     source = re.sub(r"(?m)(?<!\\)%.*$", "", source)
+    title_page = TITLE_PAGE.read_text(encoding="utf-8")
 
     abstract_tex = extract_braced(source, "abstract")
     abstract_words = count_words(pandoc_plain(abstract_tex))
@@ -70,6 +72,15 @@ def main() -> None:
         for line in HIGHLIGHTS.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
+    title_headings = [
+        r"\section*{Conflict of Interest}",
+        r"\section*{Funding}",
+        r"\section*{Author's Contribution}",
+        r"\section*{Acknowledgement}",
+    ]
+    title_heading_positions = [
+        title_page.find(heading) for heading in title_headings
+    ]
 
     checks = {
         "main_words_le_4000": main_words <= 4000,
@@ -82,7 +93,28 @@ def main() -> None:
         ),
         "heading_depth_le_3": "\\paragraph{" not in source and "\\subparagraph{" not in source,
         "data_availability_present": "Data Availability/Supplementary Information" in source,
-        "statements_declarations_present": "Statements and Declarations" in source,
+        "statements_declarations_absent_from_blinded_manuscript": (
+            "Statements and Declarations" not in source
+        ),
+        "title_page_feedback_headings_present": all(
+            position >= 0 for position in title_heading_positions
+        ),
+        "title_page_feedback_headings_ordered": title_heading_positions == sorted(
+            title_heading_positions
+        ),
+        "title_page_conflict_statement_present": (
+            "The authors declare that they have no conflict of interest." in title_page
+        ),
+        "title_page_funding_statement_present": (
+            "No funding was received for conducting this study or preparing this manuscript."
+            in title_page
+        ),
+        "title_page_acknowledgement_not_applicable": (
+            r"\section*{Acknowledgement}" in title_page
+            and "Not applicable." in title_page.split(
+                r"\section*{Acknowledgement}", 1
+            )[1]
+        ),
         "ai_disclosure_in_method": "AI-assisted research support" in source,
     }
 

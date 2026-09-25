@@ -37,10 +37,15 @@ Verified: 20 September 2026
 - Tables and figures numbered and cited consecutively; captions supplied in the text.
 - Figures embedded in the manuscript; no titles inside figures; approximately 8–12-pt final lettering; grayscale-accessible encodings.
 - “Data Availability/Supplementary Information” section with persistent URL(s).
-- “Statements and Declarations” including funding and competing interests.
+- Journal-office override received 24 September 2026: declarations belong only
+  on the separate title page, using the exact headings Conflict of Interest,
+  Funding, Author's Contribution, and Acknowledgement; the blinded manuscript
+  must not contain a Statements and Declarations section.
 - AI use beyond copy editing documented in Methods; humans remain accountable.
 - Separate CRediT contributions on the title page.
-- Optional continuous line numbering; double spacing requested.
+- Journal-office override received 24 September 2026: author-supplied automatic
+  continuous line numbering is mandatory for the blinded Word manuscript;
+  double spacing remains required.
 
 ## Accepted-paper calibration
 

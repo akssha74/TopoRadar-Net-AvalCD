@@ -10,16 +10,16 @@ Verified: 20 September 2026
 - [x] Five highlights, each no more than 150 characters and written without acronyms
 - [x] Anonymous main manuscript for double-blind review
 - [x] Separate identified title page
-- [x] Title page includes title, authors, affiliation, corresponding-author contact, a Declarations heading, acknowledgements, funding, competing interests, CRediT contributions, and author agreement
+- [x] Title page uses the editorial-office headings and order: Conflict of Interest, Funding, Author's Contribution, and Acknowledgement
 - [x] Editable anonymous Word manuscript
 - [x] Official Springer Nature LaTeX template retained as editable mathematical source
 - [x] APA author–year citations and alphabetized references
 - [x] Persistent DOI URL in Data Availability/Supplementary Information
-- [x] Statements and Declarations included
+- [x] Statements and Declarations removed from the blinded manuscript as directed by the editorial office
 - [x] AI-assisted research support disclosed in Methods
 - [x] No more than three displayed heading levels
 - [x] Automatic Word page numbering
-- [x] No embedded Word line numbering, preventing duplication by Editorial Manager
+- [x] Automatic continuous Word line numbering embedded throughout the blinded manuscript as directed by the editorial office
 - [x] A4, 12-point Times New Roman, double-spaced Word main document
 - [x] Figures embedded in the manuscript and cited consecutively
 - [x] Figure titles removed from artwork

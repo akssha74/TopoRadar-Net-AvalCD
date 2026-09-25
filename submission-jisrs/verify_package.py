@@ -133,9 +133,20 @@ def main() -> None:
     section = document.sections[0]
     if round(section.page_width.mm) != 210 or round(section.page_height.mm) != 297:
         raise SystemExit("DOCX is not A4")
-    line_numbers = section._sectPr.find(qn("w:lnNumType"))
-    if line_numbers is not None:
-        raise SystemExit("DOCX contains line numbering that Editorial Manager duplicates")
+    for section_index, docx_section in enumerate(document.sections, start=1):
+        line_numbers = docx_section._sectPr.find(qn("w:lnNumType"))
+        if line_numbers is None:
+            raise SystemExit(
+                f"DOCX section {section_index} lacks automatic line numbering"
+            )
+        if (
+            line_numbers.get(qn("w:countBy")) != "1"
+            or line_numbers.get(qn("w:start")) != "1"
+            or line_numbers.get(qn("w:restart")) != "continuous"
+        ):
+            raise SystemExit(
+                f"DOCX section {section_index} line numbering is not continuous"
+            )
     if not re.search(r"<w:instrText[^>]*>\s*PAGE\s*</w:instrText>", footer_xml):
         raise SystemExit("DOCX lacks an automatic PAGE field in its footer")
     if abs(document.styles["Normal"].font.size.pt - 12) > 0.01:
@@ -146,6 +157,21 @@ def main() -> None:
             raise SystemExit(f"DOCX missing caption prefix: {caption_prefix}")
     if "Fig. 1." in docx_text or "Fig. 2." in docx_text:
         raise SystemExit("DOCX figure caption contains punctuation after its number")
+    if "Statements and Declarations" in docx_text:
+        raise SystemExit(
+            "Blinded DOCX still contains the prohibited Statements and Declarations section"
+        )
+    for prohibited_declaration in (
+        "Funding. No external grant funding",
+        "Competing interests.",
+        "Ethics approval and consent.",
+        "Consent for publication.",
+        "Author contributions.",
+    ):
+        if prohibited_declaration in docx_text:
+            raise SystemExit(
+                f"Blinded DOCX retains declaration text: {prohibited_declaration}"
+            )
 
     title_page = Document(SUBMISSION / "JISRS_Title_Page.docx")
     title_page_text = "\n".join(
@@ -155,6 +181,38 @@ def main() -> None:
         raise SystemExit("Title page lacks a Declarations heading")
     if "Highlights" in title_page_text:
         raise SystemExit("Title page duplicates the separately supplied Highlights")
+    required_title_headings = [
+        "Conflict of Interest",
+        "Funding",
+        "Author’s Contribution",
+        "Acknowledgement",
+    ]
+    title_heading_positions = [
+        title_page_text.find(heading) for heading in required_title_headings
+    ]
+    if any(position < 0 for position in title_heading_positions):
+        raise SystemExit(
+            "Title page lacks one or more editorially required declaration headings"
+        )
+    if title_heading_positions != sorted(title_heading_positions):
+        raise SystemExit(
+            "Title page declaration headings are not in the editorially required order"
+        )
+    if (
+        "The authors declare that they have no conflict of interest."
+        not in title_page_text
+    ):
+        raise SystemExit("Title page lacks the required Conflict of Interest statement")
+    if (
+        "No funding was received for conducting this study or preparing this manuscript."
+        not in title_page_text
+    ):
+        raise SystemExit("Title page lacks the required Funding statement")
+    acknowledgement_text = title_page_text.split("Acknowledgement", 1)[1].split(
+        "Ethics Approval and Consent", 1
+    )[0]
+    if "Not applicable." not in acknowledgement_text:
+        raise SystemExit("Title page Acknowledgement is not marked Not applicable")
     if Path(metadata["supplementary_information"]).name != "ESM_1.pdf":
         raise SystemExit("Supplementary Information is not named ESM_1.pdf")
 

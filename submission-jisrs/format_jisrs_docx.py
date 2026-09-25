@@ -122,11 +122,16 @@ def prevent_split(row) -> None:
     tr_pr.append(OxmlElement("w:cantSplit"))
 
 
-def remove_line_numbers(section) -> None:
+def add_continuous_line_numbers(section) -> None:
     sect_pr = section._sectPr
     existing = sect_pr.find(qn("w:lnNumType"))
     if existing is not None:
         sect_pr.remove(existing)
+    line_numbers = OxmlElement("w:lnNumType")
+    line_numbers.set(qn("w:countBy"), "1")
+    line_numbers.set(qn("w:start"), "1")
+    line_numbers.set(qn("w:restart"), "continuous")
+    sect_pr.append(line_numbers)
 
 
 def add_page_number(section) -> None:
@@ -164,7 +169,7 @@ def main() -> None:
         section.bottom_margin = Mm(20)
         section.left_margin = Mm(20)
         section.right_margin = Mm(20)
-        remove_line_numbers(section)
+        add_continuous_line_numbers(section)
         add_page_number(section)
 
     normal = document.styles["Normal"]
@@ -255,7 +260,7 @@ def main() -> None:
 
     print(
         f"Formatted {args.path}: A4, 20-mm margins, 12-pt Times New Roman, "
-        "double-spaced, automatic page numbers, no embedded line numbers, "
+        "double-spaced, automatic page numbers, continuous line numbers, "
         "non-splitting table rows."
     )
 

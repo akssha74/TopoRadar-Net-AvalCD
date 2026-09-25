@@ -40,17 +40,21 @@ Before approving the generated proof:
 - Confirm that references cite prior work in the third person.
 - Confirm figures, tables, equations, and references render without missing markers.
 - Confirm the Word manuscript remains A4 and double-spaced, contains automatic
-  page numbers, and does not duplicate Editorial Manager's line numbering.
+  page numbers, and contains author-supplied automatic continuous line numbering.
 
 ## Declarations
 
 - Funding: none
-- Competing interests: none
+- Conflict of Interest: none
 - Human/animal ethics: not applicable
 - Consent: not applicable
 - Data: AvalCD DOI is stated in the manuscript
-- AI disclosure: included in Methods and Statements and Declarations
+- AI disclosure: included in Methods
 - Author contributions: supplied on the separate title page
+- Acknowledgement: not applicable
+
+The declaration statements belong on the separate title page only. The blinded
+manuscript must not contain a Statements and Declarations section.
 
 ## Publication route
 
